@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eeg-mdd"
+version = "0.1.0"
+description = "Reconstrucción del dataset y preprocesamiento EEG para detección de depresión (MDD vs HC)"
+requires-python = ">=3.10"
+dependencies = [
+    "mne>=1.6",
+    "numpy",
+    "scipy",
+    "pandas",
+    "pyarrow",
+    "openpyxl",
+    "pyyaml",
+    "scikit-learn",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

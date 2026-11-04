@@ -1,0 +1,21 @@
+# Datos: nunca se suben al repositorio
+data/raw/
+data/interim/
+data/processed/
+reports/
+*.fif
+
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Cualquier archivo con datos de participantes, esté donde esté
+*.raw
+*.mff/
+*.parquet
+*.xlsx
+*.xls
+*.csv
+!configs/*.csv
+.claude/

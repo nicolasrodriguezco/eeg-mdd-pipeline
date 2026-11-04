@@ -1,0 +1,16 @@
+name: eeg-mdd
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - mne>=1.6
+      - numpy
+      - scipy
+      - pandas
+      - pyarrow
+      - openpyxl
+      - pyyaml
+      - scikit-learn
+      - pytest

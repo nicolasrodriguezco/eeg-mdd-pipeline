@@ -1,0 +1,77 @@
+# Configuración del pipeline. Las rutas son relativas a la raíz del repositorio.
+
+paths:
+  raw_dir: data/raw
+  interim_dir: data/interim
+  processed_dir: data/processed
+  reports_dir: reports
+  manual_id_map: configs/manual_id_map.csv
+  ica_exclusions: configs/ica_exclusions.csv
+
+dataset:
+  # Extensiones que se consideran archivos de EEG.
+  # MODMA ERP 128 canales (Lanzhou 2015): archivos .raw de EGI.
+  eeg_extensions: [".raw", ".mff"]
+  # El ID son los 8 dígitos AL INICIO del nombre (ej. "02020019_erp 20150703 1052.raw").
+  # El "^" es importante: la fecha (20150703) también tiene 8 dígitos.
+  subject_id_regex: "^(\\d{8})"
+  # Auditoría (Fase A): los 53 archivos tienen 129 canales EEG (E1-E128 + E129,
+  # que es la referencia de registro VREF/Cz y vale cero) a 250 Hz.
+  expected_n_eeg_channels: 129
+  expected_sfreq: 250
+  allowed_flat_channels: [E129]
+  clinical:
+    # Excel oficial de MODMA (Sheet1: 53 filas; Sheet2 y Sheet3 vacías).
+    # La etiqueta MDD/HC sale SIEMPRE de este archivo, nunca del prefijo del ID.
+    file: data/raw/subjects_information_EEG_128channels_ERP_lanzhou_2015.xlsx
+    id_column: "subject id"        # texto de 8 dígitos con cero inicial (02010002)
+    group_column: type             # valores: MDD / HC
+    # Cómo vienen escritos los grupos en el archivo clínico -> etiqueta final.
+    group_map:
+      MDD: MDD
+      HC: HC
+
+preprocessing:
+  # Todo fijado en docs/preregistration.md (2026-11-04), antes de ver resultados.
+  montage: GSN-HydroCel-129
+  rename_channels: {E129: Cz}   # E129 = referencia de registro (VREF) = Cz del montaje
+  l_freq: 0.5
+  h_freq: 40.0
+  notch_freqs: [50.0]           # verificado: red de 50 Hz (China)
+  reference: average
+  resample_sfreq: 250           # los datos ya vienen a 250 Hz
+  tmin: -0.2
+  tmax: 0.6                     # el punto aparece >= 632 ms tras el rostro
+  baseline: [-0.2, 0.0]
+  reject_abs_uv: 100            # rechazo si |x| > 100 µV en cualquier canal tras la línea base
+  reject_peak_to_peak_uv: null
+  # Nombre del canal de EGI -> código fijo (igual en todos los sujetos).
+  egi_event_codes: {fcue: 11, hcue: 12, scue: 13}
+  event_id: {fear: 11, happy: 12, sad: 13}
+  stim_channel: null
+  bad_channels:
+    flat_sd_uv: 0.1
+    robust_z: 5.0
+    min_neighbor_corr: 0.4
+    n_neighbors: 6
+    exempt_flat: [Cz]
+  ica:
+    enabled: true
+    method: picard
+    fit_params: {ortho: false, extended: true}
+    n_components: 30
+    random_state: 97
+    highpass_for_fit: 1.0
+    lowpass_for_fit: 100.0
+    decim_for_fit: 2
+    iclabel_threshold: 0.80
+    iclabel_reject: [eye blink, muscle artifact, heart beat, line noise, channel noise]
+  continuous:
+    sfreq: 125
+    segment_s: 2.0
+    reject_abs_uv: 100
+
+exclusion:
+  max_bad_channel_frac: 0.20
+  min_trials_total: 240
+  min_trials_per_condition: 40
