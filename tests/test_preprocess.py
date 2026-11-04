@@ -56,3 +56,16 @@ def test_ica_is_fitted_and_saved(synthetic_raw, pp_config, tmp_path):
     epochs, log = preprocess_raw(synthetic_raw, pp_config, "02010001", ica_exclude=[0], ica_dir=tmp_path)
     assert (tmp_path / "sub-02010001-ica.fif").exists()
     assert log["ica_excluded"] == "0"
+
+
+def test_pyprep_bad_channels_flags_noisy_and_exempts_reference(synthetic_raw):
+    from eeg_mdd.preprocess import detect_bad_channels
+
+    raw = synthetic_raw.copy().pick("eeg")
+    raw.rename_channels({"E128": "Cz"})
+    raw._data[raw.ch_names.index("Cz")] = 0.0                     # referencia de registro: plana
+    rng = np.random.default_rng(0)
+    raw._data[raw.ch_names.index("E40")] += rng.normal(0, 150e-6, raw.n_times)   # canal muy ruidoso
+    bads, reasons = detect_bad_channels(raw, {"method": "pyprep", "exempt_flat": ["Cz"]})
+    assert "E40" in bads
+    assert "Cz" not in bads

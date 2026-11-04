@@ -70,4 +70,4 @@ def test_scripts_01_to_04(tmp_path):
     assert set(log["subject_id"]) == {"02010001", "02010002"}
     assert log["error"].map(lambda v: pd.isna(v) or v == "").all()
     assert (log["n_trials_kept_total"] == 12).all()
-    assert (tmp_path / "data" / "processed" / "sub-02010001-epo.fif").exists()
+    assert (tmp_path / "data" / "processed" / "epochs" / "sub-02010001-epo.fif").exists()

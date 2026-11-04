@@ -50,6 +50,11 @@ preprocessing:
   event_id: {fear: 11, happy: 12, sad: 13}
   stim_channel: null
   bad_channels:
+    # Desviación 1 (reports/deviations.md): la regla original de correlación con vecinos
+    # marcaba hasta 48 canales (falso positivo junto a la referencia). Se usa PyPREP.
+    method: pyprep
+    ransac: false
+    random_state: 97
     flat_sd_uv: 0.1
     robust_z: 5.0
     min_neighbor_corr: 0.4
