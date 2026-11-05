@@ -69,17 +69,27 @@ def model_selection_grid() -> tuple[Pipeline, list[dict]]:
     return _tab(_lr("l2")), grids
 
 
-def riemann_models() -> dict[str, tuple[Pipeline, dict]]:
-    """Modelos por ensayo sobre señales regionales (n_trials, n_regions, n_times)."""
+def riemann_models(precomputed_cov: bool = False) -> dict[str, tuple[Pipeline, dict]]:
+    """Modelos por ensayo sobre señales regionales (n_trials, n_regions, n_times).
+
+    ``precomputed_cov=True``: TS-LR y MDM reciben ya las covarianzas OAS por ensayo
+    (n_trials, n_regions, n_regions). Es seguro: cada covarianza usa solo su propio
+    ensayo y no aprende nada de otros datos; lo que sí aprende (media de referencia
+    del espacio tangente, escalado, LR, centroides de MDM) sigue dentro del Pipeline.
+    ERPCov-TS-LR siempre recibe la señal: sus prototipos de ERP usan etiquetas y se
+    ajustan dentro del pliegue. Por coste de cómputo su C queda fijo a priori (0.1),
+    sin rejilla interna (desviación D5).
+    """
     from pyriemann.classification import MDM
     from pyriemann.estimation import Covariances, ERPCovariances
     from pyriemann.tangentspace import TangentSpace
 
+    cov = [] if precomputed_cov else [("cov", Covariances(estimator="oas"))]
     return {
-        "TS-LR": (Pipeline([("cov", Covariances(estimator="oas")), ("ts", TangentSpace(metric="riemann")),
-                            ("scale", StandardScaler()), ("clf", _lr("l2"))]), {"clf__C": np.logspace(-3, 1, 5)}),
-        "MDM": (Pipeline([("cov", Covariances(estimator="oas")), ("clf", MDM(metric="riemann"))]), {}),
+        "TS-LR": (Pipeline(cov + [("ts", TangentSpace(metric="riemann")), ("scale", StandardScaler()),
+                                  ("clf", _lr("l2"))]), {"clf__C": np.logspace(-3, 1, 5)}),
+        "MDM": (Pipeline(cov + [("clf", MDM(metric="riemann"))]), {}),
         "ERPCov-TS-LR": (Pipeline([("cov", ERPCovariances(classes=[0, 1], estimator="oas")),
                                    ("ts", TangentSpace(metric="riemann")), ("scale", StandardScaler()),
-                                   ("clf", _lr("l2"))]), {"clf__C": np.logspace(-3, 1, 5)}),
+                                   ("clf", _lr("l2", C=0.1))]), {}),
     }

@@ -1,0 +1,64 @@
+\section{Deviations from the pre-specified plan}\label{app:deviations}
+Deviations D1--D4 were decided before any model had been trained; at that point only the preprocessing log had been
+inspected. D5 was decided after the subject-level models had been evaluated but before any result of the affected
+(Riemannian) models existed.
+
+\begin{enumerate}
+  \item[D1] \textbf{Bad-channel detector.}
+        \begin{itemize}
+          \item \emph{Problem:} the pre-specified rule (flat signal, robust log-SD $z>5$, median neighbour correlation
+                $<0.4$) flagged up to 48 of 129 channels in a recording. Of all flags, 94\% came from the
+                neighbour-correlation criterion, and they included channels adjacent to the vertex reference with
+                \emph{negative} neighbour correlations. Whole-recording correlation is not a valid quality measure on
+                reference-dominated, artefact-laden data.
+          \item \emph{Change:} the rule was replaced by the PREP implementation~\cite{bigdely2015prep}.
+          \item \emph{Unchanged:} the 20\% exclusion threshold.
+        \end{itemize}
+  \item[D2] \textbf{Re-run.} Fourteen participants were re-run after an infrastructure failure: a library was being
+        installed during the first run. Since D1 required a full re-run anyway, all 53 were re-processed.
+  \item[D3] \textbf{Added model.} The ERP-covariance Riemannian model was added as a secondary model.
+  \item[D4] \textbf{Added sensitivity analysis.} Exclusions affected \NExcludedMDD{} MDD and \NExcludedHC{} HC
+        participants, so we added a sensitivity analysis of the primary model on all 53 participants.
+  \item[D5] \textbf{Computational budget of the Riemannian models.}
+        \begin{itemize}
+          \item \emph{Problem:} timing one outer fold showed that the full protocol (10 repetitions plus 200
+                permutations, i.e.\ 1{,}050 outer folds per model) would take more than 12~h, mostly because
+                per-trial covariances were recomputed in every inner-loop fit.
+          \item \emph{Change 1 (no effect on results):} for the tangent-space and MDM models, per-trial OAS
+                covariances were computed once. Each covariance depends only on its own trial, so this involves no
+                learning across samples; the tangent-space reference point, scaling, classifier and MDM centroids
+                were still fitted inside each training fold. A unit test verifies identical predictions.
+          \item \emph{Change 2:} the ERP-covariance model, whose class prototypes depend on labels and must be
+                recomputed within each fold, used a fixed regularisation $C=0.1$ instead of an inner grid. A value
+                fixed in advance cannot inflate performance; at worst it is slightly sub-optimal.
+        \end{itemize}
+\end{enumerate}
+
+\section{Preprocessing quality}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{fig_quality}
+\caption{Signal quality per participant: retained face-locked trials, interpolated channels and removed ICA
+components. Open markers show participants excluded by the pre-specified criteria (dashed lines). Horizontal bars
+are group medians.}
+\label{fig:quality}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\linewidth]{fig_regions}
+\caption{Assignment of HydroCel-129 electrodes to the ten regions, obtained by nearest 10--10 anchor on the fitted
+head sphere. Filled markers are left-hemisphere electrodes and open markers right-hemisphere electrodes. Grey
+electrodes (midline, and the face/neck ring more than \SI{115}{\degree} from the vertex) are not used for regional
+features.}
+\label{fig:regions}
+\end{figure}
+
+\section{Univariate group differences}
+\begin{table}[h]
+\centering\small
+\caption{The ten features with the smallest uncorrected Mann--Whitney $p$ (MDD vs.\ HC, included participants).
+$p_\text{FDR}$ is Benjamini--Hochberg corrected over all 288 features.}
+\label{tab:uni}
+\input{tables/univariate_top.tex}
+\end{table}

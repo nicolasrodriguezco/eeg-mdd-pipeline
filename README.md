@@ -1,61 +1,81 @@
 # eeg-mdd-pipeline
 
-Reconstrucción desde cero del dataset y del preprocesamiento para el estudio
-**"Detección de depresión (MDD vs. HC) con EEG"**, a partir de los datos crudos.
+Subject-independent classification of **major depressive disorder (MDD) vs. healthy controls (HC)**
+from 128-channel task EEG (MODMA, EGI HydroCel GSN, emotional-face dot-probe task, Lanzhou 2015).
+The protocol is fully reproducible and leakage-free. **This is research code, not a clinical tool.**
 
-> Regla de oro: los datos crudos nunca se modifican, ningún sujeto pasa sin una
-> etiqueta verificada, y todo lo que se ajusta con datos se ajusta por sujeto o
-> dentro del pliegue de entrenamiento.
+- Paper (LaTeX, English): `docs/paper/main.tex` → `docs/paper/main.pdf`
+- Analysis plan, fixed before any result: `docs/preregistration.md`. Deviations: `reports/deviations.md`
+- Data card / model card: `docs/data_card.md`, `docs/model_card.md`
 
-## Instalación
+## Installation
 
 ```bash
-conda env create -f environment.yml
+conda env create -f environment.yml        # Python 3.11, MNE, PyPREP, mne-icalabel, pyRiemann, braindecode...
 conda activate eeg-mdd
 pip install -e .
+# GPU (optional, needed for practical deep-learning run times; RTX 50xx needs CUDA 12.8 wheels):
+pip install torch --index-url https://download.pytorch.org/whl/cu128
 ```
 
-## Estructura
+Data are **not** distributed. Put the MODMA ERP files in `data/raw/` and leave them read-only:
+- `EEG_128channels_ERP_lanzhou_2015/*.raw`
+- `subjects_information_EEG_128channels_ERP_lanzhou_2015.xlsx`
 
-```
-configs/
-  config.yaml            # rutas, parámetros y event_id (llenar tras la auditoría)
-  manual_id_map.csv      # cruces de ID manuales, cada uno con justificación
-data/
-  raw/                   # datos crudos (SOLO LECTURA, no se versionan)
-  interim/               # tablas de inventario, auditoría y cruce
-  processed/             # épocas por sujeto en .fif
-reports/                 # registros y figuras
-scripts/                 # pasos del pipeline, en orden
-src/eeg_mdd/             # código reutilizable
-tests/                   # pruebas con EEG sintético
-```
+## Reproduce everything (end to end)
 
-## Flujo (Fase 0)
-
-| Paso | Comando | Salida | Qué revisar a mano |
+| Step | Command | Output | Time* |
 |---|---|---|---|
-| 1. Inventario | `python scripts/01_inventory.py` | `data/interim/inventory.csv` | Formatos, carpetas, dónde está la etiqueta |
-| 2. Auditoría | `python scripts/02_audit.py` | `data/interim/audit.csv` | Canales, frecuencia, eventos por código, canales planos |
-| 3. Cruce de IDs | `python scripts/03_match_ids.py` | `data/interim/subjects.csv` | Todo caso en `only_eeg`, `only_clinical` o `duplicated` |
-| 4. Preprocesamiento | `python scripts/04_preprocess.py` | `data/processed/*-epo.fif` y `reports/preprocessing_log.csv` | Ensayos que quedan por sujeto y condición |
-| 5. Comparación | `python scripts/05_compare_old.py --old ruta/al/viejo.parquet` | `reports/old_vs_new.csv` | Cada diferencia es un posible error de la versión vieja |
+| 1. Inventory | `python scripts/01_inventory.py` | `data/interim/inventory.csv` | s |
+| 2. Audit (EGI events by name) | `python scripts/02_audit.py` | `data/interim/audit.csv` | 2 min |
+| 3. ID matching (exact, no fuzzy) | `python scripts/03_match_ids.py` | `data/interim/subjects.csv` | s |
+| 3b. Demographics / recording dates | `python scripts/03b_demographics.py` | `reports/tables/` | 1 min |
+| 4. Preprocessing + exclusion | `python scripts/04_preprocess.py --n-jobs 10` | epochs, segments, ICA, `reports/qc/*.html` | 15 min |
+| 6. Features | `python scripts/06_features.py` | `data/processed/features/` | 1 min |
+| 7. Classic + Riemannian models | `python scripts/07_models.py` | `reports/results/models/` | hours (permutations) |
+| 7b. Sensitivity, all 53 | `python scripts/07_models.py --all-subjects --only primary` | `reports/results/models_all53/` | min |
+| 8. Deep learning (GPU) | `python scripts/08_deep.py --repeats 3` | `reports/results/models/DL-*` | hours |
+| 9. Confounds | `python scripts/09_confounds.py` | `reports/results/confounds/` | min |
+| 10. Interpretation | `python scripts/10_interpret.py` | `reports/results/interpret/`, figures | min |
+| 11. Figures, tables, numbers | `python scripts/11_figures_tables.py` | `reports/results/{figures,tables}`, `docs/paper/generated/numbers.tex` | s |
+| 12. Paper | `cd docs/paper && ../../tools/tectonic/tectonic.exe main.tex` | `docs/paper/main.pdf` | s |
 
-Antes del paso 4 hay que completar en `configs/config.yaml`:
-- `dataset.subject_id_regex`: cómo extraer el ID del nombre del archivo.
-- `dataset.clinical`: archivo, columna de ID y columna de grupo.
-- `preprocessing.event_id`: códigos de evento de cada condición (sale de la auditoría).
-- `preprocessing.notch_freqs`: **verificar 50 Hz** (MODMA se registró en China).
+Tectonic: the conda-forge build fails on Windows with a DLL entry-point error, so the standalone release is used
+(download `tectonic-0.15.0-x86_64-pc-windows-msvc.zip` from the tectonic GitHub releases into `tools/tectonic/`;
+the folder is git-ignored). The first compilation downloads the required TeX packages.
 
-## Pruebas
+*32-core CPU and RTX 5070 Laptop GPU.
+
+Every number in the paper is a LaTeX macro written by step 11 from the saved outputs. No number is typed by hand.
+
+## Guarantees enforced in code
+
+- **Labels** come only from the clinical spreadsheet, by exact ID match. Fuzzy matches go to `configs/manual_id_map.csv`, which needs a written justification.
+- **Events** are read by EGI channel name (`fcue`, `hcue`, `scue`) with fixed codes. The combined `STI 014` channel is 1 for every event in these files.
+- **Preprocessing** is per participant, so nothing is fitted across participants:
+  - PyPREP bad-channel detection, then ICA (Picard) with ICLabel-based component rejection.
+  - 0.5–40 Hz band-pass, 50 Hz notch, spline interpolation, average reference.
+  - Epochs from −200 to 600 ms, rejected if any channel exceeds ±100 µV.
+- **Evaluation** is always subject-wise:
+  - 5-fold × 10-repeat outer CV on subjects, with nested inner CV on subjects.
+  - A `SubjectLeakError` assertion runs on every outer, inner and validation split.
+  - All models share the same subject partitions, so they can be compared pairwise.
+- **Prohibited predictors:** demographics and questionnaires are never EEG predictors. Demographics appear only in the demographic baseline and the confound analyses.
+- **Reporting:** results are per subject, with 95% bootstrap CIs over subjects and label-permutation p-values that re-run the full nested pipeline.
+
+## Tests
 
 ```bash
-pytest -q
+pytest -q          # synthetic EEG only; no real data needed
 ```
 
-Las pruebas generan EEG sintético de 128 canales, así que no necesitan los datos reales.
+## Layout
 
-## Pendientes conocidos
-
-- Si los datos vienen en `.mat`, hay que escribir el lector en `src/eeg_mdd/io.py` (`_read_mat`) según la estructura real del archivo.
-- La ICA se ajusta y se guarda por sujeto, pero los componentes a eliminar se eligen a mano y se anotan en `configs/ica_exclusions.csv`.
+```
+configs/      config.yaml (all parameters), manual_id_map.csv, ica_exclusions.csv (ICLabel decisions)
+docs/         preregistration, review, data/model cards, paper/
+scripts/      numbered pipeline steps
+src/eeg_mdd/  io, audit, events, matching, demographics, preprocess, features/, evaluation/, models/, plotting
+tests/        pytest suite (synthetic data)
+reports/      phase reports, logs, QC reports and results (not versioned: they contain participant data)
+```

@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\captionsetup{font=small,labelfont=bf}
+\graphicspath{{figures/}}
+\sisetup{detect-all}
+
+\input{generated/numbers.tex}
+
+% ---- Author (sole author) ------------------------------------------------
+\newcommand{\AuthorName}{Nicolas Rodriguez}
+\newcommand{\AuthorAffil}{Department of Mathematics and Statistics, Universidad del Norte, Barranquilla, Colombia}
+\newcommand{\AuthorEmail}{[email]}
+
+\title{How well does task EEG separate major depression from healthy controls in participants never seen by the
+model?\\[0.3em]
+\large A leakage-free, pre-specified evaluation on the MODMA 128-channel dot-probe dataset}
+\author{\AuthorName\\\small\AuthorAffil\\\small\texttt{\AuthorEmail}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/related}
+\input{sections/methods}
+\input{sections/results}
+\input{sections/discussion}
+
+\section*{Code and data availability}
+All code, the analysis plan (fixed and version-controlled before any result was produced) and the list of deviations
+are available in the accompanying repository. The EEG data belong to the MODMA project~\cite{cai2022modma} and were
+obtained from its maintainers for academic use; they are not redistributed.
+
+\section*{Acknowledgements}
+This work grew out of a research-seminar project at Universidad del Norte. The author thanks Dr.\ Karen Fl\'orez for
+her supervision of that project, and the MODMA team for making the data available for academic research.
+
+\section*{Use of AI tools}
+An AI coding assistant was used to write and test the analysis code and to draft the text. All analysis
+decisions, code and results were checked by the author, and every number in this paper is generated
+programmatically from saved outputs.
+
+\section*{Disclaimer}
+This work is a methodological study. The models described here are \emph{not} diagnostic tools and must not be
+used for clinical decision-making.
+
+\bibliographystyle{unsrtnat}
+\bibliography{refs}
+
+\appendix
+\input{sections/appendix}
+
+\end{document}

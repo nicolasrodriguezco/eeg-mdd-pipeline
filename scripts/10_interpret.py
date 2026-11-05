@@ -25,6 +25,7 @@ from statsmodels.stats.multitest import multipletests
 
 from eeg_mdd import plotting as P
 from eeg_mdd.config import load_config
+from eeg_mdd.resources import free_gb, limit_threads, safe_n_jobs
 from eeg_mdd.evaluation.cv import outer_splits
 from eeg_mdd.features import erp_clusters, family_of
 from eeg_mdd.features.spectral import BANDS
@@ -70,6 +71,9 @@ def main() -> None:
     ap.add_argument("--n-jobs", type=int, default=24)
     ap.add_argument("--n-perm", type=int, default=1000)
     args = ap.parse_args()
+    limit_threads()
+    args.n_jobs = safe_n_jobs(0.5, max_jobs=args.n_jobs)
+    print(f"Procesos: {args.n_jobs} (RAM libre {free_gb():.1f} GB)", flush=True)
     P.setup()
 
     cfg = load_config(args.config)
@@ -126,7 +130,7 @@ def main() -> None:
         colors = [P.GROUP_COLORS["MDD"] if yy else P.GROUP_COLORS["HC"] for yy in y]
         jitter = np.random.default_rng(row).uniform(-0.18, 0.18, len(vals))
         ax.scatter(vals, row + jitter, s=9, c=colors, alpha=0.8, linewidths=0)
-    ax.set_yticks(range(len(top)), [t.replace("_", " ") for t in top], fontsize=6.5)
+    ax.set_yticks(range(len(top)), [t.replace("__", " – ").replace("_", " ") for t in top], fontsize=6.5)
     ax.axvline(0, color=P.INK2, lw=0.8)
     ax.set_xlabel("SHAP value (log-odds of MDD)")
     ax.set_title("Primary model: top-15 features by mean |SHAP|")
@@ -156,7 +160,7 @@ def main() -> None:
     info = mne.create_info(chans, 125.0, "eeg")
     info.set_montage(mont)
     adjacency, _ = mne.channels.find_ch_adjacency(info, "eeg")
-    fig, axes = P.plt.subplots(1, len(BANDS), figsize=(7.2, 1.9))
+    fig, axes = P.plt.subplots(1, len(BANDS), figsize=(7.2, 2.0), gridspec_kw=dict(wspace=0.08))
     clus_rows, dmaps = [], {}
     for ax, band in zip(axes, BANDS):
         pb = power[power["band"] == band].set_index("subject_id").loc[g, chans]
@@ -174,8 +178,9 @@ def main() -> None:
         im, _ = mne.viz.plot_topomap(d, info, axes=ax, show=False, cmap=P.DIVERGING, vlim=(-1, 1), mask=mask,
                                      mask_params=dict(marker="o", markerfacecolor="white", markeredgecolor=P.INK,
                                                       markersize=3), contours=0, sensors=False)
-        ax.set_title(f"{band} ({BANDS[band][0]:g}–{BANDS[band][1]:g} Hz)", fontsize=7.5)
-    cb = fig.colorbar(im, ax=axes, shrink=0.75, pad=0.02)
+        band_name = band.replace("lowgamma", "low gamma")
+        ax.set_title(f"{band_name}\n{BANDS[band][0]:g}–{BANDS[band][1]:g} Hz", fontsize=7)
+    cb = fig.colorbar(im, ax=axes, shrink=0.7, pad=0.03, fraction=0.025)
     cb.set_label("Cohen's d (MDD − HC)\nlog10 power", fontsize=7)
     P.save(fig, figs / "fig_topomaps_power")
     pd.DataFrame(clus_rows).to_csv(out / "power_cluster_tests.csv", index=False)
@@ -191,8 +196,8 @@ def main() -> None:
     cl = erp_clusters()
     ch_names = next(iter(evk.values()))[conds[0]].ch_names
     idx = {c: i for i, c in enumerate(ch_names)}
-    fig, axes = P.plt.subplots(3, len(conds), figsize=(7.2, 5.0), sharex=True)
-    titles = {"n170_L": "Left occipito-temporal (≈P7)", "n170_R": "Right occipito-temporal (≈P8)",
+    fig, axes = P.plt.subplots(3, len(conds), figsize=(7.2, 5.2), sharex=True)
+    titles = {"n170_L": "Left occ.-temp. (≈P7)", "n170_R": "Right occ.-temp. (≈P8)",
               "centroparietal": "Centro-parietal (≈Pz)"}
     windows = {"n170_L": (0.14, 0.2), "n170_R": (0.14, 0.2), "centroparietal": (0.25, 0.5)}
     for j, cond in enumerate(conds):
@@ -212,7 +217,7 @@ def main() -> None:
             if j == 0:
                 ax.set_ylabel(f"{titles[cname]}\nµV", fontsize=7)
             if i == 2:
-                ax.set_xlabel("Time from face-pair onset (ms)")
+                ax.set_xlabel("Time from faces onset (ms)", fontsize=7)
     axes[0, 0].legend(fontsize=6.5, loc="lower left")
     P.save(fig, figs / "fig_erp_groups")
 

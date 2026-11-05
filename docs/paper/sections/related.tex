@@ -1,0 +1,48 @@
+\section{Related work}
+
+\paragraph{EEG markers of depression.}
+Reviews of EEG markers of MDD have catalogued many candidates. These include quantitative band power, frontal alpha
+asymmetry (FAA), connectivity, vigilance, sleep EEG and event-related potentials. Effects are generally small and
+heterogeneous across studies, and the reviews repeatedly call for standardised
+procedures~\cite{olbrich2013eeg,deaguiar2019review,simmatis2023technical}.
+
+The most studied single marker is FAA~\cite{allen2015faa}. A meta-analysis concluded that it has no diagnostic value
+for MDD~\cite{vandervinne2017faa}.
+
+\paragraph{Emotional ERPs and the dot-probe task.}
+The dot-probe paradigm measures attentional bias towards emotional stimuli~\cite{macleod1986attentional}. ERP studies of
+emotional faces typically examine three components:
+\begin{itemize}
+  \item the face-sensitive N170~\cite{bentin1996n170};
+  \item the P300, indexing attentional allocation~\cite{polich2007p300};
+  \item the late positive potential (LPP), indexing sustained motivated attention~\cite{hajcak2010erp}.
+\end{itemize}
+The Lanzhou group that later released MODMA used a dot-probe task with emotional--neutral face pairs in 17 patients and
+17 controls. They reported larger P300 amplitudes when the probe replaced a sad face, interpreted as difficulty
+disengaging from negative information, and explored ERP components as classification
+features~\cite{li2018attentional}. The 128-channel ERP subset of MODMA (24 MDD, 29 HC) uses fear-, sad- and
+happy-neutral face pairs~\cite{cai2022modma}.
+
+\paragraph{Machine learning on MODMA and on depression EEG in general.}
+Studies applying machine learning to depression EEG often report accuracies above 90\%. For example, a CNN--LSTM
+applied to EEG segments reached 97.7--99.1\%~\cite{ay2019automated}.
+
+Such figures depend critically on how data are split. When segments of the same participant appear in both
+training and test sets, a model can identify participants instead of the disorder. Segment-wise evaluation has been
+shown to overestimate performance in translational EEG~\cite{brookshire2024leakage}, consistent with a broader
+literature on record-wise splitting and leakage~\cite{saeb2017need,kapoor2023leakage}.
+
+Fewer MODMA studies use subject-independent protocols. A graph-network approach on the 128-channel \emph{resting}
+EEG, with leave-one-out validation, reported around 81\% accuracy for multi-class severity
+recognition~\cite{zhang2025depl}.
+
+Published MODMA studies differ in signal type, preprocessing and validation, and often under-report whether folds are
+formed over participants. We therefore do not attempt a quantitative comparison. Instead, Section~\ref{sec:inflation}
+measures directly, on the same data and pipeline, how much trial-wise splitting changes the estimate.
+
+\paragraph{Small samples.}
+With $n\approx50$, cross-validated estimates have wide confidence intervals~\cite{varoquaux2018cross}. Theoretical
+chance levels are also unreliable, so permutation-based significance testing is
+required~\cite{combrisson2015exceeding}. Choosing the best of several models on the same cross-validation inflates its
+estimate~\cite{cawley2010overfitting}. These three facts motivate our pre-specified primary model, our
+participant-level bootstrap intervals, our full-pipeline permutation tests and our nested model-selection estimate.

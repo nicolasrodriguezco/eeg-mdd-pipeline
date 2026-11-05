@@ -1,0 +1,224 @@
+\section{Results}
+
+\subsection{Sample and signal quality}
+Of the 53 recordings, \NIncluded{} met the pre-specified quality criteria (\NIncludedMDD{} MDD, \NIncludedHC{} HC).
+Exclusions affected \NExcludedMDD{} MDD and \NExcludedHC{} HC participants (Fisher's exact $p=\ExclusionFisherP$).
+Among included participants, the median number of retained face-locked trials was \MedianTrials{} of 480
+(range \MinTrials--\MaxTrials), the median number of interpolated channels was \MedianBadCh{} (range
+\MinBadCh--\MaxBadCh) and the median number of removed ICA components was \MedianIca{} of 30 (range \MinIca--\MaxIca).
+None of these quality measures differed between groups (Mann--Whitney $p=\QualNTrialsKeptTotalP$,
+$\QualNBadChannelsP$ and $\QualIcaNExcludedP$, respectively; Fig.~\ref{fig:quality}). Any group difference in the
+features is therefore unlikely to reflect a gross difference in data quality.
+
+\subsection{Classification of MDD vs.\ HC}
+Table~\ref{tab:main} and Fig.~\ref{fig:models} summarise all models. All estimates are participant-level and
+out-of-sample.
+
+\paragraph{Primary analysis.} The pre-specified primary model (LR-L2 on all 288 features) did not separate the
+groups: AUC $=\PrimaryLrLAllAuc$ (95\% CI \PrimaryLrLAllAucLo--\PrimaryLrLAllAucHi), balanced accuracy
+$=\PrimaryLrLAllBalancedAccuracy$, permutation $p=\PrimaryLrLAllPperm$ (Fig.~\ref{fig:perm}). The primary hypothesis,
+that task EEG features classify MDD above chance in unseen participants, is therefore not supported.
+
+\paragraph{Demographic baseline.} Age, sex and education alone gave AUC $=\DemographicsLrAuc$
+(\DemographicsLrAucLo--\DemographicsLrAucHi, $p=\DemographicsLrPperm$). Of the three variables, only education differed between groups
+(Table~\ref{tab:demo}), so it presumably carries most of this signal. This baseline outperformed the primary EEG model on the same folds (mean per-fold
+$\Delta$AUC $=\CmpPrimaryLrLAllVsDemoDiff$, corrected resampled $t$-test $p=\CmpPrimaryLrLAllVsDemoP$;
+Table~\ref{tab:cmp}). It was not exceeded by any EEG model.
+
+\paragraph{Secondary models.} Of the secondary models, only L1-regularised logistic regression reached nominal
+significance: AUC $=\LrLAllAuc$ (\LrLAllAucLo--\LrLAllAucHi), uncorrected permutation $p=\LrLAllPperm$. This result
+does not survive Holm correction over the \NSecondaryHolm{} secondary models with permutation tests
+($p_\text{Holm}=\LrLAllPholm$). Its advantage over the primary model on the same folds was also not significant
+($\Delta$AUC $=\CmpLrLAllVsPrimaryDiff$, $p=\CmpLrLAllVsPrimaryP$).
+
+The nested model-selection estimate is the honest estimate of ``choosing the best handcrafted-feature model'',
+because the choice of model family is made inside the inner loop. It was lower: AUC $=\NestedmodelselectionAllAuc$
+(\NestedmodelselectionAllAucLo--\NestedmodelselectionAllAucHi, $p=\NestedmodelselectionAllPperm$).
+
+No single feature family was informative on its own. LR-L2 AUCs were:
+\begin{itemize}
+  \item spectral and FAA: \LrLSpectralAuc;
+  \item ERP: \LrLErpAuc;
+  \item connectivity: \LrLConnectivityAuc;
+  \item complexity: \LrLComplexityAuc.
+\end{itemize}
+All permutation $p$-values were $\geq\LrLSpectralPperm$. Non-linear models (RBF SVM, random forest, LightGBM) did
+not improve on linear ones.
+
+\paragraph{Trial-level models.} Neither the Riemannian nor the deep-learning models exploited the trial-level data
+better than the handcrafted features (Table~\ref{tab:main}).
+\begin{itemize}
+  \item Riemannian: tangent space + LR, AUC $=\TsLrAuc$; MDM, \MdmAuc; ERP covariances, \ErpcovTsLrAuc{}
+        ($p=\ErpcovTsLrPperm$).
+  \item Deep learning: EEGNet, AUC $=\DlEegnetAuc$; ShallowFBCSPNet, \DlShallowfbcspnetAuc; TCN, \DlTcnAuc.
+        All confidence intervals include 0.5.
+\end{itemize}
+The deep networks reached high validation AUCs in some folds, but test AUCs fluctuated widely across folds. This is
+the signature of fitting participant-specific rather than diagnosis-specific structure with only 36 training
+participants per fold.
+
+\begin{table}[t]
+\centering\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\caption{Participant-level out-of-sample performance (MDD vs.\ HC, $n=\NIncluded$). Point estimates are means over
+10 repetitions of 5-fold cross-validation (3 for deep learning). 95\% CIs come from a participant bootstrap.
+Sensitivity and specificity are at a fixed 0.5 threshold. $p_\text{perm}$: label-permutation test re-running the
+full nested pipeline (number of permutations in parentheses); ``--'' means not run. The primary model is in bold.}
+\label{tab:main}
+\input{tables/main_results.tex}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_model_comparison}
+\caption{Participant-level ROC AUC (left) and balanced accuracy (right) with 95\% bootstrap CIs, for every model.
+The dashed line marks chance. Only the demographic baseline (blue), which uses no EEG, has a CI clearly above
+chance.}
+\label{fig:models}
+\end{figure}
+
+\begin{table}[t]
+\centering\scriptsize
+\caption{Paired comparisons on identical participant folds. $\Delta$AUC is the mean per-fold difference
+(model $-$ reference). $p_\text{corr}$ is from the corrected resampled $t$-test~\cite{nadeau2003inference}.
+$p_\text{Holm}$ applies Holm's correction to the permutation $p$-values of the secondary models.}
+\label{tab:cmp}
+\input{tables/comparisons.tex}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\begin{subfigure}[t]{0.36\linewidth}
+  \includegraphics[width=\linewidth]{fig_roc}
+  \caption{}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.62\linewidth}
+  \includegraphics[width=\linewidth]{fig_permutation}
+  \caption{}
+\end{subfigure}
+\caption{(a) Mean out-of-fold ROC curves across repetitions (band: 2.5--97.5\% range over repetitions).
+(b) Permutation null distributions of the participant-level AUC, with the observed AUC (first repetition) marked.}
+\label{fig:perm}
+\end{figure}
+
+\subsection{How much does trial-wise splitting inflate performance?}\label{sec:inflation}
+Fig.~\ref{fig:inflation} contrasts the same two trial-level models under a trial-wise split, where trials of a
+participant can fall in both training and test sets, and a subject-wise split.
+\begin{itemize}
+  \item \textbf{Tangent-space model.} Trial-level AUC was \InflTsLrTrialSplitTrialAuc{} with the trial-wise split and
+        \InflTsLrSubjectSplitTrialAuc{} with the subject-wise split. Averaging trial probabilities per participant
+        gave a participant-level AUC of \InflTsLrTrialSplitSubjectAuc{} under the trial-wise split, i.e.\ perfect
+        apparent diagnosis, versus \InflTsLrSubjectSplitSubjectAuc{} under the subject-wise split.
+  \item \textbf{Random forest on raw regional amplitudes}, the approach of many published studies and of an earlier
+        unpublished analysis of these data by the author. Trial-level AUC was
+        \InflRawamplitudeRfTrialSplitTrialAuc{} versus \InflRawamplitudeRfSubjectSplitTrialAuc, and participant-level
+        AUC was \InflRawamplitudeRfTrialSplitSubjectAuc{} versus \InflRawamplitudeRfSubjectSplitSubjectAuc.
+\end{itemize}
+The trial-wise figures do not measure diagnosis. A classifier can recognise the \emph{participant} from the
+individual statistics of their EEG, and the participant determines the label. Only the subject-wise figures answer
+the clinical question.
+
+The subject-wise participant-level AUC of the raw-amplitude random forest (\InflRawamplitudeRfSubjectSplitSubjectAuc)
+is the highest of any EEG model. We do not interpret it as evidence of a diagnostic signal, for three reasons:
+\begin{itemize}
+  \item the model was included as a control, not pre-specified as a diagnostic model;
+  \item it was evaluated with only three repetitions and no permutation test;
+  \item it is one of many analyses, and for reference, 5\% of permutation runs of the primary pipeline exceeded AUC
+        \PrimaryLrLAllNullQ.
+\end{itemize}
+It does suggest that the raw ERP waveform may be worth testing as a pre-specified hypothesis in independent data.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{fig_inflation}
+\caption{AUC of the same models evaluated with a trial-wise split (invalid; trials of each participant appear in
+training and test) and with a subject-wise split, at the trial level (left) and after averaging trial probabilities
+per participant (right). Bars show means over three repetitions, with SD as error bars. The trial-wise split is shown
+only to quantify the inflation.}
+\label{fig:inflation}
+\end{figure}
+
+\subsection{Confounds and sensitivity analyses}
+Table~\ref{tab:conf} reports whether the EEG features could predict variables other than diagnosis, using the
+primary pipeline.
+\begin{itemize}
+  \item \textbf{Sex:} AUC $=\ConfSexAuc$ (\ConfSexAucLo--\ConfSexAucHi, $p=\ConfSexP$).
+  \item \textbf{Age above the median:} \ConfAgeAuc{} ($p=\ConfAgeP$).
+  \item \textbf{Recording period:} \ConfRecordingAuc{} ($p=\ConfRecordingP$).
+\end{itemize}
+EEG features thus carried information about sex, consistent with known sex differences in EEG amplitude and
+spectra. Sex was balanced across groups (Table~\ref{tab:demo}), however, so it cannot explain a diagnostic signal,
+and none was found. Neither age nor recording period was predictable from EEG.
+
+Restricting the analysis to the \SensN{} participants recorded between June and August 2015 (\SensNMDD{} MDD), when
+both groups were recorded in parallel, gave AUC $=\SensAuc$ (\SensAucLo--\SensAucHi, $p=\SensP$).
+
+Including all 53 participants, with no exclusions, gave AUC $=\AllAuc$ (\AllAucLo--\AllAucHi, $p=\AllP$). The null
+result is therefore not an artefact of the exclusion criteria. Primary-model AUC was similar in women
+(\BySexFemaleAuc, $n=\BySexFemaleN$) and men (\BySexMaleAuc, $n=\BySexMaleN$).
+
+\begin{table}[t]
+\centering\small
+\caption{Can the EEG features predict confounds? The primary pipeline (LR-L2, all features) was applied to
+alternative targets, plus two sensitivity analyses of the MDD-vs-HC classification.}
+\label{tab:conf}
+\input{tables/confounds.tex}
+\end{table}
+
+\subsection{What, if anything, differs between groups?}
+\paragraph{Model-based importance.} Permuting whole feature families in the test folds of the primary model
+changed AUC by:
+\begin{itemize}
+  \item complexity: $\ImpComplexity$;
+  \item spectral: $\ImpSpectral$;
+  \item ERP: $\ImpErp$;
+  \item connectivity: $\ImpConnectivity$.
+\end{itemize}
+All bootstrap intervals included zero (Fig.~\ref{fig:interp}a). SHAP values of the refitted primary model
+(Fig.~\ref{fig:interp}b) were small in absolute terms, consistent with the strong regularisation selected.
+
+\paragraph{Univariate effects.} \UniNSig{} of \UniNFeat{} features differed between groups at uncorrected $p<0.05$,
+close to the $\approx14$ expected by chance. Only \UniNFdr{} survived false-discovery-rate correction: theta-band
+wPLI between left central and left temporal regions ($d=\UniTopD$, $p_\text{FDR}=\UniTopPfdr$; Table~\ref{tab:uni}).
+
+\paragraph{Spectral topography and ERPs.} Fig.~\ref{fig:topo} suggests higher beta and low-gamma power in MDD,
+strongest at the edge of the montage, but no spatial cluster survived correction (minimum cluster
+$p=\PowerClusterMinP$).
+
+Group-average ERPs (Fig.~\ref{fig:erp}) showed the expected P1--N170 complex and a centro-parietal positivity in
+both groups. Visually, MDD participants had a smaller late positivity at occipito-temporal sites, but the
+spatio-temporal cluster test did not confirm any group difference (\ErpNClusters{} candidate clusters, minimum
+$p=\ErpClusterMinP$).
+
+\begin{figure}[t]
+\centering
+\begin{subfigure}[t]{0.40\linewidth}
+  \includegraphics[width=\linewidth]{fig_family_importance}
+  \caption{}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.58\linewidth}
+  \includegraphics[width=\linewidth]{fig_shap}
+  \caption{}
+\end{subfigure}
+\caption{(a) Drop in test-fold AUC of the primary model when each feature family is permuted jointly (mean and 95\%
+interval over 50 outer folds; number of features in parentheses). (b) SHAP values of the primary model refitted on
+all participants, for the 15 features with the largest mean $|$SHAP$|$ (descriptive).}
+\label{fig:interp}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_topomaps_power}
+\caption{Group differences in log band power per electrode (Cohen's $d$, MDD $-$ HC). Electrodes belonging to a
+significant cluster (cluster permutation test, $p<0.05$) would be marked; none were.}
+\label{fig:topo}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_erp_groups}
+\caption{Grand-average ERPs ($\pm$SEM) per group and face condition, at the left and right occipito-temporal
+clusters and the centro-parietal cluster. Shaded windows are the a-priori N170 (140--200~ms) and P300 (250--500~ms)
+measurement windows.}
+\label{fig:erp}
+\end{figure}

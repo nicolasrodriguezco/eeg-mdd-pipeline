@@ -1,0 +1,42 @@
+\section{Introduction}
+
+Electroencephalography (EEG) is cheap, portable and widely available, which makes it an attractive candidate for
+objective markers of major depressive disorder (MDD). Many machine-learning studies report high accuracies for
+separating patients with MDD from healthy controls (HC) using EEG. However, a large share of this literature evaluates
+models by splitting \emph{trials} or \emph{segments}, rather than \emph{participants}, between training and test sets.
+
+When the same person contributes data to both sets, a classifier can succeed by recognising the individual (their
+head geometry, impedances, idiosyncratic rhythms or recording session) instead of the disorder. The resulting estimates
+do not approximate the intended use-case, which is diagnosing a new person~\cite{saeb2017need}. This form of leakage
+is a documented driver of the reproducibility crisis in ML-based science~\cite{kapoor2023leakage}. It has recently been
+shown to inflate performance substantially in translational EEG studies~\cite{brookshire2024leakage}.
+
+Small samples aggravate the problem. With a few dozen participants, cross-validated accuracy has error bars of
+$\pm10$ percentage points or more~\cite{varoquaux2018cross}, and theoretical chance levels are not attained in
+practice~\cite{combrisson2015exceeding}. Finally, demographic or acquisition variables that differ between groups
+(sex, education, recording period) can masquerade as disorder-related signal.
+
+The Multi-modal Open Dataset for Mental-disorder Analysis (MODMA)~\cite{cai2022modma} provides 128-channel EEG
+recorded during an emotional-face dot-probe task~\cite{macleod1986attentional} from patients with MDD and matched
+controls. It is a natural testbed for these questions. In this paper we ask a single question:
+\emph{how well can task EEG classify MDD versus HC in participants that the model has never seen?}
+
+\paragraph{Contributions.}
+\begin{enumerate}
+  \item A complete pipeline from the raw EGI files, with exact ID matching against the clinical spreadsheet,
+        event decoding by channel name, per-participant preprocessing (PREP bad-channel detection, ICA with ICLabel)
+        and pre-specified participant exclusion criteria.
+  \item An analysis plan committed to version control before any result existed. It fixes the primary model, the
+        primary outcome and all thresholds, and every deviation is reported.
+  \item A strictly subject-wise evaluation of 18 model configurations across five families: a demographic baseline, handcrafted
+        biomarkers (spectral, frontal alpha asymmetry, ERP, connectivity, complexity), Riemannian geometry and three
+        deep networks.
+        \begin{itemize}
+          \item Every model uses nested cross-validation and identical subject partitions.
+          \item Every result carries a participant-level bootstrap confidence interval; all models except the
+                deep networks also carry a label-permutation test of the full nested pipeline.
+        \end{itemize}
+  \item Confound analyses: can EEG predict sex, age or recording period, and does performance survive restriction
+        to a period in which both groups were recorded?
+  \item A direct measurement of how much trial-wise splitting inflates performance on the same data.
+\end{enumerate}

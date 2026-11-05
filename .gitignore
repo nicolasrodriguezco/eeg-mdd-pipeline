@@ -19,3 +19,12 @@ __pycache__/
 *.csv
 !configs/*.csv
 .claude/
+
+# Herramientas binarias locales
+tools/
+
+# Ensayo previo (coautoría) y artefactos de LaTeX
+/main.pdf
+*.blg
+*.aux
+*.log

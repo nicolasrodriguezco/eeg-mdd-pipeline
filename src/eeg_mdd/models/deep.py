@@ -65,12 +65,32 @@ def _augment(xb: torch.Tensor, cfg: DLConfig, gen: torch.Generator) -> torch.Ten
     return xb * scale + noise
 
 
-def _predict(model, X: np.ndarray, device, batch=512) -> np.ndarray:
+def _channel_stats(X: np.ndarray, idx: np.ndarray, chunk: int = 1024) -> tuple[np.ndarray, np.ndarray]:
+    """Media y DE por canal sobre las filas ``idx``, por bloques (sin copiar todo el arreglo)."""
+    n, s1, s2 = 0, 0.0, 0.0
+    for i in range(0, len(idx), chunk):
+        b = np.asarray(X[np.sort(idx[i:i + chunk])], dtype=np.float64)
+        n += b.shape[0] * b.shape[2]
+        s1 = s1 + b.sum(axis=(0, 2))
+        s2 = s2 + (b ** 2).sum(axis=(0, 2))
+    mu = s1 / n
+    sd = np.sqrt(np.maximum(s2 / n - mu ** 2, 0)) + 1e-12
+    return mu[None, :, None].astype(np.float32), sd[None, :, None].astype(np.float32)
+
+
+def _batch(X, rows, mu, sd) -> torch.Tensor:
+    order = np.argsort(rows)
+    b = np.asarray(X[rows[order]], dtype=np.float32)
+    b = b[np.argsort(order)]                      # vuelve al orden pedido
+    return torch.from_numpy((b - mu) / sd)
+
+
+def _predict(model, X: np.ndarray, rows: np.ndarray, mu, sd, device, batch=512) -> np.ndarray:
     model.eval()
     out = []
     with torch.no_grad():
-        for i in range(0, len(X), batch):
-            xb = torch.from_numpy(X[i:i + batch]).to(device)
+        for i in range(0, len(rows), batch):
+            xb = _batch(X, rows[i:i + batch], mu, sd).to(device)
             out.append(torch.softmax(_forward(model, xb), dim=1)[:, 1].cpu().numpy())
     return np.concatenate(out)
 
@@ -97,11 +117,8 @@ def train_fold(name: str, X: np.ndarray, y: np.ndarray, g: np.ndarray, tr: np.nd
     assert_disjoint(g, itr, iva)
     assert_disjoint(g, iva, te)
 
-    # Escalado por canal con estadísticos del entrenamiento interno.
-    mu = X[itr].mean(axis=(0, 2), keepdims=True)
-    sd = X[itr].std(axis=(0, 2), keepdims=True) + 1e-12
-    norm = lambda a: ((a - mu) / sd).astype(np.float32)  # noqa: E731
-    Xtr, Xva, Xte = norm(X[itr]), norm(X[iva]), norm(X[te])
+    # Escalado por canal con estadísticos del entrenamiento interno (por bloques, sin copias completas).
+    mu, sd = _channel_stats(X, itr)
 
     model = build_model(name, X.shape[1], X.shape[2], sfreq).to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
@@ -117,14 +134,14 @@ def train_fold(name: str, X: np.ndarray, y: np.ndarray, g: np.ndarray, tr: np.nd
         perm = torch.randperm(len(itr), generator=gen)
         for i in range(0, len(perm), cfg.batch_size):
             idx = perm[i:i + cfg.batch_size]
-            xb = _augment(torch.from_numpy(Xtr[idx.numpy()]), cfg, gen).to(device)
+            xb = _augment(_batch(X, itr[idx.numpy()], mu, sd), cfg, gen).to(device)
             yb = ytr[idx].to(device)
             opt.zero_grad()
             loss = loss_fn(_forward(model, xb), yb)
             loss.backward()
             opt.step()
         sched.step()
-        val_auc = _subject_auc(_predict(model, Xva, device), y[iva], g[iva])
+        val_auc = _subject_auc(_predict(model, X, iva, mu, sd, device), y[iva], g[iva])
         history.append(val_auc)
         if val_auc > best_val + 1e-4:
             best_val, wait = val_auc, 0
@@ -134,5 +151,5 @@ def train_fold(name: str, X: np.ndarray, y: np.ndarray, g: np.ndarray, tr: np.nd
             if wait >= cfg.patience:
                 break
     model.load_state_dict(best_state)
-    return {"prob": _predict(model, Xte, device), "best_val_auc": float(best_val), "epochs": len(history),
+    return {"prob": _predict(model, X, te, mu, sd, device), "best_val_auc": float(best_val), "epochs": len(history),
             "seconds": time.time() - t0}

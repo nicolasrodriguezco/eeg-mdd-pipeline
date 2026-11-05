@@ -21,6 +21,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 
 from eeg_mdd.config import load_config
+from eeg_mdd.resources import as_memmap, free_gb, limit_threads, safe_n_jobs
 from eeg_mdd.evaluation import nested_cv, permutation_test
 from eeg_mdd.features import family_of
 from eeg_mdd.matching import load_clinical
@@ -49,7 +50,17 @@ def save(res, out: Path, perm: dict | None = None, extra: dict | None = None) ->
     return s
 
 
-def run(name, est, grid, X, y, g, out_dir, n_perm, n_jobs, extra=None):
+RESUME = True
+PER_JOB_GB = {"tabular": 0.4, "trial": 0.75}       # medido: ~0.65 GB por worker en modelos por ensayo
+
+
+def run(name, est, grid, X, y, g, out_dir, n_perm, n_jobs, extra=None, kind="tabular"):
+    if RESUME and (out_dir / name / "meta.json").exists() and (out_dir / name / "ci.csv").exists():
+        print(f"  {name:<28} ya calculado -> se omite (--no-resume para recalcular)", flush=True)
+        return None
+    # Procesos según la RAM libre en este momento (nunca más que n_jobs).
+    n_jobs = safe_n_jobs(PER_JOB_GB[kind], max_jobs=n_jobs)
+    print(f"  {name}: {n_jobs} procesos (RAM libre {free_gb():.1f} GB)", flush=True)
     t0 = time.time()
     res = nested_cv(name, est, grid, X, y, g, N_SPLITS, N_REPEATS, N_INNER, n_jobs=n_jobs)
     perm = None
@@ -67,7 +78,7 @@ def trialwise_control(X, y, g, out: Path) -> pd.DataFrame:
     rows = []
     models = {"TS-LR": riemann_models()["TS-LR"][0].set_params(clf__C=0.1),
               "RawAmplitude-RF (old approach)": None}
-    Xflat = X.reshape(len(X), -1)[:, ::2]                 # señal regional cruda, 1 de cada 2 muestras
+    Xflat = np.asarray(X).reshape(len(X), -1)[:, ::2].astype(np.float32)                 # señal regional cruda, 1 de cada 2 muestras
     for name, est in models.items():
         for split in ("trial-wise (INVALID)", "subject-wise"):
             for r in range(3):
@@ -80,13 +91,14 @@ def trialwise_control(X, y, g, out: Path) -> pd.DataFrame:
                 for tr, te in folds:
                     if est is None:
                         m = RandomForestClassifier(n_estimators=300, max_features="sqrt", min_samples_leaf=3,
-                                                   class_weight="balanced", n_jobs=-1, random_state=r)
+                                                   class_weight="balanced", n_jobs=safe_n_jobs(0.5),
+                                                   random_state=r)
                         m.fit(Xflat[tr], y[tr])
                         prob[te] = m.predict_proba(Xflat[te])[:, 1]
                     else:
                         from sklearn.base import clone
-                        m = clone(est).fit(X[tr], y[tr])
-                        prob[te] = m.predict_proba(X[te])[:, 1]
+                        m = clone(est).fit(np.asarray(X[tr]), y[tr])
+                        prob[te] = m.predict_proba(np.asarray(X[te]))[:, 1]
                 trial_auc = roc_auc_score(y, prob)
                 subj = pd.DataFrame({"g": g, "y": y, "p": prob}).groupby("g").agg(y=("y", "first"), p=("p", "mean"))
                 rows.append({"model": name, "split": split, "repeat": r, "trial_auc": trial_auc,
@@ -106,9 +118,13 @@ def main() -> None:
     ap.add_argument("--only", nargs="*", default=None, help="demo primary secondary families selection riemann control")
     ap.add_argument("--perm-fast", type=int, default=1000)
     ap.add_argument("--perm-slow", type=int, default=200)
+    ap.add_argument("--no-resume", action="store_true")
     ap.add_argument("--all-subjects", action="store_true",
                     help="sensibilidad: incluye también a los sujetos excluidos por los criterios")
     args = ap.parse_args()
+    global RESUME
+    RESUME = not args.no_resume
+    limit_threads()
     todo = set(args.only or ["demo", "primary", "secondary", "families", "selection", "riemann", "control"])
 
     cfg = load_config(args.config)
@@ -164,13 +180,21 @@ def main() -> None:
 
     if "riemann" in todo or "control" in todo:
         d = np.load(feat_dir / "trial_regions.npz", allow_pickle=True)
-        Xt = d["X"].astype(np.float64)
+        # float32 compartido por memmap: los procesos no copian el arreglo completo.
+        Xt = as_memmap(d["X"], feat_dir / "trial_regions_X.npy")
         yt = (d["group"] == "MDD").astype(int)
         gt = d["subject_id"].astype(str)
         print(f"Ensayos: {len(yt)} de {len(set(gt))} sujetos; forma {Xt.shape}")
         if "riemann" in todo:
-            for name, (est, grid) in riemann_models().items():
-                run(name, est, grid, Xt, yt, gt, out, args.perm_slow, args.n_jobs, {"input": "trial region signals"})
+            # Covarianzas OAS por ensayo calculadas UNA vez (transformación por muestra, sin aprendizaje).
+            from pyriemann.estimation import Covariances
+            Ct = as_memmap(Covariances(estimator="oas").transform(np.asarray(Xt, dtype=np.float64)),
+                           feat_dir / "trial_regions_cov.npy", dtype=np.float64)
+            for name, (est, grid) in riemann_models(precomputed_cov=True).items():
+                Xin = Xt if name == "ERPCov-TS-LR" else Ct
+                run(name, est, grid, Xin, yt, gt, out, args.perm_slow, args.n_jobs,
+                    {"input": "trial region signals" if Xin is Xt else "per-trial OAS covariances of region signals"},
+                    kind="trial")
         if "control" in todo:
             trialwise_control(Xt, yt, gt, out.parent / "control")
 

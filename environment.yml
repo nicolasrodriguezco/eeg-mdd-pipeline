@@ -4,13 +4,28 @@ channels:
 dependencies:
   - python=3.11
   - pip
+  - tectonic
   - pip:
-      - mne>=1.6
+      - mne==1.13.2
+      - mne-icalabel==0.10.0
+      - mne-connectivity
+      - pyprep==0.10.0
+      - python-picard
+      - onnxruntime
       - numpy
       - scipy
       - pandas
       - pyarrow
       - openpyxl
       - pyyaml
-      - scikit-learn
+      - scikit-learn==1.9.1
+      - pyriemann==0.12
+      - lightgbm==4.7.0
+      - shap==0.51.0
+      - antropy
+      - statsmodels
+      - joblib
+      - matplotlib
+      - braindecode==2.0.0
+      - torch
       - pytest

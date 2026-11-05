@@ -1,0 +1,32 @@
+\begin{abstract}
+\noindent\textbf{Background.} Machine-learning studies often report near-perfect accuracy for detecting major
+depressive disorder (MDD) from EEG. Many of them, however, split trials rather than participants between training and
+test sets, and few compare against non-EEG baselines.
+
+\noindent\textbf{Methods.} We re-analysed the 128-channel dot-probe ERP recordings of the MODMA dataset (24 MDD, 29 HC)
+from the raw files with a pre-specified, version-controlled plan. Preprocessing used PREP bad-channel detection and
+ICA with ICLabel, and participants were excluded by fixed quality criteria. We evaluated 18 model configurations:
+\begin{itemize}
+  \item a demographic baseline;
+  \item linear, kernel and tree models on 288 handcrafted features (spectral, frontal alpha asymmetry, ERP, wPLI
+        connectivity, complexity);
+  \item Riemannian models;
+  \item three deep networks on full epochs.
+\end{itemize}
+All models used nested cross-validation over participants with identical folds. Results carry participant-level
+bootstrap confidence intervals, and all but the deep networks carry permutation tests of the full pipeline.
+
+\noindent\textbf{Results.} In \NIncluded{} participants, the pre-specified primary model (L2 logistic regression on all
+features) reached AUC \PrimaryLrLAllAuc{} (95\% CI \PrimaryLrLAllAucLo--\PrimaryLrLAllAucHi, $p=\PrimaryLrLAllPperm$).
+No EEG model exceeded a baseline using only age, sex and education (AUC \DemographicsLrAuc). The best secondary model
+(AUC \LrLAllAuc) did not survive multiplicity correction, and nested model selection gave AUC
+\NestedmodelselectionAllAuc. Evaluated with an invalid trial-wise split, the same tangent-space model achieved apparently perfect
+participant-level classification (AUC \InflTsLrTrialSplitSubjectAuc), versus \InflTsLrSubjectSplitSubjectAuc{} when
+participants were held out. The null
+result held when all 53 participants were included and when the analysis was restricted to a period in which both
+groups were recorded.
+
+\noindent\textbf{Conclusions.} Evaluated on unseen participants, task EEG in this dataset carries no detectable
+diagnostic signal for MDD beyond demographics. Trial-wise evaluation can manufacture high accuracy. Participant-wise
+evaluation, pre-specification and demographic baselines should be standard.
+\end{abstract}

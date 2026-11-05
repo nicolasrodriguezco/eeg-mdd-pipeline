@@ -115,3 +115,19 @@ def test_same_subject_partitions_for_subject_and_trial_level_data():
          outer_splits(subj["y"].to_numpy(), subj["g"].to_numpy(), 5, 2)]
     b = [(r, k, frozenset(g[te])) for r, k, tr, te in outer_splits(y, g, 5, 2)]
     assert a == b
+
+
+def test_precomputed_cov_equivalent():
+    """TS-LR/MDM sobre covarianzas precalculadas == mismo modelo con la covarianza dentro del Pipeline."""
+    from pyriemann.estimation import Covariances
+
+    rng = np.random.default_rng(0)
+    X = rng.normal(size=(120, 4, 50))
+    y = np.repeat([0, 1], 60)
+    X[y == 1, 0] *= 1.5
+    C = Covariances(estimator="oas").transform(X)
+    raw, pre = riemann_models(), riemann_models(precomputed_cov=True)
+    for name in ("TS-LR", "MDM"):
+        a = raw[name][0].fit(X[:80], y[:80]).predict_proba(X[80:])
+        b = pre[name][0].fit(C[:80], y[:80]).predict_proba(C[80:])
+        np.testing.assert_allclose(a, b, rtol=1e-6, atol=1e-8)

@@ -17,6 +17,7 @@ import pandas as pd
 from scipy import stats
 
 from eeg_mdd.config import load_config
+from eeg_mdd.resources import free_gb, limit_threads, safe_n_jobs
 from eeg_mdd.demographics import recording_datetime_from_name
 from eeg_mdd.evaluation import nested_cv, permutation_test, subject_metrics
 from eeg_mdd.features import family_of
@@ -30,6 +31,9 @@ def main() -> None:
     ap.add_argument("--n-jobs", type=int, default=24)
     ap.add_argument("--n-perm", type=int, default=1000)
     args = ap.parse_args()
+    limit_threads()
+    args.n_jobs = safe_n_jobs(0.5, max_jobs=args.n_jobs)
+    print(f"Procesos: {args.n_jobs} (RAM libre {free_gb():.1f} GB)", flush=True)
 
     cfg = load_config(args.config)
     feat_dir = Path(cfg["paths"]["processed_dir"]) / "features"

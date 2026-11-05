@@ -23,6 +23,15 @@ from eeg_mdd.models.deep import DLConfig, train_fold
 
 
 def load_trials(processed: Path, subjects: pd.DataFrame):
+    """Épocas de todos los sujetos en un memmap float32 en disco (no ocupa RAM entera)."""
+    from eeg_mdd.resources import as_memmap
+
+    cache = processed / "features" / "trials_full_X.npy"
+    meta = processed / "features" / "trials_full_meta.npz"
+    if cache.exists() and meta.exists():
+        m = np.load(meta, allow_pickle=True)
+        if list(m["subjects"]) == list(subjects["eeg_id"]):
+            return np.load(cache, mmap_mode="r"), m["y"], m["g"], float(m["sfreq"])
     X, y, g = [], [], []
     for _, s in subjects.iterrows():
         ep = mne.read_epochs(processed / "epochs" / f"sub-{s['eeg_id']}-epo.fif", verbose="error")
@@ -30,7 +39,13 @@ def load_trials(processed: Path, subjects: pd.DataFrame):
         X.append(d)
         y += [int(s["group"] == "MDD")] * len(d)
         g += [s["eeg_id"]] * len(d)
-    return np.concatenate(X), np.array(y), np.array(g), float(ep.info["sfreq"])
+    Xa = np.concatenate(X)
+    del X
+    y, g, sf = np.array(y), np.array(g), float(ep.info["sfreq"])
+    mm = as_memmap(Xa, cache)
+    del Xa
+    np.savez(meta, y=y, g=g, sfreq=sf, subjects=np.array(subjects["eeg_id"]))
+    return mm, y, g, sf
 
 
 def run_model(name, X, y, g, sfreq, n_repeats, cfg, device, perm_seed=None):

@@ -1,0 +1,25 @@
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+ & \multicolumn{2}{c}{vs.\ primary} & \multicolumn{2}{c}{vs.\ demographics} & & \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Model & $\Delta$AUC & $p_\text{corr}$ & $\Delta$AUC & $p_\text{corr}$ & $p_\text{perm}$ & $p_\text{Holm}$ \\
+\midrule
+LR-L1, all features & +0.16 & 0.106 & -0.09 & 0.470 & 0.013 & 0.169 \\
+Nested model selection, all features & +0.08 & 0.392 & -0.17 & 0.176 & 0.080 & 0.955 \\
+Random forest, all features & +0.02 & 0.672 & -0.22 & 0.029 & 0.348 & 1.000 \\
+LightGBM, all features & +0.01 & 0.944 & -0.24 & 0.020 & 0.353 & 1.000 \\
+LR-L2, all features (primary) & -- & -- & -0.25 & 0.019 & 0.456 & -- \\
+Linear SVM, all features & -0.13 & 0.422 & -0.38 & 0.004 & 0.479 & 1.000 \\
+RBF SVM, all features & -0.13 & 0.429 & -0.38 & 0.008 & 0.572 & 1.000 \\
+LR-L2, complexity & +0.06 & 0.517 & -0.19 & 0.107 & 0.705 & 1.000 \\
+LR-L2, spectral + FAA & -0.01 & 0.903 & -0.26 & 0.011 & 0.325 & 1.000 \\
+LR-L2, wPLI connectivity & -0.10 & 0.325 & -0.34 & 0.008 & 0.768 & 1.000 \\
+LR-L2, ERP & -0.15 & 0.121 & -0.40 & 0.000 & 0.720 & 1.000 \\
+ERP covariances + TS + LR & +0.08 & 0.455 & -0.17 & 0.164 & 0.159 & 1.000 \\
+Tangent space + LR & -0.05 & 0.670 & -0.30 & 0.027 & 0.532 & 1.000 \\
+MDM & -0.19 & 0.094 & -0.44 & 0.000 & 0.891 & 1.000 \\
+TCN & -0.07 & 0.656 & -0.31 & 0.078 & -- & -- \\
+EEGNet & -0.09 & 0.512 & -0.33 & 0.022 & -- & -- \\
+ShallowFBCSPNet & -0.12 & 0.434 & -0.36 & 0.025 & -- & -- \\
+\bottomrule
+\end{tabular}

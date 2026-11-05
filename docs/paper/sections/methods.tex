@@ -1,0 +1,203 @@
+\section{Methods}
+
+\subsection{Participants and data}
+We used the 128-channel event-related potential (ERP) recordings of MODMA (Lanzhou, 2014--2016)~\cite{cai2022modma}.
+The release contains 53 recordings, one per participant, sampled at \SI{250}{Hz}. They were acquired with a HydroCel
+Geodesic Sensor Net (EGI) using 128 scalp electrodes plus the vertex reference (E129/Cz).
+
+Diagnostic group (24 MDD, 29 HC) was taken \emph{exclusively} from the official subject-information spreadsheet.
+Recording files were matched to it by exact identifier, without normalisation: all 53 identifiers matched one-to-one.
+
+Table~\ref{tab:demo} summarises the sample. The groups did not differ in age ($p=\DemoAgeP$) or sex
+($p=\DemoGenderP$), but MDD participants had fewer years of education ($p=\DemoEducationP$). Questionnaire scores
+(PHQ-9, GAD-7, CTQ-SF, LES, SSRS, PSQI) were used only to describe the sample and never as predictors, because they
+measure, or are closely tied to, the target.
+
+\begin{table}[t]
+\centering\small
+\caption{Sample characteristics (all 53 recordings). Mean $\pm$ SD. $^\dagger$Descriptive only; never used as
+predictors.}
+\label{tab:demo}
+\input{tables/demographics.tex}
+\end{table}
+
+\paragraph{Task and events.}
+Each trial of the dot-probe task~\cite{macleod1986attentional} consisted of the following sequence:
+\begin{enumerate}
+  \item a fixation cross (464--652~ms);
+  \item a pair of faces, one emotional and one neutral (516~ms);
+  \item an inter-stimulus interval (116--316~ms);
+  \item a dot probe (168~ms), followed by the participant's response.
+\end{enumerate}
+Trials came in three blocks of 160 (fear, happy, sad), with block order varying across participants.
+
+We decoded events from the individual EGI event channels by name (\texttt{fcue}, \texttt{hcue}, \texttt{scue}). The
+combined stimulus channel produced by the reader carries the same code for every event in these files and is
+therefore unusable. Every recording contained the complete 480 trials. Epochs were locked to face-pair onset, because
+the probe appears at least 632~ms after it, so the window up to 600~ms is free of probe-evoked activity.
+
+\subsection{Pre-specified analysis plan}
+Before any epoch, feature or model output existed, we committed an analysis plan to version control. It fixed the
+preprocessing, the participant exclusion criteria, the feature definitions, the evaluation protocol, the primary model
+and the primary outcome.
+
+Five deviations are listed in Appendix~\ref{app:deviations}: four were decided before any model was run, and the
+fifth (a computational shortcut for the Riemannian models) before any of their results existed. The only one
+affecting the data was replacing an ad-hoc bad-channel rule with the PREP implementation (below), after the original
+rule produced implausible flags next to the reference electrode.
+
+\subsection{Preprocessing}
+All steps were performed separately for each participant with MNE-Python~\cite{gramfort2013mne}, so no information
+is shared across participants:
+\begin{enumerate}
+  \item Bad channels were detected with the PREP pipeline (PyPREP \texttt{NoisyChannels}, without
+        RANSAC)~\cite{bigdely2015prep}. The criteria were NaN/flat signal, deviation, high-frequency noise, low
+        correlation, low SNR, dropout and abnormal PSD. The vertex reference was exempt, being flat by construction.
+  \item Independent component analysis (Picard, extended-infomax objective~\cite{ablin2018picard}, 30 components)
+        was fitted on a copy filtered at 1--100~Hz, notched at 50~Hz (the mains frequency in China) and
+        average-referenced, with bad channels excluded.
+  \item Components were labelled with ICLabel~\cite{pion2019iclabel,li2022mneicalabel}. A component was removed when
+        its most probable class was eye, muscle, heart, line noise or channel noise \emph{and} that class had
+        probability $\ge 0.80$.
+  \item The analysis copy was band-pass filtered at 0.5--40~Hz (zero-phase FIR) and notched at 50~Hz. It was then
+        average-referenced, the ICA cleaning was applied, bad channels were interpolated (spherical splines), and it
+        was re-referenced to the average.
+  \item Epochs spanned $-200$ to $600$~ms, with a $-200$ to $0$~ms baseline. An epoch was rejected if any channel
+        exceeded $\pm\SI{100}{\micro\volt}$.
+  \item For spectral, connectivity and complexity features, the task period of the same cleaned recording was
+        resampled to 125~Hz and cut into 2-s segments. The same amplitude rule was applied to the segments.
+\end{enumerate}
+
+\paragraph{Participant exclusion (pre-specified).}
+A participant was excluded if any of these held:
+\begin{itemize}
+  \item more than 20\% of channels were bad;
+  \item fewer than 240 of 480 trials (50\%) survived rejection;
+  \item fewer than 40 trials survived in any condition.
+\end{itemize}
+
+\subsection{Features}
+All features were computed per participant, without labels. They are therefore not a source of leakage; everything
+that \emph{learns} from data happens inside the cross-validation loop.
+
+\paragraph{Regions.}
+We defined ten regions: frontal, central, temporal, parietal and occipital, each split into left and right
+(Fig.~\ref{fig:regions} in the appendix). Each HydroCel electrode was assigned to the region of its nearest 10--10
+anchor position on the fitted head sphere. Midline electrodes and the lower face/neck ring (more than \SI{115}{\degree}
+from the vertex) were not used for regional features.
+
+\paragraph{Feature families.}
+\begin{itemize}
+  \item \textbf{Spectral (100 features).} Welch power in the delta (1--4~Hz), theta (4--8), alpha (8--13),
+        beta (13--30) and low-gamma (30--40~Hz) bands, as $\log_{10}$ absolute and relative power per region.
+  \item \textbf{Frontal alpha asymmetry (2).} $\ln\alpha_\text{right}-\ln\alpha_\text{left}$ for the HydroCel
+        equivalents of F4/F3 (E124/E24) and F8/F7 (E122/E33)~\cite{allen2015faa,vandervinne2017faa}.
+  \item \textbf{ERP (21).} Measured per condition on the participant's average, using windows fixed a priori from
+        the literature:
+        \begin{itemize}
+          \item N170 peak amplitude and latency at left and right occipito-temporal clusters (around P7/P8),
+                140--200~ms~\cite{bentin1996n170};
+          \item P300 mean amplitude (250--500~ms) and peak latency at a centro-parietal cluster
+                (around Pz)~\cite{polich2007p300};
+          \item late positive potential (LPP), mean amplitude 400--600~ms, at the same
+                cluster~\cite{hajcak2010erp}.
+        \end{itemize}
+  \item \textbf{Connectivity (135).} Weighted phase-lag index (wPLI)~\cite{vinck2011wpli} between the ten
+        region-mean signals, in the theta, alpha and beta bands.
+  \item \textbf{Complexity (30).} Per region, sample entropy~\cite{richman2000sampen}, Higuchi fractal
+        dimension~\cite{higuchi1988} and Lempel--Ziv complexity~\cite{lempel1976complexity}, averaged over 2-s
+        segments.
+\end{itemize}
+This gives 288 subject-level features. For trial-level models we kept the ten region-mean signals of each epoch
+($10\times201$ samples) and, for deep learning, the full $129\times201$ epochs.
+
+\subsection{Models}
+\begin{itemize}
+  \item \textbf{Demographic baseline.} L2 logistic regression on age, sex and education. It indicates how much of
+        any EEG result could be explained by demographics alone.
+  \item \textbf{Handcrafted features.} Each model is a scikit-learn~\cite{pedregosa2011sklearn} pipeline: median
+        imputation, standardisation, then the classifier.
+        \begin{itemize}
+          \item \emph{Primary, fixed a priori:} L2-regularised logistic regression (LR-L2) on all 288 features.
+          \item \emph{Secondary:} L1-LR, linear and RBF support-vector machines, random forest~\cite{breiman2001rf}
+                and depth-limited LightGBM~\cite{ke2017lightgbm}, plus LR-L2 on each feature family separately.
+        \end{itemize}
+        Picking the best of many models inflates its estimate~\cite{cawley2010overfitting}. We therefore also report a
+        \emph{nested model selection} estimate, in which the inner loop chooses both the model family and its
+        hyperparameters.
+  \item \textbf{Riemannian, trial level.}~\cite{barachant2012multiclass,congedo2017riemannian}
+        \begin{itemize}
+          \item OAS-shrunk covariance matrices~\cite{chen2010oas} of the regional epoch signals, either projected
+                to the tangent space and classified with LR, or classified with minimum distance to mean (MDM);
+          \item ERP-augmented covariances, whose class prototypes are estimated inside each training fold, followed
+                by tangent space and LR with a fixed $C=0.1$ (deviation D5).
+        \end{itemize}
+  \item \textbf{Deep learning, trial level.} EEGNet~\cite{lawhern2018eegnet}, ShallowFBCSPNet~\cite{schirrmeister2017deep}
+        and a temporal convolutional network (TCN)~\cite{bai2018tcn,gemein2020machine}, as implemented in
+        braindecode.
+        \begin{itemize}
+          \item Training used AdamW (learning rate $10^{-3}$, weight decay $10^{-3}$), cosine annealing,
+                class-weighted cross-entropy, and augmentation by random time shifts ($\pm40$~ms), amplitude
+                scaling and Gaussian noise.
+          \item Early stopping (patience 10, maximum 60 epochs) used the subject-level AUC on a validation split of
+                the \emph{training participants} (20\%).
+          \item Channel-wise normalisation statistics came from the inner training participants only.
+        \end{itemize}
+\end{itemize}
+Trial-level models produce one probability per trial. These were averaged within each participant to give a single
+participant-level prediction.
+
+\subsection{Evaluation protocol}
+\begin{itemize}
+  \item \textbf{Outer loop.} Stratified 5-fold cross-validation over \emph{participants}, repeated 10 times
+        (3 times for deep learning, for computational reasons). All models were evaluated on \emph{identical}
+        participant partitions.
+  \item \textbf{Inner loop.} Hyperparameters were selected by 5-fold participant-grouped cross-validation within the
+        training participants, maximising AUC.
+  \item \textbf{Leakage check.} An assertion verifies, in every outer, inner and validation split, that no
+        participant contributes data to both sides.
+  \item \textbf{Metrics.} All metrics are computed per participant: ROC AUC (the pre-specified primary outcome),
+        balanced accuracy, sensitivity and specificity at a fixed 0.5 threshold (never tuned on test data), F1 and
+        Brier score.
+  \item \textbf{Uncertainty.} Point estimates are averaged over repetitions. 95\% confidence intervals come from
+        2{,}000 stratified bootstrap resamples of \emph{participants} applied to the out-of-fold predictions, with
+        interval bounds averaged over repetitions.
+  \item \textbf{Significance.} Label-permutation tests~\cite{combrisson2015exceeding} permute labels \emph{between
+        participants} and re-run the entire nested pipeline. Fast models used 1{,}000 permutations; slower models
+        used 200. We report $p=(1+\#\{\text{AUC}_\text{perm}\ge\text{AUC}_\text{obs}\})/(1+n_\text{perm})$.
+\end{itemize}
+
+\subsection{Confounds, sensitivity and inflation control}
+\begin{itemize}
+  \item \textbf{Can EEG predict confounds?} We applied the primary pipeline to three alternative targets: sex,
+        age above the median, and recording period.
+        \begin{itemize}
+          \item The recording period is relevant because group and period are partly confounded: between October 2015
+                and January 2016 only controls were recorded, and in March--April 2016 only patients.
+          \item We therefore also re-ran the primary pipeline on the participants recorded between June and
+                August 2015, when both groups were recorded in parallel.
+        \end{itemize}
+  \item \textbf{Exclusions.} Because exclusions were more frequent in MDD, we re-ran the primary model on all 53
+        participants.
+  \item \textbf{Signal quality.} We compared retained trials, interpolated channels and removed ICA components
+        between groups.
+  \item \textbf{Inflation control (invalid by design).} To quantify the inflation caused by trial-wise splitting,
+        we evaluated two trial-level models with both a trial-wise split and a subject-wise split, keeping
+        everything else identical:
+        \begin{itemize}
+          \item the tangent-space model;
+          \item a random forest on raw regional amplitudes, mimicking common practice.
+        \end{itemize}
+\end{itemize}
+
+\subsection{Interpretation}
+\begin{itemize}
+  \item \textbf{Permutation importance.} For the primary model, computed on the \emph{test} folds of the outer loop,
+        for single features and for whole feature families permuted jointly.
+  \item \textbf{SHAP.} SHAP values~\cite{lundberg2017shap} of the primary model refitted on all participants
+        (descriptive).
+  \item \textbf{Univariate effects.} Cohen's $d$ with Mann--Whitney tests and Benjamini--Hochberg false-discovery-rate
+        correction~\cite{benjamini1995fdr}.
+  \item \textbf{Cluster-based permutation tests}~\cite{maris2007nonparametric} on channel-level band power
+        (spatial clusters) and on ERPs (spatio-temporal clusters), as descriptive neurophysiology.
+\end{itemize}

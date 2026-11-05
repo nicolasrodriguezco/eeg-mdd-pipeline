@@ -1,0 +1,93 @@
+\section{Discussion}
+
+\subsection{Main finding}
+Under a strictly participant-wise, pre-specified protocol, task EEG from the MODMA dot-probe recordings did not
+separate MDD from healthy controls better than chance. The conclusion holds across all model types tested:
+\begin{itemize}
+  \item the pre-specified primary model and every feature family on its own;
+  \item linear, kernel and tree-based classifiers;
+  \item Riemannian models and three deep networks trained on the full 128-channel epochs.
+\end{itemize}
+The one nominally significant secondary result (L1-regularised logistic regression) did not survive correction for
+the number of secondary models. The honest estimate of picking the best model, obtained by nested model selection,
+fell to \NestedmodelselectionAllAuc, with a confidence interval including chance.
+
+By contrast, three demographic variables (age, sex and education) reached AUC \DemographicsLrAuc. Any EEG model that
+claims diagnostic value on this dataset should be benchmarked against this figure, not only against 0.5.
+
+These findings agree with reviews describing EEG markers of depression as small and heterogeneous
+effects~\cite{olbrich2013eeg,deaguiar2019review,simmatis2023technical}. They also agree with the meta-analytic null
+result for frontal alpha asymmetry~\cite{vandervinne2017faa}. They do not agree with the near-perfect accuracies often
+reported for EEG-based depression detection~\cite{ay2019automated}.
+
+\subsection{Why do published accuracies differ so much?}
+Our inflation control offers a direct explanation. On the same data, the tangent-space model evaluated with a
+trial-wise split ranked every participant correctly (participant-level AUC \InflTsLrTrialSplitSubjectAuc;
+trial-level \InflTsLrTrialSplitTrialAuc). Evaluated on held-out participants, it was at chance
+(\InflTsLrSubjectSplitSubjectAuc).
+
+When epochs of one person appear in both training and test sets, the classifier only needs to recognise the person,
+and every person carries one label. Individual EEG signatures are highly distinctive, so this task is easy, and it says
+nothing about diagnosing a new patient~\cite{saeb2017need,brookshire2024leakage}. Reported accuracies therefore cannot
+be interpreted unless the split is stated to be across participants. In this light, values above 95\% on datasets of
+a few dozen participants should be regarded with suspicion.
+
+\subsection{Model selection and multiplicity}
+With $n=\NIncluded$, sampling noise alone produces large AUCs: under label permutation, the primary pipeline exceeded
+AUC \PrimaryLrLAllNullQ{} in 5\% of runs. Across 18 configurations, some will exceed that by chance. Reporting the best of them, here L1-LR at AUC \LrLAllAuc, would have yielded a publishable but
+misleading result.
+
+Three elements of the design guard against this:
+\begin{itemize}
+  \item a primary model and outcome fixed before any result existed;
+  \item multiplicity correction across secondary models;
+  \item a nested estimate of the selection procedure itself~\cite{cawley2010overfitting}.
+\end{itemize}
+We recommend all three as standard practice for small clinical EEG datasets.
+
+\subsection{Confounds}
+The groups differed in education and, partly, in recording period: some months contain only patients or only
+controls. In principle, period effects (equipment state, staff, season) could produce group differences unrelated to
+depression.
+
+Two observations make this unlikely to be the explanation here. First, the EEG features did not predict recording
+period above chance. Second, the analysis restricted to the months in which both groups were recorded was no more
+successful than the full analysis.
+
+The signal-quality measures did not differ between groups. Even so, one descriptive pattern deserves caution:
+\begin{itemize}
+  \item MDD participants showed numerically higher beta and low-gamma power, strongest at peripheral electrodes;
+  \item they also showed higher entropy and Lempel--Ziv complexity, the family whose permutation importance was
+        largest, though not significant.
+\end{itemize}
+Both patterns are also typical signatures of residual muscle activity. ICA with ICLabel removes the clearest muscle
+components but not all EMG. Any future report of high-frequency or complexity differences in these data should
+therefore rule out muscle tension before attributing them to depression.
+
+The single connectivity feature that survived FDR correction (left central--temporal theta wPLI) was not robustly
+used by any model. It should be considered a hypothesis for replication, not a finding.
+
+\subsection{Limitations}
+\begin{itemize}
+  \item \textbf{Sample size.} With \NIncludedMDD{} MDD and \NIncludedHC{} HC participants after exclusion, the
+        participant-level confidence intervals are wide: for the primary model,
+        \PrimaryLrLAllAucLo--\PrimaryLrLAllAucHi. A modest true effect, around AUC 0.6, cannot be excluded. Our
+        conclusion is that these data provide no evidence of a diagnostic signal, not that none exists.
+  \item \textbf{Single site and single task.} All data come from one site, one EEG system and one paradigm. Clinical
+        details that may modulate EEG are not modelled, notably medication status and illness duration.
+  \item \textbf{Asymmetric exclusions.} The pre-specified quality criteria excluded more patients than controls. The
+        analysis on all 53 participants, however, gave the same conclusion.
+  \item \textbf{Deep learning budget.} For computational reasons, the deep networks were evaluated with 3 rather than
+        10 repetitions and without permutation tests. Their confidence intervals all included chance, and their point
+        estimates were below that of the primary model.
+  \item \textbf{Feature space.} The features were fixed a priori from the literature. Other representations could
+        perform better, but searching for them on the same 45 participants would reintroduce the selection bias this
+        study was designed to avoid.
+\end{itemize}
+
+\subsection{Conclusion}
+Evaluated rigorously on participants never seen by the model, 128-channel task EEG from the MODMA dot-probe dataset
+did not distinguish major depression from healthy controls, and was outperformed by a demographic baseline. The large
+gap between trial-wise and participant-wise estimates on the same data shows how evaluation choices can manufacture
+apparent diagnostic accuracy. Credible progress towards EEG markers of depression will require participant-wise
+evaluation, pre-specified analyses, demographic baselines and substantially larger, multi-site samples.
