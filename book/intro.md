@@ -7,7 +7,7 @@ This book documents the code, methods and results of the study
 > published accuracies inflate. Nicolas Rodriguez, Data Science Program, Division of Basic Sciences,
 > Universidad del Norte, Barranquilla, Colombia.
 > [LinkedIn](https://www.linkedin.com/in/nicolasrodriguez04/) ·
-> [nicolasrodriguezco10@gmail.com](mailto:nicolasrodriguezco10@gmail.com)
+> [nmcontreras@uninorte.edu.co](mailto:nmcontreras@uninorte.edu.co)
 
 Source code: [github.com/nicolasrodriguezco/eeg-mdd-pipeline](https://github.com/nicolasrodriguezco/eeg-mdd-pipeline).
 
