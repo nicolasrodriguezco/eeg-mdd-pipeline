@@ -1,0 +1,930 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Preprocessing &#8212; EEG and major depression: a leakage-free benchmark</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'methods/preprocessing';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Features" href="features.html" />
+    <link rel="prev" title="Pipeline overview" href="pipeline.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">EEG and major depression: a leakage-free benchmark</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    EEG and major depression: a leakage-free benchmark
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">The study</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../study/question.html">The question</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../study/dataset.html">The dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../study/findings.html">Findings at a glance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Methods</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline overview</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluation.html">Evaluation protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audit.html">Post-hoc audit (exploratory)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Results</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../results/main.html">Main results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../results/inflation.html">Why trial-wise splits inflate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../results/audit.html">Audit results (exploratory)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Using this work</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../guide/reproduce.html">Reproducing the analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/checklist.html">Reporting checklist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/preregistration.html">Pre-registered analysis plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/deviations.html">Deviations from the plan</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../code/scripts.html">Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../code/api.html">Package reference (<code class="docutils literal notranslate"><span class="pre">eeg_mdd</span></code>)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/nicolasrodriguezco/eeg-mdd-pipeline" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/methods/preprocessing.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Preprocessing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#participant-exclusion-fixed-before-any-result">Participant exclusion (fixed before any result)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="preprocessing">
+<h1>Preprocessing<a class="headerlink" href="#preprocessing" title="Link to this heading">#</a></h1>
+<p>All steps run <strong>separately for each participant</strong> with MNE-Python, so no information is shared across
+participants.</p>
+<ol class="arabic simple">
+<li><p><strong>Bad channels.</strong> Detected with the PREP pipeline (PyPREP <code class="docutils literal notranslate"><span class="pre">NoisyChannels</span></code>, RANSAC off). The criteria are
+NaN/flat signal, deviation, high-frequency noise, low correlation, low SNR, dropout and abnormal PSD. The vertex
+reference is exempt, being flat by construction. This replaced the pre-specified detector, which failed on these
+data (deviation D1).</p></li>
+<li><p><strong>ICA.</strong> Picard with the extended-infomax objective and 30 components, fitted on a copy filtered at 1–100 Hz,
+notched at 50 Hz and average-referenced, with bad channels excluded.</p></li>
+<li><p><strong>ICLabel.</strong> A component is removed when its most probable class is eye, muscle, heart, line noise or channel
+noise <strong>and</strong> that probability is at least 0.80. Decisions are logged in <code class="docutils literal notranslate"><span class="pre">configs/ica_exclusions.csv</span></code>.</p></li>
+<li><p><strong>Analysis copy.</strong> The analysis copy then goes through these steps:</p>
+<ul class="simple">
+<li><p>0.5–40 Hz zero-phase FIR band-pass and 50 Hz notch;</p></li>
+<li><p>average reference, then ICA cleaning;</p></li>
+<li><p>spherical-spline interpolation of bad channels;</p></li>
+<li><p>a second average reference.</p></li>
+</ul>
+</li>
+<li><p><strong>Epochs.</strong> From −200 to 600 ms, with a −200 to 0 ms baseline. An epoch is rejected if any channel exceeds
+±100 µV.</p></li>
+<li><p><strong>Segments.</strong> For the spectral, connectivity and complexity features, the task period is resampled to 125 Hz and
+cut into 2-s segments, with the same amplitude rule.</p></li>
+</ol>
+<section id="participant-exclusion-fixed-before-any-result">
+<h2>Participant exclusion (fixed before any result)<a class="headerlink" href="#participant-exclusion-fixed-before-any-result" title="Link to this heading">#</a></h2>
+<p>A participant is excluded if any of these holds:</p>
+<ul class="simple">
+<li><p>more than 20% of channels are bad;</p></li>
+<li><p>fewer than 240 of 480 trials survive rejection;</p></li>
+<li><p>fewer than 40 trials survive in any condition.</p></li>
+</ul>
+<p>These rules excluded 6 MDD and 2 HC participants, leaving 45. The asymmetry was not significant (Fisher <span class="math notranslate nohighlight">\(p=0.12\)</span>).
+Re-running the primary model on all 53 participants gave the same conclusion.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Source: preprocessing module</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">"""Preprocesamiento por sujeto con MNE.</span>
+
+<span class="sd">Todo se ajusta dentro de un mismo sujeto (detección de canales malos, ICA,</span>
+<span class="sd">rechazo), así que no hay fuga de información entre sujetos en esta etapa.</span>
+<span class="sd">El plan completo está fijado en ``docs/preregistration.md``.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">mne</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.audit</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_events</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.events</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_egi_events</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- utilidades</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_ica_exclusions</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Exclusiones de ICA fijadas a mano (tienen prioridad sobre ICLabel)."""</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">{}</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"reviewer"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="c1"># Las filas escritas automáticamente por ICLabel no son decisiones manuales.</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s2">"reviewer"</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"ICLabel-auto"</span><span class="p">)]</span>
+    <span class="n">out</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">comps</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"subject_id"</span><span class="p">,</span> <span class="p">[]),</span> <span class="n">df</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"exclude_components"</span><span class="p">,</span> <span class="p">[])):</span>
+        <span class="k">if</span> <span class="n">sid</span> <span class="ow">and</span> <span class="n">comps</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">sid</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">comps</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">";"</span><span class="p">,</span> <span class="s2">","</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">prepare_raw</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">BaseRaw</span><span class="p">,</span> <span class="n">pp</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">BaseRaw</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Renombra canales y pone el montaje (los .raw de EGI no lo traen)."""</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="n">ren</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">(</span><span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"rename_channels"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">raw</span><span class="o">.</span><span class="n">ch_names</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">ren</span><span class="p">:</span>
+        <span class="n">raw</span><span class="o">.</span><span class="n">rename_channels</span><span class="p">(</span><span class="n">ren</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"montage"</span><span class="p">):</span>
+        <span class="n">raw</span><span class="o">.</span><span class="n">set_montage</span><span class="p">(</span><span class="n">pp</span><span class="p">[</span><span class="s2">"montage"</span><span class="p">],</span> <span class="n">on_missing</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">raw</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">find_task_events</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">BaseRaw</span><span class="p">,</span> <span class="n">pp</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Eventos por nombre de EGI (si la config los define) o por canal de estímulo."""</span>
+    <span class="k">if</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"egi_event_codes"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">find_egi_events</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">pp</span><span class="p">[</span><span class="s2">"egi_event_codes"</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">get_events</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"stim_channel"</span><span class="p">))</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- canales malos</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">detect_bad_channels</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">BaseRaw</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Canales malos por planitud, desviación robusta y baja correlación con vecinos.</span>
+
+<span class="sd">    Se calcula sobre una copia filtrada 1-40 Hz de los canales EEG. Devuelve la</span>
+<span class="sd">    lista y el motivo de cada uno. Con ``method: pyprep`` se usa la detección del</span>
+<span class="sd">    pipeline PREP (PyPREP ``NoisyChannels``, sin RANSAC).</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"method"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"pyprep"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_detect_bad_pyprep</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">cfg</span><span class="p">)</span>
+    <span class="n">eeg</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">pick</span><span class="p">(</span><span class="s2">"eeg"</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">eeg</span><span class="o">.</span><span class="n">ch_names</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">eeg</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+    <span class="n">sd</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">reasons</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">exempt</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"exempt_flat"</span><span class="p">,</span> <span class="p">[]))</span>
+
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">sd</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"flat_sd_uv"</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-6</span> <span class="ow">and</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exempt</span><span class="p">:</span>
+            <span class="n">reasons</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"flat"</span>
+
+    <span class="n">live</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exempt</span> <span class="ow">or</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mf">1e-12</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">sd</span><span class="p">)])</span>
+    <span class="n">log_sd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">sd</span><span class="p">,</span> <span class="mf">1e-15</span><span class="p">))</span>
+    <span class="n">med</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">log_sd</span><span class="p">[</span><span class="n">live</span><span class="p">])</span>
+    <span class="n">mad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">log_sd</span><span class="p">[</span><span class="n">live</span><span class="p">]</span> <span class="o">-</span> <span class="n">med</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1.4826</span> <span class="ow">or</span> <span class="mf">1e-12</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">log_sd</span> <span class="o">-</span> <span class="n">med</span><span class="p">)</span> <span class="o">/</span> <span class="n">mad</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">zz</span><span class="p">,</span> <span class="n">ok</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">live</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ok</span> <span class="ow">and</span> <span class="nb">abs</span><span class="p">(</span><span class="n">zz</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"robust_z"</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reasons</span><span class="p">:</span>
+            <span class="n">reasons</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"robust_z=</span><span class="si">{</span><span class="n">zz</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span>
+
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">eeg</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"chs"</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s2">"loc"</span><span class="p">][:</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))])</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_neighbors"</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+        <span class="n">corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pos</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">-</span> <span class="n">pos</span><span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">reasons</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">live</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="n">nb</span> <span class="o">=</span> <span class="p">[</span><span class="n">j</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="n">live</span><span class="p">[</span><span class="n">j</span><span class="p">]][:</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">corr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">nb</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"min_neighbor_corr"</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">):</span>
+                <span class="n">reasons</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"neighbor_corr=</span><span class="si">{</span><span class="n">c</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">reasons</span><span class="p">),</span> <span class="n">reasons</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_detect_bad_pyprep</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">BaseRaw</span><span class="p">,</span> <span class="n">cfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pyprep</span>
+
+    <span class="n">exempt</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"exempt_flat"</span><span class="p">,</span> <span class="p">[]))</span>
+    <span class="n">eeg</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">pick</span><span class="p">(</span><span class="s2">"eeg"</span><span class="p">)</span>
+    <span class="n">old</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">set_log_level</span><span class="p">(</span><span class="s2">"ERROR"</span><span class="p">,</span> <span class="n">return_old_level</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"pyprep"</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">nc</span> <span class="o">=</span> <span class="n">pyprep</span><span class="o">.</span><span class="n">NoisyChannels</span><span class="p">(</span><span class="n">eeg</span><span class="p">,</span> <span class="n">do_detrend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"random_state"</span><span class="p">,</span> <span class="mi">97</span><span class="p">))</span>
+        <span class="n">nc</span><span class="o">.</span><span class="n">find_all_bads</span><span class="p">(</span><span class="n">ransac</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ransac"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">mne</span><span class="o">.</span><span class="n">set_log_level</span><span class="p">(</span><span class="n">old</span><span class="p">)</span>
+    <span class="n">reasons</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">chans</span> <span class="ow">in</span> <span class="n">nc</span><span class="o">.</span><span class="n">get_bads</span><span class="p">(</span><span class="n">as_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"bad_all"</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chans</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">exempt</span><span class="p">:</span>      <span class="c1"># la referencia de registro (Cz) es plana por definición</span>
+                <span class="k">continue</span>
+            <span class="n">reasons</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">kind</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"bad_by_"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="s2">"pyprep:"</span> <span class="o">+</span> <span class="s2">"+"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">reasons</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="n">out</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- ICA</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_ica_iclabel</span><span class="p">(</span><span class="n">raw</span><span class="p">:</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">BaseRaw</span><span class="p">,</span> <span class="n">ica_cfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">notch</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">ICA</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Ajusta ICA en una copia 1-100 Hz con referencia promedio y la etiqueta con ICLabel."""</span>
+    <span class="n">fit_raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">pick</span><span class="p">(</span><span class="s2">"eeg"</span><span class="p">)</span>
+    <span class="n">nyq</span> <span class="o">=</span> <span class="n">fit_raw</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"sfreq"</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"lowpass_for_fit"</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">h</span> <span class="k">if</span> <span class="n">h</span> <span class="ow">and</span> <span class="n">h</span> <span class="o">&lt;</span> <span class="n">nyq</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">fit_raw</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"highpass_for_fit"</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">h</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="n">notch_fit</span> <span class="o">=</span> <span class="p">[</span><span class="n">g</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">notch</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">f</span><span class="p">)</span> <span class="k">if</span> <span class="n">g</span> <span class="o">&lt;</span> <span class="n">nyq</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">notch_fit</span><span class="p">:</span>
+        <span class="n">fit_raw</span><span class="o">.</span><span class="n">notch_filter</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">notch_fit</span><span class="p">)),</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="n">fit_raw</span><span class="o">.</span><span class="n">set_eeg_reference</span><span class="p">(</span><span class="s2">"average"</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+
+    <span class="n">ica</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">ICA</span><span class="p">(</span>
+        <span class="n">n_components</span><span class="o">=</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_components"</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+        <span class="n">method</span><span class="o">=</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"method"</span><span class="p">,</span> <span class="s2">"picard"</span><span class="p">),</span>
+        <span class="n">fit_params</span><span class="o">=</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"fit_params"</span><span class="p">),</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"random_state"</span><span class="p">,</span> <span class="mi">97</span><span class="p">),</span>
+        <span class="n">max_iter</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ica</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">fit_raw</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="s2">"eeg"</span><span class="p">,</span> <span class="n">decim</span><span class="o">=</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"decim_for_fit"</span><span class="p">),</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"component"</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="n">ica</span><span class="o">.</span><span class="n">n_components_</span><span class="p">),</span> <span class="s2">"label"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"proba"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">})</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">mne_icalabel</span><span class="w"> </span><span class="kn">import</span> <span class="n">label_components</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">label_components</span><span class="p">(</span><span class="n">fit_raw</span><span class="p">,</span> <span class="n">ica</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"iclabel"</span><span class="p">)</span>
+        <span class="n">labels</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">"labels"</span><span class="p">]</span>
+        <span class="n">labels</span><span class="p">[</span><span class="s2">"proba"</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">"y_pred_proba"</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover - mne-icalabel es dependencia del proyecto</span>
+        <span class="k">pass</span>
+    <span class="n">thr</span> <span class="o">=</span> <span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"iclabel_threshold"</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+    <span class="n">reject</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"iclabel_reject"</span><span class="p">,</span> <span class="p">[]))</span>
+    <span class="n">labels</span><span class="p">[</span><span class="s2">"exclude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">reject</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="s2">"proba"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">thr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ica</span><span class="p">,</span> <span class="n">labels</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------- pipeline</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SubjectResult</span><span class="p">:</span>
+    <span class="n">epochs</span><span class="p">:</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span>
+    <span class="n">log</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="n">continuous</span><span class="p">:</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ica</span><span class="p">:</span> <span class="n">mne</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">ICA</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ica_labels</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">bad_reasons</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_reject_abs</span><span class="p">(</span><span class="n">epochs</span><span class="p">:</span> <span class="n">mne</span><span class="o">.</span><span class="n">BaseEpochs</span><span class="p">,</span> <span class="n">thr_uv</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">thr_uv</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="k">return</span>
+    <span class="n">peak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">epochs</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">picks</span><span class="o">=</span><span class="s2">"eeg"</span><span class="p">))</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">bad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">peak</span> <span class="o">&gt;</span> <span class="n">thr_uv</span> <span class="o">*</span> <span class="mf">1e-6</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bad</span><span class="p">):</span>
+        <span class="n">epochs</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">bad</span><span class="p">,</span> <span class="n">reason</span><span class="o">=</span><span class="n">reason</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">preprocess_subject</span><span class="p">(</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">BaseRaw</span><span class="p">,</span>
+    <span class="n">pp</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">subject_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ica_exclude</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ica_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SubjectResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""De registro continuo a épocas limpias (y segmentos continuos) de un sujeto."""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"event_id"</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"preprocessing.event_id está vacío en config.yaml. "</span>
+            <span class="s2">"Complétalo con los códigos de evento que mostró la auditoría."</span>
+        <span class="p">)</span>
+    <span class="n">log</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"subject_id"</span><span class="p">:</span> <span class="n">subject_id</span><span class="p">}</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">prepare_raw</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">pp</span><span class="p">)</span>
+
+    <span class="c1"># 1) Eventos antes de quitar los canales de estímulo.</span>
+    <span class="n">events</span> <span class="o">=</span> <span class="n">find_task_events</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">pp</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">[</span><span class="s2">"n_events_found"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">))</span>
+
+    <span class="c1"># 2) Solo EEG.</span>
+    <span class="n">raw</span><span class="o">.</span><span class="n">pick</span><span class="p">(</span><span class="s2">"eeg"</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">[</span><span class="s2">"n_eeg_channels"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">ch_names</span><span class="p">)</span>
+
+    <span class="c1"># 3) Canales malos (automáticos + los ya marcados en el archivo).</span>
+    <span class="n">reasons</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">b</span><span class="p">:</span> <span class="s2">"marked_in_file"</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"bads"</span><span class="p">]}</span>
+    <span class="k">if</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"bad_channels"</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">auto</span> <span class="o">=</span> <span class="n">detect_bad_channels</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">pp</span><span class="p">[</span><span class="s2">"bad_channels"</span><span class="p">])</span>
+        <span class="n">reasons</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">auto</span><span class="p">)</span>
+    <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"bads"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">reasons</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">[</span><span class="s2">"n_bad_channels"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">reasons</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">[</span><span class="s2">"bad_channels"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">";"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">reasons</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+
+    <span class="c1"># 4) ICA (ajustada en una copia propia del sujeto).</span>
+    <span class="n">ica_cfg</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ica"</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">notch</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"notch_freqs"</span><span class="p">,</span> <span class="p">[])</span> <span class="ow">or</span> <span class="p">[]]</span>
+    <span class="n">ica</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">log</span><span class="p">[</span><span class="s2">"ica_excluded"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"enabled"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"method"</span><span class="p">,</span> <span class="s2">"fastica"</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"picard"</span> <span class="ow">or</span> <span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"iclabel_threshold"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ica</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">fit_ica_iclabel</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">ica_cfg</span><span class="p">,</span> <span class="n">notch</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># modo simple (FastICA sin ICLabel), usado en pruebas antiguas</span>
+            <span class="n">fit_raw</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"highpass_for_fit"</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+            <span class="n">ica</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">ICA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_components"</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">),</span>
+                                        <span class="n">method</span><span class="o">=</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"method"</span><span class="p">,</span> <span class="s2">"fastica"</span><span class="p">),</span>
+                                        <span class="n">random_state</span><span class="o">=</span><span class="n">ica_cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"random_state"</span><span class="p">,</span> <span class="mi">97</span><span class="p">),</span> <span class="n">max_iter</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">)</span>
+            <span class="n">ica</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">fit_raw</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ica_dir</span><span class="p">:</span>
+            <span class="n">Path</span><span class="p">(</span><span class="n">ica_dir</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">ica</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">ica_dir</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"sub-</span><span class="si">{</span><span class="n">subject_id</span><span class="si">}</span><span class="s2">-ica.fif"</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ica_exclude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exclude</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ica_exclude</span><span class="p">),</span> <span class="s2">"manual"</span>
+        <span class="k">elif</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exclude</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="s2">"exclude"</span><span class="p">],</span> <span class="s2">"component"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="s2">"iclabel"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">exclude</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="p">[],</span> <span class="s2">"none"</span>
+        <span class="n">ica</span><span class="o">.</span><span class="n">exclude</span> <span class="o">=</span> <span class="n">exclude</span>
+        <span class="n">log</span><span class="p">[</span><span class="s2">"ica_n_components"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ica</span><span class="o">.</span><span class="n">n_components_</span><span class="p">)</span>
+        <span class="n">log</span><span class="p">[</span><span class="s2">"ica_excluded"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">)</span>
+        <span class="n">log</span><span class="p">[</span><span class="s2">"ica_n_excluded"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span>
+        <span class="n">log</span><span class="p">[</span><span class="s2">"ica_exclusion_source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">lab</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"eye blink"</span><span class="p">,</span> <span class="s2">"muscle artifact"</span><span class="p">,</span> <span class="s2">"heart beat"</span><span class="p">,</span> <span class="s2">"line noise"</span><span class="p">,</span> <span class="s2">"channel noise"</span><span class="p">):</span>
+                <span class="n">log</span><span class="p">[</span><span class="sa">f</span><span class="s2">"ica_n_</span><span class="si">{</span><span class="n">lab</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">' '</span><span class="p">,</span><span class="w"> </span><span class="s1">'_'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">labels</span><span class="p">[</span><span class="s2">"exclude"</span><span class="p">]</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="s2">"label"</span><span class="p">]</span> <span class="o">==</span> <span class="n">lab</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+    <span class="c1"># 5) Copia de análisis: filtros -&gt; referencia promedio (sin malos) -&gt; ICA -&gt; interpolación -&gt; referencia.</span>
+    <span class="n">raw</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pp</span><span class="p">[</span><span class="s2">"l_freq"</span><span class="p">],</span> <span class="n">pp</span><span class="p">[</span><span class="s2">"h_freq"</span><span class="p">],</span> <span class="n">fir_design</span><span class="o">=</span><span class="s2">"firwin"</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="n">notch_ok</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">notch</span> <span class="k">if</span> <span class="n">f</span> <span class="o">&lt;</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"sfreq"</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">notch_ok</span><span class="p">:</span>
+        <span class="n">raw</span><span class="o">.</span><span class="n">notch_filter</span><span class="p">(</span><span class="n">notch_ok</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">[</span><span class="s2">"notch_freqs"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">notch</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ica</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ica</span><span class="o">.</span><span class="n">exclude</span><span class="p">:</span>
+        <span class="n">raw</span><span class="o">.</span><span class="n">set_eeg_reference</span><span class="p">(</span><span class="s2">"average"</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>  <span class="c1"># igual que al ajustar</span>
+        <span class="n">ica</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">[</span><span class="s2">"bads_interpolated"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"bads"</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"bads"</span><span class="p">]:</span>
+        <span class="n">raw</span><span class="o">.</span><span class="n">interpolate_bads</span><span class="p">(</span><span class="n">reset_bads</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="n">raw</span><span class="o">.</span><span class="n">set_eeg_reference</span><span class="p">(</span><span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"reference"</span><span class="p">,</span> <span class="s2">"average"</span><span class="p">),</span> <span class="n">projection</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+
+    <span class="c1"># 6) Épocas.</span>
+    <span class="n">event_id</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pp</span><span class="p">[</span><span class="s2">"event_id"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">present</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">event_id</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">events</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])}</span>
+    <span class="k">for</span> <span class="n">cond</span><span class="p">,</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">event_id</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">log</span><span class="p">[</span><span class="sa">f</span><span class="s2">"n_trials_raw_</span><span class="si">{</span><span class="n">cond</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">events</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">present</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">subject_id</span><span class="si">}</span><span class="s2">: ninguno de los códigos de event_id aparece en el registro"</span><span class="p">)</span>
+
+    <span class="n">reject</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"eeg"</span><span class="p">:</span> <span class="n">pp</span><span class="p">[</span><span class="s2">"reject_peak_to_peak_uv"</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1e-6</span><span class="p">}</span> <span class="k">if</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"reject_peak_to_peak_uv"</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">baseline</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">pp</span><span class="p">[</span><span class="s2">"baseline"</span><span class="p">])</span> <span class="k">if</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"baseline"</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"resample_sfreq"</span><span class="p">)</span>
+    <span class="n">sfreq</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"sfreq"</span><span class="p">]</span>
+    <span class="n">decim</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"none"</span>
+    <span class="k">if</span> <span class="n">target</span> <span class="ow">and</span> <span class="n">sfreq</span> <span class="o">!=</span> <span class="n">target</span><span class="p">:</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">sfreq</span> <span class="o">/</span> <span class="n">target</span>
+        <span class="k">if</span> <span class="nb">float</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span><span class="o">.</span><span class="n">is_integer</span><span class="p">()</span> <span class="ow">and</span> <span class="n">pp</span><span class="p">[</span><span class="s2">"h_freq"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">target</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">decim</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ratio</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"decim x</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">ratio</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="s2">"resample"</span>
+    <span class="n">log</span><span class="p">[</span><span class="s2">"downsample_method"</span><span class="p">]</span> <span class="o">=</span> <span class="n">method</span>
+
+    <span class="n">epochs</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id</span><span class="o">=</span><span class="n">present</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=</span><span class="n">pp</span><span class="p">[</span><span class="s2">"tmin"</span><span class="p">],</span> <span class="n">tmax</span><span class="o">=</span><span class="n">pp</span><span class="p">[</span><span class="s2">"tmax"</span><span class="p">],</span> <span class="n">baseline</span><span class="o">=</span><span class="n">baseline</span><span class="p">,</span>
+                        <span class="n">reject</span><span class="o">=</span><span class="n">reject</span><span class="p">,</span> <span class="n">decim</span><span class="o">=</span><span class="n">decim</span><span class="p">,</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">on_missing</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"resample"</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">epochs</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+    <span class="n">_reject_abs</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"reject_abs_uv"</span><span class="p">),</span> <span class="sa">f</span><span class="s2">"ABS_</span><span class="si">{</span><span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'reject_abs_uv'</span><span class="p">)</span><span class="si">}</span><span class="s2">uV"</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">cond</span> <span class="ow">in</span> <span class="n">event_id</span><span class="p">:</span>
+        <span class="n">log</span><span class="p">[</span><span class="sa">f</span><span class="s2">"n_trials_kept_</span><span class="si">{</span><span class="n">cond</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">epochs</span><span class="p">[</span><span class="n">cond</span><span class="p">])</span> <span class="k">if</span> <span class="n">cond</span> <span class="ow">in</span> <span class="n">epochs</span><span class="o">.</span><span class="n">event_id</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">log</span><span class="p">[</span><span class="s2">"n_trials_kept_total"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">epochs</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">[</span><span class="s2">"sfreq_final"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">epochs</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"sfreq"</span><span class="p">])</span>
+
+    <span class="c1"># 7) Segmentos continuos limpios (para espectro, conectividad y complejidad).</span>
+    <span class="n">cont</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ccfg</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"continuous"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ccfg</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">):</span>
+        <span class="n">sf</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">"sfreq"</span><span class="p">]</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">raw</span><span class="o">.</span><span class="n">first_samp</span><span class="p">)</span> <span class="o">/</span> <span class="n">sf</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">raw</span><span class="o">.</span><span class="n">times</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">events</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">raw</span><span class="o">.</span><span class="n">first_samp</span><span class="p">)</span> <span class="o">/</span> <span class="n">sf</span> <span class="o">+</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ccfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"sfreq"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ccfg</span><span class="p">[</span><span class="s2">"sfreq"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">sf</span><span class="p">:</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">ccfg</span><span class="p">[</span><span class="s2">"sfreq"</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+        <span class="n">cont</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">make_fixed_length_epochs</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">ccfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"segment_s"</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">preload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                            <span class="n">verbose</span><span class="o">=</span><span class="s2">"error"</span><span class="p">)</span>
+        <span class="n">n_seg</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cont</span><span class="p">)</span>
+        <span class="n">_reject_abs</span><span class="p">(</span><span class="n">cont</span><span class="p">,</span> <span class="n">ccfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"reject_abs_uv"</span><span class="p">),</span> <span class="s2">"ABS_cont"</span><span class="p">)</span>
+        <span class="n">log</span><span class="p">[</span><span class="s2">"n_segments_total"</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_seg</span>
+        <span class="n">log</span><span class="p">[</span><span class="s2">"n_segments_kept"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cont</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">SubjectResult</span><span class="p">(</span><span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="p">,</span> <span class="n">continuous</span><span class="o">=</span><span class="n">cont</span><span class="p">,</span> <span class="n">ica</span><span class="o">=</span><span class="n">ica</span><span class="p">,</span> <span class="n">ica_labels</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span> <span class="n">bad_reasons</span><span class="o">=</span><span class="n">reasons</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">preprocess_raw</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">pp</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">,</span> <span class="n">ica_exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ica_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Interfaz anterior: devuelve solo las épocas y el registro."""</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">preprocess_subject</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">pp</span><span class="p">,</span> <span class="n">subject_id</span><span class="p">,</span> <span class="n">ica_exclude</span><span class="p">,</span> <span class="n">ica_dir</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">log</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_exclusion_criteria</span><span class="p">(</span><span class="n">log</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">crit</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">n_channels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                             <span class="n">conditions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Marca a los sujetos que no cumplen los criterios fijados de antemano."""</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">reasons</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">out</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">why</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"error"</span><span class="p">),</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">r</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]:</span>
+            <span class="n">why</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"preprocessing error"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_bad_channels"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">crit</span><span class="p">[</span><span class="s2">"max_bad_channel_frac"</span><span class="p">]</span> <span class="o">*</span> <span class="n">n_channels</span><span class="p">:</span>
+                <span class="n">why</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"bad channels </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'n_bad_channels'</span><span class="p">])</span><span class="si">}</span><span class="s2"> &gt; </span><span class="si">{</span><span class="n">crit</span><span class="p">[</span><span class="s1">'max_bad_channel_frac'</span><span class="p">]</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"n_trials_kept_total"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">crit</span><span class="p">[</span><span class="s2">"min_trials_total"</span><span class="p">]:</span>
+                <span class="n">why</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"trials </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">'n_trials_kept_total'</span><span class="p">])</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">crit</span><span class="p">[</span><span class="s1">'min_trials_total'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">conditions</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"n_trials_kept_</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">crit</span><span class="p">[</span><span class="s2">"min_trials_per_condition"</span><span class="p">]:</span>
+                    <span class="n">why</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2"> trials </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">crit</span><span class="p">[</span><span class="s1">'min_trials_per_condition'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"; "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">why</span><span class="p">))</span>
+    <span class="n">out</span><span class="p">[</span><span class="s2">"exclusion_reason"</span><span class="p">]</span> <span class="o">=</span> <span class="n">reasons</span>
+    <span class="n">out</span><span class="p">[</span><span class="s2">"included"</span><span class="p">]</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="s2">"exclusion_reason"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">""</span>
+    <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./methods"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pipeline.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Pipeline overview</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="features.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Features</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#participant-exclusion-fixed-before-any-result">Participant exclusion (fixed before any result)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nicolas Rodriguez
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

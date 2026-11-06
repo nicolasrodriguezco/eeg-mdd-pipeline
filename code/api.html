@@ -1,0 +1,1892 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Package reference (eeg_mdd) &#8212; EEG and major depression: a leakage-free benchmark</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code/api';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Scripts" href="scripts.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">EEG and major depression: a leakage-free benchmark</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    EEG and major depression: a leakage-free benchmark
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">The study</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../study/question.html">The question</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../study/dataset.html">The dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../study/findings.html">Findings at a glance</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Methods</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../methods/pipeline.html">Pipeline overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../methods/preprocessing.html">Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../methods/features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../methods/evaluation.html">Evaluation protocol</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../methods/models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../methods/audit.html">Post-hoc audit (exploratory)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Results</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../results/main.html">Main results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../results/inflation.html">Why trial-wise splits inflate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../results/audit.html">Audit results (exploratory)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Using this work</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../guide/reproduce.html">Reproducing the analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/checklist.html">Reporting checklist</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/preregistration.html">Pre-registered analysis plan</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/deviations.html">Deviations from the plan</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Code</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="scripts.html">Scripts</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Package reference (<code class="docutils literal notranslate"><span class="pre">eeg_mdd</span></code>)</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/nicolasrodriguezco/eeg-mdd-pipeline" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/code/api.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Package reference (eeg_mdd)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-eeg_mdd.evaluation.cv">Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.cv.SubjectLeakError"><code class="docutils literal notranslate"><span class="pre">SubjectLeakError</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.cv.subject_folds"><code class="docutils literal notranslate"><span class="pre">subject_folds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.cv.outer_splits"><code class="docutils literal notranslate"><span class="pre">outer_splits()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.CVResult"><code class="docutils literal notranslate"><span class="pre">CVResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.CVResult.mean_prob"><code class="docutils literal notranslate"><span class="pre">CVResult.mean_prob()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.CVResult.ci"><code class="docutils literal notranslate"><span class="pre">CVResult.ci()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.nested_cv"><code class="docutils literal notranslate"><span class="pre">nested_cv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.permutation_test"><code class="docutils literal notranslate"><span class="pre">permutation_test()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.corrected_ttest"><code class="docutils literal notranslate"><span class="pre">corrected_ttest()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.metrics.aggregate_to_subject"><code class="docutils literal notranslate"><span class="pre">aggregate_to_subject()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.metrics.subject_metrics"><code class="docutils literal notranslate"><span class="pre">subject_metrics()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.metrics.bootstrap_ci"><code class="docutils literal notranslate"><span class="pre">bootstrap_ci()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-eeg_mdd.features">Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.subject_features"><code class="docutils literal notranslate"><span class="pre">subject_features()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.regions.anchors"><code class="docutils literal notranslate"><span class="pre">anchors()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.regions.assign_regions"><code class="docutils literal notranslate"><span class="pre">assign_regions()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.regions.neighbors_of"><code class="docutils literal notranslate"><span class="pre">neighbors_of()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.spectral.psd_welch"><code class="docutils literal notranslate"><span class="pre">psd_welch()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.spectral.band_power"><code class="docutils literal notranslate"><span class="pre">band_power()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.spectral.spectral_features"><code class="docutils literal notranslate"><span class="pre">spectral_features()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.spectral.frontal_alpha_asymmetry"><code class="docutils literal notranslate"><span class="pre">frontal_alpha_asymmetry()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.erp.erp_features"><code class="docutils literal notranslate"><span class="pre">erp_features()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.connectivity_complexity.region_signals"><code class="docutils literal notranslate"><span class="pre">region_signals()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.connectivity_complexity.wpli_features"><code class="docutils literal notranslate"><span class="pre">wpli_features()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.connectivity_complexity.complexity_features"><code class="docutils literal notranslate"><span class="pre">complexity_features()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.audit.aperiodic_fit"><code class="docutils literal notranslate"><span class="pre">aperiodic_fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.audit.aperiodic_residual"><code class="docutils literal notranslate"><span class="pre">aperiodic_residual()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.audit.alpha_peak"><code class="docutils literal notranslate"><span class="pre">alpha_peak()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.audit.behavioural_rt"><code class="docutils literal notranslate"><span class="pre">behavioural_rt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.audit.muscle_index"><code class="docutils literal notranslate"><span class="pre">muscle_index()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-eeg_mdd.models">Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.tabular_models"><code class="docutils literal notranslate"><span class="pre">tabular_models()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.model_selection_grid"><code class="docutils literal notranslate"><span class="pre">model_selection_grid()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.riemann_models"><code class="docutils literal notranslate"><span class="pre">riemann_models()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.deconfound.ConfoundRegressor"><code class="docutils literal notranslate"><span class="pre">ConfoundRegressor</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.deep.DLConfig"><code class="docutils literal notranslate"><span class="pre">DLConfig</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.deep.train_fold"><code class="docutils literal notranslate"><span class="pre">train_fold()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-eeg_mdd.io">Data handling and preprocessing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.io.find_eeg_files"><code class="docutils literal notranslate"><span class="pre">find_eeg_files()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.io.extract_subject_id"><code class="docutils literal notranslate"><span class="pre">extract_subject_id()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.io.load_raw"><code class="docutils literal notranslate"><span class="pre">load_raw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.events.egi_event_channels"><code class="docutils literal notranslate"><span class="pre">egi_event_channels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.events.event_onsets"><code class="docutils literal notranslate"><span class="pre">event_onsets()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.events.count_egi_events"><code class="docutils literal notranslate"><span class="pre">count_egi_events()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.events.find_egi_events"><code class="docutils literal notranslate"><span class="pre">find_egi_events()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.events.event_table"><code class="docutils literal notranslate"><span class="pre">event_table()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.matching.normalize_id"><code class="docutils literal notranslate"><span class="pre">normalize_id()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.matching.match_subjects"><code class="docutils literal notranslate"><span class="pre">match_subjects()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.matching.usable_subjects"><code class="docutils literal notranslate"><span class="pre">usable_subjects()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.demographics.continuous_row"><code class="docutils literal notranslate"><span class="pre">continuous_row()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.demographics.categorical_row"><code class="docutils literal notranslate"><span class="pre">categorical_row()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.demographics.recording_datetime_from_name"><code class="docutils literal notranslate"><span class="pre">recording_datetime_from_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.load_ica_exclusions"><code class="docutils literal notranslate"><span class="pre">load_ica_exclusions()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.prepare_raw"><code class="docutils literal notranslate"><span class="pre">prepare_raw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.find_task_events"><code class="docutils literal notranslate"><span class="pre">find_task_events()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.detect_bad_channels"><code class="docutils literal notranslate"><span class="pre">detect_bad_channels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.fit_ica_iclabel"><code class="docutils literal notranslate"><span class="pre">fit_ica_iclabel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.SubjectResult"><code class="docutils literal notranslate"><span class="pre">SubjectResult</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.preprocess_subject"><code class="docutils literal notranslate"><span class="pre">preprocess_subject()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.preprocess_raw"><code class="docutils literal notranslate"><span class="pre">preprocess_raw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.apply_exclusion_criteria"><code class="docutils literal notranslate"><span class="pre">apply_exclusion_criteria()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.checks.check_audit"><code class="docutils literal notranslate"><span class="pre">check_audit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.checks.check_labels"><code class="docutils literal notranslate"><span class="pre">check_labels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.checks.check_no_subject_overlap"><code class="docutils literal notranslate"><span class="pre">check_no_subject_overlap()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.config.load_config"><code class="docutils literal notranslate"><span class="pre">load_config()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.config.ensure_dirs"><code class="docutils literal notranslate"><span class="pre">ensure_dirs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="package-reference-eeg-mdd">
+<h1>Package reference (<code class="docutils literal notranslate"><span class="pre">eeg_mdd</span></code>)<a class="headerlink" href="#package-reference-eeg-mdd" title="Link to this heading">#</a></h1>
+<p>Generated from the docstrings of <code class="docutils literal notranslate"><span class="pre">src/eeg_mdd/</span></code>, which are in Spanish. The heavy dependencies are mocked, so this
+page builds without MNE, PyTorch or data.</p>
+<section id="module-eeg_mdd.evaluation.cv">
+<span id="evaluation"></span><h2>Evaluation<a class="headerlink" href="#module-eeg_mdd.evaluation.cv" title="Link to this heading">#</a></h2>
+<p>Particiones por sujeto con verificación explícita de que no hay solapamiento.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.cv.SubjectLeakError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eeg_mdd.evaluation.cv.</span></span><span class="sig-name descname"><span class="pre">SubjectLeakError</span></span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/cv.html#SubjectLeakError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.cv.SubjectLeakError" title="Link to this definition">#</a></dt>
+<dd><p>Un sujeto aparece en entrenamiento y en prueba a la vez.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.cv.subject_folds">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.evaluation.cv.</span></span><span class="sig-name descname"><span class="pre">subject_folds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_splits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/cv.html#subject_folds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.cv.subject_folds" title="Link to this definition">#</a></dt>
+<dd><p>Partición estratificada de SUJETOS (no de filas). Depende solo del conjunto de
+sujetos y sus etiquetas, así que es idéntica para datos por sujeto y por ensayo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>groups</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>n_splits</strong> (<em>int</em>)</p></li>
+<li><p><strong>seed</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[tuple[set, set]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.cv.outer_splits">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.evaluation.cv.</span></span><span class="sig-name descname"><span class="pre">outer_splits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_splits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_repeats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/cv.html#outer_splits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.cv.outer_splits" title="Link to this definition">#</a></dt>
+<dd><p>(repetición, pliegue, train_idx, test_idx) sobre filas, con sujetos disjuntos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>groups</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>n_splits</strong> (<em>int</em>)</p></li>
+<li><p><strong>n_repeats</strong> (<em>int</em>)</p></li>
+<li><p><strong>seed0</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Iterator</em>[tuple[int, int, numpy.ndarray, numpy.ndarray]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.evaluation.nested">Validación cruzada anidada, agrupada por sujeto, para modelos por sujeto o por ensayo.</p>
+<ul class="simple">
+<li><p>Bucle externo: <code class="docutils literal notranslate"><span class="pre">StratifiedGroupKFold</span></code> repetido (<code class="docutils literal notranslate"><span class="pre">outer_splits</span></code>).</p></li>
+<li><p>Bucle interno: <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> con <code class="docutils literal notranslate"><span class="pre">StratifiedGroupKFold</span></code> sobre los sujetos de
+entrenamiento (hiperparámetros, y si se pide, la familia de modelo).</p></li>
+<li><p>Todo lo que aprende (imputación, escalado, selección, covarianzas de referencia)
+está dentro del estimador/Pipeline, así que se ajusta solo con entrenamiento.</p></li>
+<li><p>Las probabilidades por ensayo se promedian por sujeto antes de calcular métricas.</p></li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.nested.CVResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eeg_mdd.evaluation.nested.</span></span><span class="sig-name descname"><span class="pre">CVResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name:</span> <span class="pre">'str'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">oof:</span> <span class="pre">'pd.DataFrame'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fold_scores:</span> <span class="pre">'pd.DataFrame'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat_scores:</span> <span class="pre">'pd.DataFrame'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">best_params:</span> <span class="pre">'list'</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/nested.html#CVResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.nested.CVResult" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>oof</strong> (<em>pandas.DataFrame</em>)</p></li>
+<li><p><strong>fold_scores</strong> (<em>pandas.DataFrame</em>)</p></li>
+<li><p><strong>repeat_scores</strong> (<em>pandas.DataFrame</em>)</p></li>
+<li><p><strong>best_params</strong> (<em>list</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.nested.CVResult.mean_prob">
+<span class="sig-name descname"><span class="pre">mean_prob</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/nested.html#CVResult.mean_prob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.nested.CVResult.mean_prob" title="Link to this definition">#</a></dt>
+<dd><p>Probabilidad OOF media por sujeto sobre las repeticiones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.nested.CVResult.ci">
+<span class="sig-name descname"><span class="pre">ci</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_boot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/nested.html#CVResult.ci"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.nested.CVResult.ci" title="Link to this definition">#</a></dt>
+<dd><p>IC 95 % por bootstrap sobre sujetos, promediando los extremos entre repeticiones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_boot</strong> (<em>int</em>)</p></li>
+<li><p><strong>seed</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.nested.nested_cv">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.evaluation.nested.</span></span><span class="sig-name descname"><span class="pre">nested_cv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">estimator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_splits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_repeats</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_inner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scoring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'roc_auc'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/nested.html#nested_cv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.nested.nested_cv" title="Link to this definition">#</a></dt>
+<dd><p>CV anidada por sujeto. <code class="docutils literal notranslate"><span class="pre">y</span></code> y <code class="docutils literal notranslate"><span class="pre">groups</span></code> tienen una entrada por fila de <code class="docutils literal notranslate"><span class="pre">X</span></code>
+(fila = sujeto o ensayo). Devuelve predicciones OOF por sujeto y métricas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>n_splits</strong> (<em>int</em>)</p></li>
+<li><p><strong>n_repeats</strong> (<em>int</em>)</p></li>
+<li><p><strong>n_inner</strong> (<em>int</em>)</p></li>
+<li><p><strong>seed0</strong> (<em>int</em>)</p></li>
+<li><p><strong>n_jobs</strong> (<em>int</em>)</p></li>
+<li><p><strong>scoring</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#eeg_mdd.evaluation.nested.CVResult" title="eeg_mdd.evaluation.nested.CVResult"><em>CVResult</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.nested.permutation_test">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.evaluation.nested.</span></span><span class="sig-name descname"><span class="pre">permutation_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observed_auc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_perm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_splits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_inner</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/nested.html#permutation_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.nested.permutation_test" title="Link to this definition">#</a></dt>
+<dd><p>Test de permutación a nivel sujeto: se barajan las etiquetas ENTRE sujetos
+(cada ensayo hereda la etiqueta permutada de su sujeto) y se repite toda la
+CV anidada (1 repetición). p = (1 + #{AUC_perm &gt;= AUC_obs}) / (1 + n_perm).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observed_auc</strong> (<em>float</em>)</p></li>
+<li><p><strong>n_perm</strong> (<em>int</em>)</p></li>
+<li><p><strong>n_splits</strong> (<em>int</em>)</p></li>
+<li><p><strong>n_inner</strong> (<em>int</em>)</p></li>
+<li><p><strong>seed0</strong> (<em>int</em>)</p></li>
+<li><p><strong>n_jobs</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.nested.corrected_ttest">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.evaluation.nested.</span></span><span class="sig-name descname"><span class="pre">corrected_ttest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diff_per_fold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_test</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/nested.html#corrected_ttest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.nested.corrected_ttest" title="Link to this definition">#</a></dt>
+<dd><p>t-test de remuestreo corregido (Nadeau y Bengio, 2003; Bouckaert y Frank, 2004)
+para comparar dos modelos evaluados en los mismos pliegues.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>diff_per_fold</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>n_train</strong> (<em>int</em>)</p></li>
+<li><p><strong>n_test</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.evaluation.metrics">Métricas por sujeto e intervalos por bootstrap sobre sujetos.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.metrics.aggregate_to_subject">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.evaluation.metrics.</span></span><span class="sig-name descname"><span class="pre">aggregate_to_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/metrics.html#aggregate_to_subject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.metrics.aggregate_to_subject" title="Link to this definition">#</a></dt>
+<dd><p>Media de probabilidades por sujeto (la etiqueta es constante dentro del sujeto).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prob</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>groups</strong> (<em>numpy.ndarray</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.metrics.subject_metrics">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.evaluation.metrics.</span></span><span class="sig-name descname"><span class="pre">subject_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/metrics.html#subject_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.metrics.subject_metrics" title="Link to this definition">#</a></dt>
+<dd><p>Positivo = MDD (1). Umbral fijo de 0,5 (no se ajusta con los datos de prueba).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>prob</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>threshold</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.evaluation.metrics.bootstrap_ci">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.evaluation.metrics.</span></span><span class="sig-name descname"><span class="pre">bootstrap_ci</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_boot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/evaluation/metrics.html#bootstrap_ci"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.evaluation.metrics.bootstrap_ci" title="Link to this definition">#</a></dt>
+<dd><p>IC percentil por bootstrap estratificado sobre sujetos (una fila por sujeto).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>prob</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>n_boot</strong> (<em>int</em>)</p></li>
+<li><p><strong>seed</strong> (<em>int</em>)</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-eeg_mdd.features">
+<span id="features"></span><h2>Features<a class="headerlink" href="#module-eeg_mdd.features" title="Link to this heading">#</a></h2>
+<p>Biomarcadores de EEG por sujeto (no usan etiquetas, así que pueden calcularse fuera de la CV).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.subject_features">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.</span></span><span class="sig-name descname"><span class="pre">subject_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epochs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">segments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">complexity_segments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features.html#subject_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.subject_features" title="Link to this definition">#</a></dt>
+<dd><p>Todas las características de un sujeto.</p>
+<dl class="simple">
+<dt>Devuelve un dict con:</dt><dd><p>features         dict nombre -&gt; valor (fila de la tabla por sujeto)
+channel_power    (n_bands, n_channels) potencia absoluta por canal (µV²), para topomapas
+evokeds          lista de Evoked por condición
+trial_regions    (n_trials, n_regions, n_times) señal regional por ensayo (para Riemann)
+trial_conditions nombres de condición por ensayo</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epochs</strong> (<em>mne.BaseEpochs</em>)</p></li>
+<li><p><strong>segments</strong> (<em>mne.BaseEpochs</em>)</p></li>
+<li><p><strong>complexity_segments</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.features.regions">Mapa de regiones del montaje HydroCel GSN 129 y equivalentes 10-20.</p>
+<p>Las regiones se definen con reglas fijas sobre las coordenadas del montaje
+(posiciones normalizadas a la esfera unidad, x = derecha, y = anterior,
+z = arriba). Así el mapa es reproducible y se documenta con una figura.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.regions.anchors">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.regions.</span></span><span class="sig-name descname"><span class="pre">anchors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/regions.html#anchors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.regions.anchors" title="Link to this definition">#</a></dt>
+<dd><p>Nombre 10-10 -&gt; región (o ‘midline’/’excluded’).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.regions.assign_regions">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.regions.</span></span><span class="sig-name descname"><span class="pre">assign_regions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">montage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GSN-HydroCel-129'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/regions.html#assign_regions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.regions.assign_regions" title="Link to this definition">#</a></dt>
+<dd><p>Región de cada electrodo = región del ancla 10-10 más cercana (en ángulo).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>montage</strong> (<em>str</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.Series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.regions.neighbors_of">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.regions.</span></span><span class="sig-name descname"><span class="pre">neighbors_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">montage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'GSN-HydroCel-129'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/regions.html#neighbors_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.regions.neighbors_of" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">center</span></code> y sus k vecinos más cercanos (para clústeres de ERP).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center</strong> (<em>str</em>)</p></li>
+<li><p><strong>k</strong> (<em>int</em>)</p></li>
+<li><p><strong>montage</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.features.spectral">Potencia espectral por banda (Welch) por canal y por región, y asimetría alfa frontal.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.spectral.psd_welch">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.spectral.</span></span><span class="sig-name descname"><span class="pre">psd_welch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg_len_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/spectral.html#psd_welch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.spectral.psd_welch" title="Link to this definition">#</a></dt>
+<dd><p>PSD media sobre segmentos. <code class="docutils literal notranslate"><span class="pre">data</span></code>: (n_segments, n_channels, n_times) -&gt; (n_channels, n_freqs).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>sfreq</strong> (<em>float</em>)</p></li>
+<li><p><strong>seg_len_s</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[numpy.ndarray, numpy.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.spectral.band_power">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.spectral.</span></span><span class="sig-name descname"><span class="pre">band_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'alpha':</span> <span class="pre">(8.0,</span> <span class="pre">13.0),</span> <span class="pre">'beta':</span> <span class="pre">(13.0,</span> <span class="pre">30.0),</span> <span class="pre">'delta':</span> <span class="pre">(1.0,</span> <span class="pre">4.0),</span> <span class="pre">'lowgamma':</span> <span class="pre">(30.0,</span> <span class="pre">40.0),</span> <span class="pre">'theta':</span> <span class="pre">(4.0,</span> <span class="pre">8.0)}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/spectral.html#band_power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.spectral.band_power" title="Link to this definition">#</a></dt>
+<dd><p>Potencia absoluta (integral de la PSD) por banda, por canal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freqs</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>psd</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>bands</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, numpy.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.spectral.spectral_features">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.spectral.</span></span><span class="sig-name descname"><span class="pre">spectral_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ch_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'alpha':</span> <span class="pre">(8.0,</span> <span class="pre">13.0),</span> <span class="pre">'beta':</span> <span class="pre">(13.0,</span> <span class="pre">30.0),</span> <span class="pre">'delta':</span> <span class="pre">(1.0,</span> <span class="pre">4.0),</span> <span class="pre">'lowgamma':</span> <span class="pre">(30.0,</span> <span class="pre">40.0),</span> <span class="pre">'theta':</span> <span class="pre">(4.0,</span> <span class="pre">8.0)}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/spectral.html#spectral_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.spectral.spectral_features" title="Link to this definition">#</a></dt>
+<dd><p>Características espectrales de un sujeto.</p>
+<p>Devuelve (features por región, potencia absoluta por canal y banda).
+- <code class="docutils literal notranslate"><span class="pre">pow_&lt;banda&gt;_&lt;región&gt;</span></code>: log10 de la potencia absoluta media de la región (µV²).
+- <code class="docutils literal notranslate"><span class="pre">rel_&lt;banda&gt;_&lt;región&gt;</span></code>: potencia de la banda / potencia total 1-40 Hz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>sfreq</strong> (<em>float</em>)</p></li>
+<li><p><strong>ch_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>regions</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>)</p></li>
+<li><p><strong>bands</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[dict[str, float], dict[str, numpy.ndarray]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.spectral.frontal_alpha_asymmetry">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.spectral.</span></span><span class="sig-name descname"><span class="pre">frontal_alpha_asymmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alpha_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ch_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pairs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/spectral.html#frontal_alpha_asymmetry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.spectral.frontal_alpha_asymmetry" title="Link to this definition">#</a></dt>
+<dd><p>ln(alfa derecha) - ln(alfa izquierda) para cada par (izq, der).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha_power</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>ch_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>pairs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.features.erp">Componentes de ERP con ventanas fijadas a priori (no derivadas de los datos).</p>
+<p>Ventanas (desde la literatura de rostros emocionales):
+- N170: 140-200 ms, mínimo en electrodos occipito-temporales (≈P7/P8).
+- P300: 250-500 ms, media y latencia del máximo en un clúster centro-parietal (≈Pz).
+- LPP: 400-600 ms, media en el mismo clúster.</p>
+<p>La LPP se limita a 600 ms por el diseño: el punto de la tarea aparece &gt;= 632 ms después del rostro.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.erp.erp_features">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.erp.</span></span><span class="sig-name descname"><span class="pre">erp_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">evoked_uv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ch_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/erp.html#erp_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.erp.erp_features" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">evoked_uv</span></code>: (n_channels, n_times) en µV. <code class="docutils literal notranslate"><span class="pre">clusters</span></code>: n170_L, n170_R, centroparietal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>evoked_uv</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>times</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>ch_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>clusters</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>)</p></li>
+<li><p><strong>prefix</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.features.connectivity_complexity">Conectividad (wPLI entre regiones) y complejidad (SampEn, Higuchi, Lempel-Ziv).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.connectivity_complexity.region_signals">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.connectivity_complexity.</span></span><span class="sig-name descname"><span class="pre">region_signals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ch_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/connectivity_complexity.html#region_signals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.connectivity_complexity.region_signals" title="Link to this definition">#</a></dt>
+<dd><p>Promedio de los canales de cada región. <code class="docutils literal notranslate"><span class="pre">data</span></code>: (…, n_channels, n_times).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>ch_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>regions</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[numpy.ndarray, list[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.connectivity_complexity.wpli_features">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.connectivity_complexity.</span></span><span class="sig-name descname"><span class="pre">wpli_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'alpha':</span> <span class="pre">(8.0,</span> <span class="pre">13.0),</span> <span class="pre">'beta':</span> <span class="pre">(13.0,</span> <span class="pre">30.0),</span> <span class="pre">'theta':</span> <span class="pre">(4.0,</span> <span class="pre">8.0)}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/connectivity_complexity.html#wpli_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.connectivity_complexity.wpli_features" title="Link to this definition">#</a></dt>
+<dd><p>wPLI por banda entre todos los pares de regiones. <code class="docutils literal notranslate"><span class="pre">region_data</span></code>: (n_seg, n_reg, n_times).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_data</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>region_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>sfreq</strong> (<em>float</em>)</p></li>
+<li><p><strong>bands</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.connectivity_complexity.complexity_features">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.connectivity_complexity.</span></span><span class="sig-name descname"><span class="pre">complexity_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_segments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/connectivity_complexity.html#complexity_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.connectivity_complexity.complexity_features" title="Link to this definition">#</a></dt>
+<dd><p>Media sobre segmentos de SampEn, Higuchi FD y Lempel-Ziv (binarizado por la mediana).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region_data</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>region_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>max_segments</strong> (<em>int</em>)</p></li>
+<li><p><strong>seed</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.features.audit">Características de la auditoría (D6, exploratorias y post hoc).</p>
+<p>Ninguna usa etiquetas. Se calculan por sujeto y por eso pueden quedar fuera de la CV.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">aperiodic_fit</span></code>: ajuste 1/f robusto (estilo FOOOF, sin “knee”) del espectro log-log.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alpha_peak</span></code>: frecuencia del pico alfa (centroide del residuo positivo) y su altura.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">behavioural_rt</span></code>: tiempos de reacción desde los eventos de EGI (<code class="docutils literal notranslate"><span class="pre">*dot</span></code> → <code class="docutils literal notranslate"><span class="pre">resp</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">muscle_index</span></code>: potencia de 55–95 Hz en el registro crudo, como índice de EMG.</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.audit.aperiodic_fit">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.audit.</span></span><span class="sig-name descname"><span class="pre">aperiodic_fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(2.0,</span> <span class="pre">35.0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/audit.html#aperiodic_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.audit.aperiodic_fit" title="Link to this definition">#</a></dt>
+<dd><p>(desfase, exponente) de <code class="docutils literal notranslate"><span class="pre">log10</span> <span class="pre">P</span> <span class="pre">=</span> <span class="pre">b</span> <span class="pre">-</span> <span class="pre">chi</span> <span class="pre">*</span> <span class="pre">log10</span> <span class="pre">f</span></code>.</p>
+<p>Primero hace un ajuste inicial y luego lo repite solo con los puntos que quedan por debajo de él. Así los
+picos oscilatorios no sesgan la pendiente: es la lógica de <code class="docutils literal notranslate"><span class="pre">_robust_ap_fit</span></code> de FOOOF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freqs</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>psd</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>frange</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.audit.aperiodic_residual">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.audit.</span></span><span class="sig-name descname"><span class="pre">aperiodic_residual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exponent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/audit.html#aperiodic_residual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.audit.aperiodic_residual" title="Link to this definition">#</a></dt>
+<dd><p>log10 P menos el componente aperiódico (en unidades log10).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freqs</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>psd</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>offset</strong> (<em>float</em>)</p></li>
+<li><p><strong>exponent</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.audit.alpha_peak">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.audit.</span></span><span class="sig-name descname"><span class="pre">alpha_peak</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">freqs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(7.0,</span> <span class="pre">13.0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/audit.html#alpha_peak"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.audit.alpha_peak" title="Link to this definition">#</a></dt>
+<dd><p>(frecuencia del pico alfa, altura máxima del residuo) con el centroide del residuo positivo en <code class="docutils literal notranslate"><span class="pre">band</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freqs</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>resid</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>band</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.audit.behavioural_rt">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.audit.</span></span><span class="sig-name descname"><span class="pre">behavioural_rt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dot_onsets_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resp_onsets_s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.15,</span> <span class="pre">1.5)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/audit.html#behavioural_rt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.audit.behavioural_rt" title="Link to this definition">#</a></dt>
+<dd><p>Tiempos de reacción por sujeto.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dot_onsets_s</span></code>: inicios del punto por condición en segundos, por ejemplo <code class="docutils literal notranslate"><span class="pre">{&quot;fear&quot;:</span> <span class="pre">...,</span> <span class="pre">&quot;happy&quot;:</span> <span class="pre">...,</span> <span class="pre">...}</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resp_onsets_s</span></code>: inicios de las respuestas en segundos.</p></li>
+</ul>
+<p>El TR de un ensayo es la primera respuesta posterior al punto, si cae dentro de <code class="docutils literal notranslate"><span class="pre">valid</span></code>. Si no, el ensayo cuenta
+como omisión o respuesta fuera de rango. Las claves de TRSP (congruencia, acierto) no están en los <code class="docutils literal notranslate"><span class="pre">.raw</span></code> de EGI,
+así que no hay índice de sesgo atencional.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dot_onsets_s</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>numpy.ndarray</em><em>]</em>)</p></li>
+<li><p><strong>resp_onsets_s</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>valid</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.features.audit.muscle_index">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.features.audit.</span></span><span class="sig-name descname"><span class="pre">muscle_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_uv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seg_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(55.0,</span> <span class="pre">95.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1.0,</span> <span class="pre">40.0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/features/audit.html#muscle_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.features.audit.muscle_index" title="Link to this definition">#</a></dt>
+<dd><p>Índice de EMG por canal: log10 de la potencia media en <code class="docutils literal notranslate"><span class="pre">band</span></code> y su cociente con <code class="docutils literal notranslate"><span class="pre">ref_band</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">data_uv</span></code> (n_canales, n_muestras) ya filtrado pasa-altos, con notch y referencia promedio. Se usa la mediana
+sobre segmentos de 2 s, que es robusta a artefactos aislados grandes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_uv</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>sfreq</strong> (<em>float</em>)</p></li>
+<li><p><strong>seg_s</strong> (<em>float</em>)</p></li>
+<li><p><strong>band</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>ref_band</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[numpy.ndarray, numpy.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-eeg_mdd.models">
+<span id="models"></span><h2>Models<a class="headerlink" href="#module-eeg_mdd.models" title="Link to this heading">#</a></h2>
+<p>Catálogo de modelos: cada entrada devuelve (Pipeline, rejilla de hiperparámetros).</p>
+<p>Todos los pasos que aprenden de los datos (imputación, escalado, covarianzas de
+referencia, prototipos de ERP) están dentro del Pipeline, así que en la CV
+anidada se ajustan solo con los sujetos de entrenamiento.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.models.tabular_models">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.models.</span></span><span class="sig-name descname"><span class="pre">tabular_models</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/models.html#tabular_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.models.tabular_models" title="Link to this definition">#</a></dt>
+<dd><p>Modelos para tablas por sujeto (características o demografía).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, tuple[sklearn.pipeline.Pipeline, list | dict]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.models.model_selection_grid">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.models.</span></span><span class="sig-name descname"><span class="pre">model_selection_grid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/models.html#model_selection_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.models.model_selection_grid" title="Link to this definition">#</a></dt>
+<dd><p>Una sola búsqueda interna que elige familia de modelo E hiperparámetros.</p>
+<p>Sirve para estimar sin sesgo el desempeño de “quedarse con el mejor modelo”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[sklearn.pipeline.Pipeline, list[dict]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.models.riemann_models">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.models.</span></span><span class="sig-name descname"><span class="pre">riemann_models</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precomputed_cov</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/models.html#riemann_models"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.models.riemann_models" title="Link to this definition">#</a></dt>
+<dd><p>Modelos por ensayo sobre señales regionales (n_trials, n_regions, n_times).</p>
+<p><code class="docutils literal notranslate"><span class="pre">precomputed_cov=True</span></code>: TS-LR y MDM reciben ya las covarianzas OAS por ensayo
+(n_trials, n_regions, n_regions). Es seguro: cada covarianza usa solo su propio
+ensayo y no aprende nada de otros datos; lo que sí aprende (media de referencia
+del espacio tangente, escalado, LR, centroides de MDM) sigue dentro del Pipeline.
+ERPCov-TS-LR siempre recibe la señal: sus prototipos de ERP usan etiquetas y se
+ajustan dentro del pliegue. Por coste de cómputo su C queda fijo a priori (0.1),
+sin rejilla interna (desviación D5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>precomputed_cov</strong> (<em>bool</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, tuple[sklearn.pipeline.Pipeline, dict]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.models.deconfound">Desconfusión dentro del pliegue (D6, exploratorio).</p>
+<p><code class="docutils literal notranslate"><span class="pre">ConfoundRegressor</span></code> recibe una matriz cuyas últimas <code class="docutils literal notranslate"><span class="pre">n_confounds</span></code> columnas son los confusores (por ejemplo edad,
+sexo y escolaridad):</p>
+<ul class="simple">
+<li><p>En <code class="docutils literal notranslate"><span class="pre">fit</span></code> estima por mínimos cuadrados, solo con los sujetos de entrenamiento, la parte de cada característica
+que explican los confusores.</p></li>
+<li><p>En <code class="docutils literal notranslate"><span class="pre">transform</span></code> resta esa parte con los coeficientes de entrenamiento y descarta los confusores.</p></li>
+</ul>
+<p>Así el clasificador no ve información lineal de los confusores, y ningún dato de prueba interviene en el ajuste.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="eeg_mdd.models.deconfound.ConfoundRegressor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eeg_mdd.models.deconfound.</span></span><span class="sig-name descname"><span class="pre">ConfoundRegressor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/models/deconfound.html#ConfoundRegressor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.models.deconfound.ConfoundRegressor" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n_confounds</strong> (<em>int</em>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.models.deep">Deep learning por ensayo (braindecode) con validación por sujeto.</p>
+<dl class="simple">
+<dt>Por pliegue externo:</dt><dd><ol class="arabic simple">
+<li><p>Los sujetos de entrenamiento se dividen (estratificado, por sujeto) en
+entrenamiento interno y validación (20 %) para early stopping.</p></li>
+<li><p>Escalado por canal con estadísticos SOLO del entrenamiento interno.</p></li>
+<li><p>Aumentación simple: desplazamiento temporal, escala de amplitud y ruido.</p></li>
+<li><p>Las probabilidades por ensayo de los sujetos de prueba se promedian por sujeto.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="eeg_mdd.models.deep.DLConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eeg_mdd.models.deep.</span></span><span class="sig-name descname"><span class="pre">DLConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'float'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_decay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'float'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_frac_splits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_sd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'float'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'tuple'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0.9,</span> <span class="pre">1.1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/models/deep.html#DLConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.models.deep.DLConfig" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_epochs</strong> (<em>int</em>)</p></li>
+<li><p><strong>patience</strong> (<em>int</em>)</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>)</p></li>
+<li><p><strong>lr</strong> (<em>float</em>)</p></li>
+<li><p><strong>weight_decay</strong> (<em>float</em>)</p></li>
+<li><p><strong>val_frac_splits</strong> (<em>int</em>)</p></li>
+<li><p><strong>shift_max</strong> (<em>int</em>)</p></li>
+<li><p><strong>noise_sd</strong> (<em>float</em>)</p></li>
+<li><p><strong>scale_range</strong> (<em>tuple</em>)</p></li>
+<li><p><strong>seed</strong> (<em>int</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.models.deep.train_fold">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.models.deep.</span></span><span class="sig-name descname"><span class="pre">train_fold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">te</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cuda'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/models/deep.html#train_fold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.models.deep.train_fold" title="Link to this definition">#</a></dt>
+<dd><p>Entrena en <code class="docutils literal notranslate"><span class="pre">tr</span></code> (con validación interna por sujeto) y predice <code class="docutils literal notranslate"><span class="pre">te</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>)</p></li>
+<li><p><strong>X</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>y</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>g</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>tr</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>te</strong> (<em>numpy.ndarray</em>)</p></li>
+<li><p><strong>sfreq</strong> (<em>float</em>)</p></li>
+<li><p><strong>cfg</strong> (<a class="reference internal" href="#eeg_mdd.models.deep.DLConfig" title="eeg_mdd.models.deep.DLConfig"><em>DLConfig</em></a>)</p></li>
+<li><p><strong>device</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-eeg_mdd.io">
+<span id="data-handling-and-preprocessing"></span><h2>Data handling and preprocessing<a class="headerlink" href="#module-eeg_mdd.io" title="Link to this heading">#</a></h2>
+<p>Búsqueda y lectura de archivos de EEG.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.io.find_eeg_files">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.io.</span></span><span class="sig-name descname"><span class="pre">find_eeg_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extensions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/io.html#find_eeg_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.io.find_eeg_files" title="Link to this definition">#</a></dt>
+<dd><p>Lista los archivos de EEG bajo <code class="docutils literal notranslate"><span class="pre">raw_dir</span></code>.</p>
+<p>Los registros <code class="docutils literal notranslate"><span class="pre">.mff</span></code> de EGI son carpetas, así que también se aceptan
+directorios con esa extensión.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw_dir</strong> (<em>str</em><em> | </em><em>Path</em>)</p></li>
+<li><p><strong>extensions</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[<em>Path</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.io.extract_subject_id">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.io.</span></span><span class="sig-name descname"><span class="pre">extract_subject_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/io.html#extract_subject_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.io.extract_subject_id" title="Link to this definition">#</a></dt>
+<dd><p>Saca el ID del sujeto del nombre del archivo con una expresión regular.</p>
+<p>Devuelve <code class="docutils literal notranslate"><span class="pre">None</span></code> si no hay coincidencia: esos archivos se revisan a mano,
+nunca se adivina el ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> | </em><em>Path</em>)</p></li>
+<li><p><strong>pattern</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.io.load_raw">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.io.</span></span><span class="sig-name descname"><span class="pre">load_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preload</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/io.html#load_raw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.io.load_raw" title="Link to this definition">#</a></dt>
+<dd><p>Lee un registro según su extensión.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> | </em><em>Path</em>)</p></li>
+<li><p><strong>preload</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>mne.io.BaseRaw</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.events">Eventos de EGI leídos por NOMBRE, con códigos fijos para todo el dataset.</p>
+<p>Por qué existe este módulo: al leer un <code class="docutils literal notranslate"><span class="pre">.raw</span></code> de EGI, MNE crea un canal de
+estímulo por tipo de evento (<code class="docutils literal notranslate"><span class="pre">fcue</span></code>, <code class="docutils literal notranslate"><span class="pre">hdot</span></code>, <code class="docutils literal notranslate"><span class="pre">resp</span></code>…) y además un canal
+combinado <code class="docutils literal notranslate"><span class="pre">STI</span> <span class="pre">014</span></code>. En los archivos de MODMA <code class="docutils literal notranslate"><span class="pre">STI</span> <span class="pre">014</span></code> vale 1 para todos
+los eventos, así que no distingue condiciones; y cualquier numeración que MNE
+asigne depende de qué tipos aparecen en cada archivo. Por eso los eventos se
+toman siempre por nombre de canal y el código numérico sale de la
+configuración, que es igual para todos los sujetos.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.events.egi_event_channels">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.events.</span></span><span class="sig-name descname"><span class="pre">egi_event_channels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/events.html#egi_event_channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.events.egi_event_channels" title="Link to this definition">#</a></dt>
+<dd><p>Nombres de los canales de evento de EGI (sin el canal combinado).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>raw</strong> (<em>mne.io.BaseRaw</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.events.event_onsets">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.events.</span></span><span class="sig-name descname"><span class="pre">event_onsets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/events.html#event_onsets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.events.event_onsets" title="Link to this definition">#</a></dt>
+<dd><p>Muestras (relativas al inicio del registro) donde el canal pasa de 0 a &gt;0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw</strong> (<em>mne.io.BaseRaw</em>)</p></li>
+<li><p><strong>channel</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.events.count_egi_events">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.events.</span></span><span class="sig-name descname"><span class="pre">count_egi_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/events.html#count_egi_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.events.count_egi_events" title="Link to this definition">#</a></dt>
+<dd><p>Número de eventos por nombre de canal de EGI.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>raw</strong> (<em>mne.io.BaseRaw</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.events.find_egi_events">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.events.</span></span><span class="sig-name descname"><span class="pre">find_egi_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">codes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/events.html#find_egi_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.events.find_egi_events" title="Link to this definition">#</a></dt>
+<dd><p>Matriz de eventos de MNE (muestra, 0, código) para los nombres pedidos.</p>
+<p><code class="docutils literal notranslate"><span class="pre">codes</span></code> mapea nombre de canal de EGI -&gt; código entero fijo, por ejemplo
+<code class="docutils literal notranslate"><span class="pre">{&quot;fcue&quot;:</span> <span class="pre">11,</span> <span class="pre">&quot;hcue&quot;:</span> <span class="pre">12,</span> <span class="pre">&quot;scue&quot;:</span> <span class="pre">13}</span></code>. Los nombres que no estén en el
+archivo simplemente no aportan eventos (se registra aparte quién falta).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw</strong> (<em>mne.io.BaseRaw</em>)</p></li>
+<li><p><strong>codes</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.events.event_table">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.events.</span></span><span class="sig-name descname"><span class="pre">event_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/events.html#event_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.events.event_table" title="Link to this definition">#</a></dt>
+<dd><p>Tabla ordenada (tiempo, nombre) con todos los eventos de los canales indicados.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw</strong> (<em>mne.io.BaseRaw</em>)</p></li>
+<li><p><strong>channels</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.matching">Cruce entre los registros de EEG y los datos clínicos.</p>
+<p>Principio: NO hay coincidencias aproximadas ni “normalizaciones” creativas.
+Un ID solo se une si es idéntico (después de quitar espacios) o si aparece en
+el mapa manual con una justificación escrita.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.matching.normalize_id">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.matching.</span></span><span class="sig-name descname"><span class="pre">normalize_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/matching.html#normalize_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.matching.normalize_id" title="Link to this definition">#</a></dt>
+<dd><p>Única normalización permitida: convertir a texto y quitar espacios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.matching.match_subjects">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.matching.</span></span><span class="sig-name descname"><span class="pre">match_subjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eeg_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clinical</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">manual_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/matching.html#match_subjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.matching.match_subjects" title="Link to this definition">#</a></dt>
+<dd><p>Una fila por ID con su estado de cruce y su etiqueta.</p>
+<dl class="simple">
+<dt>Estados:</dt><dd><p>matched / matched_manual  -&gt; unido y con etiqueta válida
+only_eeg                  -&gt; hay EEG pero no datos clínicos
+only_clinical             -&gt; hay datos clínicos pero no EEG
+duplicated                -&gt; el ID aparece más de una vez (EEG o clínico)
+unlabeled                 -&gt; unido pero sin etiqueta MDD/HC válida</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eeg_ids</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>clinical</strong> (<em>pandas.DataFrame</em>)</p></li>
+<li><p><strong>manual_map</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.matching.usable_subjects">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.matching.</span></span><span class="sig-name descname"><span class="pre">usable_subjects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matches</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/matching.html#usable_subjects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.matching.usable_subjects" title="Link to this definition">#</a></dt>
+<dd><p>Solo los sujetos que pueden pasar al preprocesamiento.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>matches</strong> (<em>pandas.DataFrame</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.demographics">Tabla demográfica por grupo y pruebas de diferencias (análisis de confusores).</p>
+<p>Estas variables NUNCA entran como predictores del modelo de EEG; solo se usan
+para describir la muestra, para el análisis de confusores y para la línea base
+demográfica (ver docs/preregistration.md).</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.demographics.continuous_row">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.demographics.</span></span><span class="sig-name descname"><span class="pre">continuous_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'group'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/demographics.html#continuous_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.demographics.continuous_row" title="Link to this definition">#</a></dt>
+<dd><p>Media ± DE, mediana [RIC] por grupo y prueba de Mann-Whitney (y t de Welch).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pandas.DataFrame</em>)</p></li>
+<li><p><strong>col</strong> (<em>str</em>)</p></li>
+<li><p><strong>group_col</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.demographics.categorical_row">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.demographics.</span></span><span class="sig-name descname"><span class="pre">categorical_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'group'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/demographics.html#categorical_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.demographics.categorical_row" title="Link to this definition">#</a></dt>
+<dd><p>Conteos por grupo y prueba exacta de Fisher (2x2) o chi² (si hay más niveles).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pandas.DataFrame</em>)</p></li>
+<li><p><strong>col</strong> (<em>str</em>)</p></li>
+<li><p><strong>group_col</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.demographics.recording_datetime_from_name">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.demographics.</span></span><span class="sig-name descname"><span class="pre">recording_datetime_from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/demographics.html#recording_datetime_from_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.demographics.recording_datetime_from_name" title="Link to this definition">#</a></dt>
+<dd><p>Fecha (y hora en texto, tal cual) escritas en el nombre del archivo.</p>
+<p>La hora a veces viene truncada (p. ej. “14” o “110”), así que se devuelve
+como texto y la fecha como Timestamp. No se adivina nada.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em> | </em><em>Path</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[pd.Timestamp | None, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.preprocess">Preprocesamiento por sujeto con MNE.</p>
+<p>Todo se ajusta dentro de un mismo sujeto (detección de canales malos, ICA,
+rechazo), así que no hay fuga de información entre sujetos en esta etapa.
+El plan completo está fijado en <code class="docutils literal notranslate"><span class="pre">docs/preregistration.md</span></code>.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.preprocess.load_ica_exclusions">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.preprocess.</span></span><span class="sig-name descname"><span class="pre">load_ica_exclusions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/preprocess.html#load_ica_exclusions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.preprocess.load_ica_exclusions" title="Link to this definition">#</a></dt>
+<dd><p>Exclusiones de ICA fijadas a mano (tienen prioridad sobre ICLabel).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em> | </em><em>Path</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, list[int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.preprocess.prepare_raw">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.preprocess.</span></span><span class="sig-name descname"><span class="pre">prepare_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/preprocess.html#prepare_raw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.preprocess.prepare_raw" title="Link to this definition">#</a></dt>
+<dd><p>Renombra canales y pone el montaje (los .raw de EGI no lo traen).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw</strong> (<em>mne.io.BaseRaw</em>)</p></li>
+<li><p><strong>pp</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>mne.io.BaseRaw</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.preprocess.find_task_events">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.preprocess.</span></span><span class="sig-name descname"><span class="pre">find_task_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/preprocess.html#find_task_events"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.preprocess.find_task_events" title="Link to this definition">#</a></dt>
+<dd><p>Eventos por nombre de EGI (si la config los define) o por canal de estímulo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw</strong> (<em>mne.io.BaseRaw</em>)</p></li>
+<li><p><strong>pp</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.preprocess.detect_bad_channels">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.preprocess.</span></span><span class="sig-name descname"><span class="pre">detect_bad_channels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/preprocess.html#detect_bad_channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.preprocess.detect_bad_channels" title="Link to this definition">#</a></dt>
+<dd><p>Canales malos por planitud, desviación robusta y baja correlación con vecinos.</p>
+<p>Se calcula sobre una copia filtrada 1-40 Hz de los canales EEG. Devuelve la
+lista y el motivo de cada uno. Con <code class="docutils literal notranslate"><span class="pre">method:</span> <span class="pre">pyprep</span></code> se usa la detección del
+pipeline PREP (PyPREP <code class="docutils literal notranslate"><span class="pre">NoisyChannels</span></code>, sin RANSAC).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw</strong> (<em>mne.io.BaseRaw</em>)</p></li>
+<li><p><strong>cfg</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[list[str], dict[str, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.preprocess.fit_ica_iclabel">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.preprocess.</span></span><span class="sig-name descname"><span class="pre">fit_ica_iclabel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ica_cfg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/preprocess.html#fit_ica_iclabel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.preprocess.fit_ica_iclabel" title="Link to this definition">#</a></dt>
+<dd><p>Ajusta ICA en una copia 1-100 Hz con referencia promedio y la etiqueta con ICLabel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw</strong> (<em>mne.io.BaseRaw</em>)</p></li>
+<li><p><strong>ica_cfg</strong> (<em>dict</em>)</p></li>
+<li><p><strong>notch</strong> (<em>list</em><em>[</em><em>float</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[mne.preprocessing.ICA, pandas.DataFrame]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="eeg_mdd.preprocess.SubjectResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eeg_mdd.preprocess.</span></span><span class="sig-name descname"><span class="pre">SubjectResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epochs:</span> <span class="pre">'mne.Epochs'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log:</span> <span class="pre">'dict'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">continuous:</span> <span class="pre">'mne.Epochs</span> <span class="pre">|</span> <span class="pre">None'</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ica:</span> <span class="pre">'mne.preprocessing.ICA</span> <span class="pre">|</span> <span class="pre">None'</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ica_labels:</span> <span class="pre">'pd.DataFrame</span> <span class="pre">|</span> <span class="pre">None'</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bad_reasons:</span> <span class="pre">'dict'</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/preprocess.html#SubjectResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.preprocess.SubjectResult" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epochs</strong> (<em>mne.Epochs</em>)</p></li>
+<li><p><strong>log</strong> (<em>dict</em>)</p></li>
+<li><p><strong>continuous</strong> (<em>mne.Epochs</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>ica</strong> (<em>mne.preprocessing.ICA</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>ica_labels</strong> (<em>pd.DataFrame</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>bad_reasons</strong> (<em>dict</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.preprocess.preprocess_subject">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.preprocess.</span></span><span class="sig-name descname"><span class="pre">preprocess_subject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ica_exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ica_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/preprocess.html#preprocess_subject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.preprocess.preprocess_subject" title="Link to this definition">#</a></dt>
+<dd><p>De registro continuo a épocas limpias (y segmentos continuos) de un sujeto.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw</strong> (<em>mne.io.BaseRaw</em>)</p></li>
+<li><p><strong>pp</strong> (<em>dict</em>)</p></li>
+<li><p><strong>subject_id</strong> (<em>str</em>)</p></li>
+<li><p><strong>ica_exclude</strong> (<em>list</em><em>[</em><em>int</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>ica_dir</strong> (<em>str</em><em> | </em><em>Path</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#eeg_mdd.preprocess.SubjectResult" title="eeg_mdd.preprocess.SubjectResult"><em>SubjectResult</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.preprocess.preprocess_raw">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.preprocess.</span></span><span class="sig-name descname"><span class="pre">preprocess_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subject_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ica_exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ica_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/preprocess.html#preprocess_raw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.preprocess.preprocess_raw" title="Link to this definition">#</a></dt>
+<dd><p>Interfaz anterior: devuelve solo las épocas y el registro.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[mne.Epochs, dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.preprocess.apply_exclusion_criteria">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.preprocess.</span></span><span class="sig-name descname"><span class="pre">apply_exclusion_criteria</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/preprocess.html#apply_exclusion_criteria"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.preprocess.apply_exclusion_criteria" title="Link to this definition">#</a></dt>
+<dd><p>Marca a los sujetos que no cumplen los criterios fijados de antemano.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log</strong> (<em>pandas.DataFrame</em>)</p></li>
+<li><p><strong>crit</strong> (<em>dict</em>)</p></li>
+<li><p><strong>n_channels</strong> (<em>int</em>)</p></li>
+<li><p><strong>conditions</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.checks">Validaciones que deben pasar antes de avanzar de fase.</p>
+<p>Cada función devuelve una lista de problemas en texto. Lista vacía = todo bien.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.checks.check_audit">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.checks.</span></span><span class="sig-name descname"><span class="pre">check_audit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_n_eeg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_sfreq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allowed_flat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/checks.html#check_audit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.checks.check_audit" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">allowed_flat</span></code>: canales que se espera que estén planos (p. ej. la referencia
+de registro de EGI, E129/VREF, que vale cero hasta re-referenciar).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>audit</strong> (<em>pandas.DataFrame</em>)</p></li>
+<li><p><strong>expected_n_eeg</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>expected_sfreq</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>allowed_flat</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.checks.check_labels">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.checks.</span></span><span class="sig-name descname"><span class="pre">check_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subjects</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/checks.html#check_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.checks.check_labels" title="Link to this definition">#</a></dt>
+<dd><p>Cada sujeto usable tiene exactamente una etiqueta válida.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subjects</strong> (<em>pandas.DataFrame</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.checks.check_no_subject_overlap">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.checks.</span></span><span class="sig-name descname"><span class="pre">check_no_subject_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_ids</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/checks.html#check_no_subject_overlap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.checks.check_no_subject_overlap" title="Link to this definition">#</a></dt>
+<dd><p>Ningún sujeto puede estar en entrenamiento y prueba a la vez.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train_ids</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>test_ids</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-eeg_mdd.config">Carga de la configuración y resolución de rutas.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.config.load_config">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.config.</span></span><span class="sig-name descname"><span class="pre">load_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/config.html#load_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.config.load_config" title="Link to this definition">#</a></dt>
+<dd><p>Lee el YAML y convierte las rutas de <code class="docutils literal notranslate"><span class="pre">paths</span></code> y <code class="docutils literal notranslate"><span class="pre">clinical.file</span></code> en absolutas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> | </em><em>Path</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>root</strong> (<em>str</em><em> | </em><em>Path</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, <em>Any</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="eeg_mdd.config.ensure_dirs">
+<span class="sig-prename descclassname"><span class="pre">eeg_mdd.config.</span></span><span class="sig-name descname"><span class="pre">ensure_dirs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/eeg_mdd/config.html#ensure_dirs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#eeg_mdd.config.ensure_dirs" title="Link to this definition">#</a></dt>
+<dd><p>Crea las carpetas de salida (nunca toca <code class="docutils literal notranslate"><span class="pre">raw_dir</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cfg</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./code"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="scripts.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Scripts</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-eeg_mdd.evaluation.cv">Evaluation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.cv.SubjectLeakError"><code class="docutils literal notranslate"><span class="pre">SubjectLeakError</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.cv.subject_folds"><code class="docutils literal notranslate"><span class="pre">subject_folds()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.cv.outer_splits"><code class="docutils literal notranslate"><span class="pre">outer_splits()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.CVResult"><code class="docutils literal notranslate"><span class="pre">CVResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.CVResult.mean_prob"><code class="docutils literal notranslate"><span class="pre">CVResult.mean_prob()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.CVResult.ci"><code class="docutils literal notranslate"><span class="pre">CVResult.ci()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.nested_cv"><code class="docutils literal notranslate"><span class="pre">nested_cv()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.permutation_test"><code class="docutils literal notranslate"><span class="pre">permutation_test()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.nested.corrected_ttest"><code class="docutils literal notranslate"><span class="pre">corrected_ttest()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.metrics.aggregate_to_subject"><code class="docutils literal notranslate"><span class="pre">aggregate_to_subject()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.metrics.subject_metrics"><code class="docutils literal notranslate"><span class="pre">subject_metrics()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.evaluation.metrics.bootstrap_ci"><code class="docutils literal notranslate"><span class="pre">bootstrap_ci()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-eeg_mdd.features">Features</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.subject_features"><code class="docutils literal notranslate"><span class="pre">subject_features()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.regions.anchors"><code class="docutils literal notranslate"><span class="pre">anchors()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.regions.assign_regions"><code class="docutils literal notranslate"><span class="pre">assign_regions()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.regions.neighbors_of"><code class="docutils literal notranslate"><span class="pre">neighbors_of()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.spectral.psd_welch"><code class="docutils literal notranslate"><span class="pre">psd_welch()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.spectral.band_power"><code class="docutils literal notranslate"><span class="pre">band_power()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.spectral.spectral_features"><code class="docutils literal notranslate"><span class="pre">spectral_features()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.spectral.frontal_alpha_asymmetry"><code class="docutils literal notranslate"><span class="pre">frontal_alpha_asymmetry()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.erp.erp_features"><code class="docutils literal notranslate"><span class="pre">erp_features()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.connectivity_complexity.region_signals"><code class="docutils literal notranslate"><span class="pre">region_signals()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.connectivity_complexity.wpli_features"><code class="docutils literal notranslate"><span class="pre">wpli_features()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.connectivity_complexity.complexity_features"><code class="docutils literal notranslate"><span class="pre">complexity_features()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.audit.aperiodic_fit"><code class="docutils literal notranslate"><span class="pre">aperiodic_fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.audit.aperiodic_residual"><code class="docutils literal notranslate"><span class="pre">aperiodic_residual()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.audit.alpha_peak"><code class="docutils literal notranslate"><span class="pre">alpha_peak()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.audit.behavioural_rt"><code class="docutils literal notranslate"><span class="pre">behavioural_rt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.features.audit.muscle_index"><code class="docutils literal notranslate"><span class="pre">muscle_index()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-eeg_mdd.models">Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.tabular_models"><code class="docutils literal notranslate"><span class="pre">tabular_models()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.model_selection_grid"><code class="docutils literal notranslate"><span class="pre">model_selection_grid()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.riemann_models"><code class="docutils literal notranslate"><span class="pre">riemann_models()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.deconfound.ConfoundRegressor"><code class="docutils literal notranslate"><span class="pre">ConfoundRegressor</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.deep.DLConfig"><code class="docutils literal notranslate"><span class="pre">DLConfig</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.models.deep.train_fold"><code class="docutils literal notranslate"><span class="pre">train_fold()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-eeg_mdd.io">Data handling and preprocessing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.io.find_eeg_files"><code class="docutils literal notranslate"><span class="pre">find_eeg_files()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.io.extract_subject_id"><code class="docutils literal notranslate"><span class="pre">extract_subject_id()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.io.load_raw"><code class="docutils literal notranslate"><span class="pre">load_raw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.events.egi_event_channels"><code class="docutils literal notranslate"><span class="pre">egi_event_channels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.events.event_onsets"><code class="docutils literal notranslate"><span class="pre">event_onsets()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.events.count_egi_events"><code class="docutils literal notranslate"><span class="pre">count_egi_events()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.events.find_egi_events"><code class="docutils literal notranslate"><span class="pre">find_egi_events()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.events.event_table"><code class="docutils literal notranslate"><span class="pre">event_table()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.matching.normalize_id"><code class="docutils literal notranslate"><span class="pre">normalize_id()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.matching.match_subjects"><code class="docutils literal notranslate"><span class="pre">match_subjects()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.matching.usable_subjects"><code class="docutils literal notranslate"><span class="pre">usable_subjects()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.demographics.continuous_row"><code class="docutils literal notranslate"><span class="pre">continuous_row()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.demographics.categorical_row"><code class="docutils literal notranslate"><span class="pre">categorical_row()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.demographics.recording_datetime_from_name"><code class="docutils literal notranslate"><span class="pre">recording_datetime_from_name()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.load_ica_exclusions"><code class="docutils literal notranslate"><span class="pre">load_ica_exclusions()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.prepare_raw"><code class="docutils literal notranslate"><span class="pre">prepare_raw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.find_task_events"><code class="docutils literal notranslate"><span class="pre">find_task_events()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.detect_bad_channels"><code class="docutils literal notranslate"><span class="pre">detect_bad_channels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.fit_ica_iclabel"><code class="docutils literal notranslate"><span class="pre">fit_ica_iclabel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.SubjectResult"><code class="docutils literal notranslate"><span class="pre">SubjectResult</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.preprocess_subject"><code class="docutils literal notranslate"><span class="pre">preprocess_subject()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.preprocess_raw"><code class="docutils literal notranslate"><span class="pre">preprocess_raw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.preprocess.apply_exclusion_criteria"><code class="docutils literal notranslate"><span class="pre">apply_exclusion_criteria()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.checks.check_audit"><code class="docutils literal notranslate"><span class="pre">check_audit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.checks.check_labels"><code class="docutils literal notranslate"><span class="pre">check_labels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.checks.check_no_subject_overlap"><code class="docutils literal notranslate"><span class="pre">check_no_subject_overlap()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.config.load_config"><code class="docutils literal notranslate"><span class="pre">load_config()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#eeg_mdd.config.ensure_dirs"><code class="docutils literal notranslate"><span class="pre">ensure_dirs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Nicolas Rodriguez
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
