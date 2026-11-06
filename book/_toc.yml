@@ -1,0 +1,31 @@
+format: jb-book
+root: intro
+parts:
+  - caption: The study
+    chapters:
+      - file: study/question
+      - file: study/dataset
+      - file: study/findings
+  - caption: Methods
+    chapters:
+      - file: methods/pipeline
+      - file: methods/preprocessing
+      - file: methods/features
+      - file: methods/evaluation
+      - file: methods/models
+      - file: methods/audit
+  - caption: Results
+    chapters:
+      - file: results/main
+      - file: results/inflation
+      - file: results/audit
+  - caption: Using this work
+    chapters:
+      - file: guide/reproduce
+      - file: guide/checklist
+      - file: guide/preregistration
+      - file: guide/deviations
+  - caption: Code
+    chapters:
+      - file: code/scripts
+      - file: code/api

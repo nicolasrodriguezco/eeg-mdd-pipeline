@@ -18,16 +18,18 @@
 \sisetup{detect-all}
 
 \input{generated/numbers.tex}
+\input{generated/audit_numbers.tex}
 
 % ---- Author (sole author) ------------------------------------------------
 \newcommand{\AuthorName}{Nicolas Rodriguez}
-\newcommand{\AuthorAffil}{Department of Mathematics and Statistics, Universidad del Norte, Barranquilla, Colombia}
+\newcommand{\AuthorAffil}{Data Science Program, Division of Basic Sciences, Universidad del Norte, Barranquilla, Colombia}
 \newcommand{\AuthorEmail}{nicolasrodriguezco10@gmail.com}
+\newcommand{\AuthorLinkedIn}{https://www.linkedin.com/in/nicolasrodriguez04/}
 
-\title{How well does task EEG separate major depression from healthy controls in participants never seen by the
-model?\\[0.3em]
-\large A leakage-free, pre-specified evaluation on the MODMA 128-channel dot-probe dataset}
-\author{\AuthorName\\\small\AuthorAffil\\\small\texttt{\AuthorEmail}}
+\title{Participant-wise evaluation removes the apparent EEG signature of major depression\\[0.3em]
+\large A pre-specified, leakage-free benchmark on the MODMA 128-channel dot-probe dataset, with a diagnosis of why
+published accuracies inflate}
+\author{\AuthorName\\\small\AuthorAffil\\\small\href{mailto:\AuthorEmail}{\texttt{\AuthorEmail}}\\\small\href{\AuthorLinkedIn}{\texttt{linkedin.com/in/nicolasrodriguez04}}}
 \date{}
 
 \begin{document}
@@ -42,7 +44,7 @@ model?\\[0.3em]
 
 \section*{Code and data availability}
 All code, the analysis plan (fixed and version-controlled before any result was produced) and the list of deviations
-are available in the accompanying repository. The EEG data belong to the MODMA project~\cite{cai2022modma} and were
+are available at \url{https://github.com/nicolasrodriguezco/eeg-mdd-pipeline}, with a companion book documenting code, methods and results at \url{https://nicolasrodriguezco.github.io/eeg-mdd-pipeline}. The EEG data belong to the MODMA project~\cite{cai2022modma} and were
 obtained from its maintainers for academic use; they are not redistributed.
 
 \section*{Acknowledgements}

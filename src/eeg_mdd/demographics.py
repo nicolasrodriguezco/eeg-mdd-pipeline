@@ -2,7 +2,7 @@
 
 Estas variables NUNCA entran como predictores del modelo de EEG; solo se usan
 para describir la muestra, para el análisis de confusores y para la línea base
-demográfica (ver CLAUDE.md, regla 6).
+demográfica (ver docs/preregistration.md).
 """
 
 from __future__ import annotations

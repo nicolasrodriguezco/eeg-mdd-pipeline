@@ -12,8 +12,12 @@ The one nominally significant secondary result (L1-regularised logistic regressi
 the number of secondary models. The honest estimate of picking the best model, obtained by nested model selection,
 fell to \NestedmodelselectionAllAuc, with a confidence interval including chance.
 
-By contrast, three demographic variables (age, sex and education) reached AUC \DemographicsLrAuc. Any EEG model that
-claims diagnostic value on this dataset should be benchmarked against this figure, not only against 0.5.
+By contrast, three demographic variables (age, sex and education) reached AUC \DemographicsLrAuc. This figure is not
+a diagnostic signal. It reflects how the sample was recruited: patients came from a hospital and controls from
+posters, and the groups differed by about three years of education. Any EEG model that claims diagnostic value on this
+dataset should still be benchmarked against it. The relevant question is whether EEG adds to demographics. In our
+exploratory analysis it did not: demographics plus EEG gave AUC \AudDemoPlusEEGAllAuc{} with all features and
+\AudDemoPlusCompactAuc{} with the compact set, both below demographics alone.
 
 These findings agree with reviews describing EEG markers of depression as small and heterogeneous
 effects~\cite{olbrich2013eeg,deaguiar2019review,simmatis2023technical}. They also agree with the meta-analytic null
@@ -61,18 +65,88 @@ The signal-quality measures did not differ between groups. Even so, one descript
         largest, though not significant.
 \end{itemize}
 Both patterns are also typical signatures of residual muscle activity. ICA with ICLabel removes the clearest muscle
-components but not all EMG. Any future report of high-frequency or complexity differences in these data should
-therefore rule out muscle tension before attributing them to depression.
+components but not all EMG. The post-hoc EMG index supports this reading:
+\begin{itemize}
+  \item it was computed on the raw recordings, before the 40-Hz low-pass;
+  \item it correlated with entropy ($\rho=\AudEmgRSampen$), relative 30--40~Hz power ($\rho=\AudEmgRGamma$) and the
+        aperiodic exponent ($\rho=\AudEmgRApExp$);
+  \item it did not itself differ between groups.
+\end{itemize}
+Complexity, high-beta and aperiodic measures of task EEG should therefore be reported together with an EMG control
+before they are attributed to depression.
+
+Education, the one demographic variable that differed between groups, is unlikely to explain the EEG results. The
+features did not predict it (AUC \AudEduAuc, $p=\AudEduP$), and regressing it out did not change the primary result
+(\AudEEGAlldeconfoundedAuc).
+
+\subsection{A hypothesis worth testing}
+The one EEG model that came close to significance used the raw, regionally averaged ERP amplitudes of each trial,
+not summary features. Its participant-level AUC was \InflRawamplitudeRfSubjectSplitSubjectAuc{} over three
+repetitions, and its permutation $p=\AudRawRfP$ did not survive correction (Holm $p=\AudRawRfPholm$). This pattern
+is consistent with a weak, temporally distributed ERP difference that hand-picked peak amplitudes and latencies
+miss. The latency boundary effects reported in Section~\ref{sec:features} point the same way. A pre-registered test
+of whole-waveform ERP models in an independent sample is the most concrete next step this study suggests.
 
 The single connectivity feature that survived FDR correction (left central--temporal theta wPLI) was not robustly
 used by any model. It should be considered a hypothesis for replication, not a finding.
+
+\subsection{What a negative result on MODMA is good for}
+A well-controlled null result is informative, for three reasons.
+\begin{itemize}
+  \item \textbf{It is a benchmark.} Any new method evaluated on MODMA can be compared with our participant-wise
+        estimates and fixed folds. A claim far above them should prompt a check of the split before it prompts
+        excitement.
+  \item \textbf{It explains the literature.} The near-perfect subject identification and the gap between
+        trial-wise and participant-wise estimates show \emph{why} high accuracies appear, not just that they do.
+  \item \textbf{It sizes the next study.} The power analysis turns ``larger samples are needed'' into a number.
+        Even under optimistic assumptions, a true AUC of 0.65 needs about \AudNNeedSixtyFive{} participants. That
+        scale requires pooling across sites, which in turn makes site harmonisation and demographic baselines
+        essential.
+\end{itemize}
+Table~\ref{tab:checklist} condenses these lessons into checks that authors, reviewers and readers can apply to any
+EEG classification study of depression.
+
+\begin{table}[t]
+\centering\small
+\caption{Reporting checklist for EEG-based depression classification, derived from this study.}
+\label{tab:checklist}
+\begin{tabular}{@{}p{0.30\linewidth}p{0.64\linewidth}@{}}
+\toprule
+Check & Why it matters here \\
+\midrule
+Split by participant, and say so & Trial-wise splitting gave AUC \InflTsLrTrialSplitSubjectAuc{} versus
+  \InflTsLrSubjectSplitSubjectAuc{} for the same model. \\
+Fit everything inside the fold & Scaling, selection and tuning on the full data leak the test set. \\
+Report a demographic baseline & Age, sex and education alone reached AUC \DemographicsLrAuc. \\
+Test the increment over that baseline & Adding EEG did not improve on demographics (\AudDemoPlusEEGAllAuc). \\
+Permute the full pipeline & Chance AUCs up to \PrimaryLrLAllNullQ{} occurred at $n=\NIncluded$. \\
+Correct for, or nest, model selection & The best of 18 models fell to \NestedmodelselectionAllAuc{} when its
+  selection was nested. \\
+Control for muscle activity & Complexity and gamma features tracked a raw EMG index ($\rho$ up to
+  \AudEmgRGamma). \\
+Report participant-level CIs and power & With 18 patients, only large effects were detectable. \\
+Pre-specify and log deviations & This keeps a negative result interpretable and a positive one credible. \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Limitations}
 \begin{itemize}
   \item \textbf{Sample size.} With \NIncludedMDD{} MDD and \NIncludedHC{} HC participants after exclusion, the
         participant-level confidence intervals are wide: for the primary model,
-        \PrimaryLrLAllAucLo--\PrimaryLrLAllAucHi. A modest true effect, around AUC 0.6, cannot be excluded. Our
-        conclusion is that these data provide no evidence of a diagnostic signal, not that none exists.
+        \PrimaryLrLAllAucLo--\PrimaryLrLAllAucHi. A modest true effect, around AUC 0.6, cannot be excluded. Our power analysis is
+        explicit about this. Even an ideal pre-trained score with true AUC 0.70 would have passed the permutation
+        threshold only \AudPowIdealSeventy\% of the time, and a pipeline learning the effect from 36 participants
+        needs an even larger effect. Our conclusion is that these data provide no evidence of a diagnostic signal,
+        not that none exists.
+  \item \textbf{Task information not available.} The released EGI files contain event onsets but not trial keys
+        (congruency, side of the emotional face, accuracy). The attentional-bias index for which the dot-probe was
+        designed, congruent-versus-incongruent probe ERPs and an exact replication of the probe-locked P300 effect
+        of~\cite{li2018attentional} could therefore not be computed. Reaction times alone did not separate the groups
+        (AUC \AudBehaviourRTLRAuc).
+  \item \textbf{Task-state spectra.} Spectral, connectivity and complexity features came from the task recording.
+        Most published spectral markers of depression are resting-state measures. The resting-state MODMA recordings
+        of the same participants would allow a cross-paradigm check, but not an independent replication.
   \item \textbf{Single site and single task.} All data come from one site, one EEG system and one paradigm. Clinical
         details that may modulate EEG are not modelled, notably medication status and illness duration.
   \item \textbf{Asymmetric exclusions.} The pre-specified quality criteria excluded more patients than controls. The
@@ -87,7 +161,16 @@ used by any model. It should be considered a hypothesis for replication, not a f
 
 \subsection{Conclusion}
 Evaluated rigorously on participants never seen by the model, 128-channel task EEG from the MODMA dot-probe dataset
-did not distinguish major depression from healthy controls, and was outperformed by a demographic baseline. The large
-gap between trial-wise and participant-wise estimates on the same data shows how evaluation choices can manufacture
-apparent diagnostic accuracy. Credible progress towards EEG markers of depression will require participant-wise
-evaluation, pre-specified analyses, demographic baselines and substantially larger, multi-site samples.
+did not distinguish major depression from healthy controls, and did not add to a demographic baseline. The same data,
+evaluated trial-wise, yield apparently perfect diagnosis, because single trials identify the person. This contrast is
+the study's central lesson. It provides a quantified explanation for the gap between published accuracies and
+clinical reality, and an honest benchmark for this widely used dataset.
+
+The path forward is clear and achievable:
+\begin{itemize}
+  \item participant-wise, pre-specified evaluation;
+  \item demographic and muscle-artefact controls;
+  \item samples in the hundreds rather than dozens.
+\end{itemize}
+EEG may yet contribute to the assessment of depression, and studies built on these principles will be able to show it
+convincingly.

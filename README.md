@@ -4,9 +4,15 @@ Subject-independent classification of **major depressive disorder (MDD) vs. heal
 from 128-channel task EEG (MODMA, EGI HydroCel GSN, emotional-face dot-probe task, Lanzhou 2015).
 The protocol is fully reproducible and leakage-free. **This is research code, not a clinical tool.**
 
+Author: Nicolas Rodriguez (Data Science Program, Division of Basic Sciences, Universidad del Norte) ·
+[LinkedIn](https://www.linkedin.com/in/nicolasrodriguez04/)
+
 - Paper (LaTeX, English): `docs/paper/main.tex` → `docs/paper/main.pdf`
 - Analysis plan, fixed before any result: `docs/preregistration.md`. Deviations: `reports/deviations.md`
 - Data card / model card: `docs/data_card.md`, `docs/model_card.md`
+- Companion Jupyter Book (code, methods, results; no data): `book/`. Build it with `jupyter-book build book`
+  (see `book/guide/reproduce.md`) and publish it with `ghp-import -n -p -f book/_build/html`.
+  Online: https://nicolasrodriguezco.github.io/eeg-mdd-pipeline
 
 ## Installation
 

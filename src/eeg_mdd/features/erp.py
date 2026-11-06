@@ -3,8 +3,9 @@
 Ventanas (desde la literatura de rostros emocionales):
 - N170: 140-200 ms, mínimo en electrodos occipito-temporales (≈P7/P8).
 - P300: 250-500 ms, media y latencia del máximo en un clúster centro-parietal (≈Pz).
-- LPP: 400-600 ms, media en el mismo clúster (limitado a 600 ms por el diseño:
-  el punto de la tarea aparece >= 632 ms después del rostro).
+- LPP: 400-600 ms, media en el mismo clúster.
+
+La LPP se limita a 600 ms por el diseño: el punto de la tarea aparece >= 632 ms después del rostro.
 """
 
 from __future__ import annotations

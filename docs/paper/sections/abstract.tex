@@ -24,9 +24,22 @@ No EEG model exceeded a baseline using only age, sex and education (AUC \Demogra
 participant-level classification (AUC \InflTsLrTrialSplitSubjectAuc), versus \InflTsLrSubjectSplitSubjectAuc{} when
 participants were held out. The null
 result held when all 53 participants were included and when the analysis was restricted to a period in which both
-groups were recorded.
+groups were recorded. Post-hoc exploratory analyses did not change it either:
+\begin{itemize}
+  \item EEG added nothing to demographics (AUC \AudDemoPlusEEGAllAuc);
+  \item EEG with demographics regressed out inside each fold gave AUC \AudEEGAlldeconfoundedAuc;
+  \item compact theory-driven features, a subject-level Riemannian model and reaction times were all at chance;
+  \item the only borderline signal came from a random forest on raw ERP waveforms ($p=\AudRawRfP$, not significant after correction), which we propose as a hypothesis for independent testing.
+\end{itemize}
+Complexity and high-frequency features tracked a raw-data EMG index. With 18 patients, only large effects were
+detectable.
 
-\noindent\textbf{Conclusions.} Evaluated on unseen participants, task EEG in this dataset carries no detectable
-diagnostic signal for MDD beyond demographics. Trial-wise evaluation can manufacture high accuracy. Participant-wise
-evaluation, pre-specification and demographic baselines should be standard.
+\noindent\textbf{Conclusions.} This study contributes a leakage-free reference benchmark for MODMA and identifies
+the mechanism behind inflated accuracies. A trial-level classifier recognised \emph{which} participant produced a
+trial with \AudIdentAcc\% accuracy, so trial-wise splits reward person recognition rather than diagnosis. Evaluated
+on unseen participants, task EEG in this dataset carried no detectable diagnostic signal beyond a demographic baseline
+that reflects recruitment differences. Residual muscle activity is a concrete, checkable confound for complexity and
+high-frequency features. Even an ideal score with a modest true effect (AUC 0.65) would need about
+\AudNNeedSixtyFive{} participants to be detected reliably. We provide a reporting checklist and open code so that
+future EEG studies of depression can be evaluated, and compared, on the same footing.
 \end{abstract}

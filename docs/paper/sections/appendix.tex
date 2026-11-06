@@ -32,6 +32,12 @@ inspected. D5 was decided after the subject-level models had been evaluated but 
                 recomputed within each fold, used a fixed regularisation $C=0.1$ instead of an inner grid. A value
                 fixed in advance cannot inflate performance; at worst it is slightly sub-optimal.
         \end{itemize}
+  \item[D6] 	extbf{Post-hoc audit analyses (exploratory).} After all pre-specified results were known, an internal
+        audit added the analyses of Sections~
+ef{sec:audit-methods} and~
+ef{sec:audit}. They do not replace,
+        re-rank or re-threshold any pre-specified result. They are Holm-corrected among themselves and labelled
+        exploratory throughout.
 \end{enumerate}
 
 \section{Preprocessing quality}
@@ -62,3 +68,42 @@ $p_\text{FDR}$ is Benjamini--Hochberg corrected over all 288 features.}
 \label{tab:uni}
 \input{tables/univariate_top.tex}
 \end{table}
+
+\section{Feature dictionary}\label{app:dictionary}
+Every subject-level feature is computed per participant without labels. Names join the family, the band or measure and the region with underscores, for example
+\texttt{pow\_alpha\_frontal\_L}. Regions are frontal, central, temporal, parietal and occipital, each
+left (L) or right (R).
+
+\begin{table}[h]
+\centering\scriptsize
+\caption{The 288 pre-specified subject-level features.}
+\label{tab:dictionary}
+\begin{tabular}{@{}p{3.3cm}rp{9.2cm}@{}}
+\toprule
+Name pattern & $n$ & Definition and interpretation \\
+\midrule
+\texttt{pow\_<band>\_<region>} & 50 & $\log_{10}$ absolute Welch power (\si{\micro\volt\squared}) in delta 1--4, theta
+  4--8, alpha 8--13, beta 13--30 and low gamma 30--40~Hz, averaged over the region's electrodes. Depends on skull
+  thickness and impedance as well as on brain activity. \\
+\texttt{rel\_<band>\_<region>} & 50 & Band power divided by 1--40~Hz power. Removes individual scale. The five
+  bands of a region sum to $\approx0.94$, so they are nearly collinear. \\
+\texttt{faa\_F3F4}, \texttt{faa\_F7F8} & 2 & Frontal alpha asymmetry, $\ln\alpha_R-\ln\alpha_L$ (E124/E24,
+  E122/E33). Lower values mean relatively less left-frontal activity, which approach--withdrawal theory predicts in
+  depression. \\
+\texttt{erp\_<cond>\_n170L/R\_amp}, \texttt{\_lat} & 12 & Minimum amplitude and its latency at 140--200~ms, at
+  clusters around P7/P8, per condition (fear, happy, sad). Structural face encoding. \\
+\texttt{erp\_<cond>\_p300\_amp}, \texttt{\_lat} & 6 & Mean amplitude (250--500~ms) and peak latency at a
+  centro-parietal cluster around Pz. Attentional allocation. \\
+\texttt{erp\_<cond>\_lpp\_amp} & 3 & Mean amplitude at 400--600~ms, same cluster. Sustained motivated attention.
+  Overlaps the P300 window ($r\approx0.9$ with P300 amplitude). \\
+\texttt{wpli\_<band>\_<A>\_\_<B>} & 135 & Weighted phase-lag index between region-mean signals (45 pairs, theta,
+  alpha and beta), multitaper over 2-s segments. It ignores zero-lag coupling, which reduces volume conduction. \\
+\texttt{sampen\_<region>} & 10 & Sample entropy ($m=2$, $r=0.2$\,SD). Signal unpredictability. \\
+\texttt{hfd\_<region>} & 10 & Higuchi fractal dimension ($k_\text{max}=10$). Signal roughness. \\
+\texttt{lzc\_<region>} & 10 & Normalised Lempel--Ziv complexity of the median-binarised signal. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Spectral, connectivity and complexity features are computed on the cleaned \emph{task} recording, not at rest.
+Complexity and high-frequency power are sensitive to residual muscle activity (Section~\ref{sec:audit}).

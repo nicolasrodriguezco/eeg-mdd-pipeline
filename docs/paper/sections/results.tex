@@ -122,7 +122,8 @@ The subject-wise participant-level AUC of the raw-amplitude random forest (\Infl
 is the highest of any EEG model. We do not interpret it as evidence of a diagnostic signal, for three reasons:
 \begin{itemize}
   \item the model was included as a control, not pre-specified as a diagnostic model;
-  \item it was evaluated with only three repetitions and no permutation test;
+  \item it was evaluated with only three repetitions, and its post-hoc permutation test was borderline and did not
+        survive multiplicity correction ($p=\AudRawRfP$, Holm $p=\AudRawRfPholm$; Section~\ref{sec:audit});
   \item it is one of many analyses, and for reference, 5\% of permutation runs of the primary pipeline exceeded AUC
         \PrimaryLrLAllNullQ.
 \end{itemize}
@@ -221,4 +222,132 @@ significant cluster (cluster permutation test, $p<0.05$) would be marked; none w
 clusters and the centro-parietal cluster. Shaded windows are the a-priori N170 (140--200~ms) and P300 (250--500~ms)
 measurement windows.}
 \label{fig:erp}
+\end{figure}
+
+\subsection{Post-hoc audit analyses (exploratory)}\label{sec:audit}
+The analyses in this section were added after all pre-specified results were known (deviation D6;
+Section~\ref{sec:audit-methods}). Table~\ref{tab:audit} lists the classification models. None of them changes the
+conclusion.
+
+\paragraph{Does EEG add to demographics?} No.
+\begin{itemize}
+  \item Adding all 288 EEG features to age, sex and education gave AUC $=\AudDemoPlusEEGAllAuc$
+        (\AudDemoPlusEEGAllLo--\AudDemoPlusEEGAllHi). Permuting the EEG block gave $p=\AudDemoPlusEEGAllP$.
+  \item Adding the compact set gave AUC $=\AudDemoPlusCompactAuc$ ($p=\AudDemoPlusCompactP$).
+\end{itemize}
+Both are \emph{below} the demographic baseline alone (\DemographicsLrAuc). With 45 participants, noisy EEG features
+dilute rather than complement the demographic signal.
+
+\paragraph{Is the null result an artefact of confounding or redundancy?} No.
+\begin{itemize}
+  \item EEG with age, sex and education regressed out inside each fold: AUC $=\AudEEGAlldeconfoundedAuc$
+        ($p=\AudEEGAlldeconfoundedP$).
+  \item PCA inside the fold: \AudEEGAllPCALRAuc{} ($p=\AudEEGAllPCALRP$).
+  \item The compact theory-driven set, including the ERP contrasts between emotions, the aperiodic exponent, the
+        alpha peak frequency and frontal-midline theta: \AudCompactLRAuc{} ($p=\AudCompactLRP$).
+  \item Subject-level Riemannian model: \AudSubjectRiemannTSLRAuc{} ($p=\AudSubjectRiemannTSLRP$).
+  \item Reaction times alone: \AudBehaviourRTLRAuc{} ($p=\AudBehaviourRTLRP$). Median RT was \AudRtMdd{} ms in MDD
+        and \AudRtHc{} ms in HC ($p=\AudQRtIncP$).
+\end{itemize}
+The smallest uncorrected $p$ among these models was \AudMinP{}, and the smallest Holm-corrected $p$ was
+\AudMinPholm.
+
+\paragraph{Education as an EEG confound.} The EEG features did not predict education above the median: AUC
+$=\AudEduAuc$ (\AudEduLo--\AudEduHi), $p=\AudEduP$. Only \AudEduNsig{} of 288 features correlated with education at
+$p<0.05$, about the number expected by chance, and \AudEduNfdr{} survived FDR correction.
+
+\paragraph{Residual muscle activity.} The EMG index, computed on the raw recordings, did not differ between groups
+($p=\AudQEmgRelAllP$ in all 53 participants). It did, however, track the features that looked descriptively larger in
+MDD (Fig.~\ref{fig:emg}):
+\begin{itemize}
+  \item mean sample entropy, $\rho=\AudEmgRSampen$;
+  \item mean Lempel--Ziv complexity, $\rho=\AudEmgRLzc$;
+  \item relative beta power, $\rho=\AudEmgRBeta$;
+  \item relative 30--40~Hz power, $\rho=\AudEmgRGamma$;
+  \item aperiodic exponent, $\rho=\AudEmgRApExp$ (all $p\le0.004$).
+\end{itemize}
+These families therefore index muscle tone as much as brain activity. The aperiodic exponent was nominally lower in
+MDD ($p=\AudQApExpAllP$ in all 53; $p=\AudQApExpIncP$ in the 45 included). Given its correlation with the EMG index,
+this cannot be attributed to cortical excitation--inhibition balance. The FDR-surviving wPLI feature was not related
+to the EMG index ($\rho=\AudEmgRWpli$).
+
+\paragraph{Signal quality before exclusion.} In all 53 participants, MDD and HC did not differ in:
+\begin{itemize}
+  \item retained trials ($p=\AudQTrialsAllP$);
+  \item bad channels ($p=\AudQBadChAllP$);
+  \item removed ICA components ($p=\AudQIcaAllP$) or ICLabel muscle components ($p=\AudQIcaMuscleAllP$).
+\end{itemize}
+
+\paragraph{Power.} The 95th percentile of the primary permutation null was AUC \AudPowThr. Even a perfect, already
+trained score would exceed it with probability:
+\begin{itemize}
+  \item \AudPowIdealSeventy\% at true AUC 0.70;
+  \item \AudPowIdealSeventyFive\% at 0.75;
+  \item \AudPowIdealEighty\% at 0.80.
+\end{itemize}
+In the semi-synthetic analysis, where the primary pipeline has to learn the effect from 36 participants, power was
+lower (Fig.~\ref{fig:power}a):
+\begin{itemize}
+  \item \AudSemiFivePower\% when the injected signal had an oracle AUC of \AudSemiFiveOracle;
+  \item \AudSemiEightPower\% at oracle AUC \AudSemiEightOracle;
+  \item \AudSemiTenPower\% at oracle AUC \AudSemiTenOracle.
+\end{itemize}
+The study could therefore only detect large effects. We extrapolated the same ideal score to larger samples, with
+the same class ratio and one-sided $\alpha=0.05$. Reaching 80\% power would need about:
+\begin{itemize}
+  \item \AudNNeedSeventy{} participants for a true AUC of 0.70;
+  \item \AudNNeedSixtyFive{} for 0.65;
+  \item \AudNNeedSixty{} for 0.60.
+\end{itemize}
+These are optimistic lower bounds, because a pipeline that also has to learn the effect needs more.
+
+\paragraph{Learning curve.} Between 12 and 36 training participants (Fig.~\ref{fig:power}b):
+\begin{itemize}
+  \item the primary model moved from AUC \AudLcPrimMin{} to \AudLcPrimMax;
+  \item the demographic model moved from \AudLcDemoMin{} to \AudLcDemoMax.
+\end{itemize}
+
+\paragraph{Why trial-wise splits inflate.} A classifier on single-trial regional covariances identified \emph{which}
+of the 45 participants produced a trial with \AudIdentAcc\% accuracy (chance \AudIdentChance\%). Individual EEG
+signatures are thus highly distinctive, which explains the perfect participant-level AUC under trial-wise splitting
+(Section~\ref{sec:inflation}).
+
+\paragraph{Raw-amplitude random forest.} With the settings of its first repetition (AUC \AudRawRfObs), a permutation
+test of the full subject-wise pipeline gave $p=\AudRawRfP$. The test used \AudRawRfN{} permutations, of which
+\AudRawRfExceed{} reached the observed AUC, and the null 95th percentile was \AudRawRfQ. This is the only nominally
+significant EEG result of the audit, but it is fragile:
+\begin{itemize}
+  \item with so few permutations, the 95\% interval for the exceedance probability extends to \AudRawRfPciHi;
+  \item after Holm correction across the \AudRawRfFamily{} exploratory models it is $p=\AudRawRfPholm$;
+  \item the model was not pre-specified, and a 288-feature linear model on summaries of the same data was at chance.
+\end{itemize}
+We therefore treat the raw ERP waveform as the most promising hypothesis this study generates, to be tested in
+independent data, and not as a finding.
+
+\begin{table}[t]
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Exploratory post-hoc models (D6), on the same folds as Table~\ref{tab:main}. $p_\text{perm}$: 1{,}000
+permutations of the full nested pipeline. For the two incremental models the EEG block is permuted instead of the
+labels. $p_\text{Holm}$ is computed across these seven models. $\Delta$AUC is the difference from the demographic
+baseline, with the corrected resampled $t$-test.}
+\label{tab:audit}
+\input{tables/audit_models.tex}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_power_curve}
+\caption{(a) Probability of exceeding the 95th percentile of the permutation null, as a function of the true AUC. Blue:
+an ideal pre-trained score. Red: the primary pipeline learning an injected effect, semi-synthetic. (b) Learning curve
+(mean $\pm$ SD over 10 repetitions).}
+\label{fig:power}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_emg}
+\caption{EMG index (raw recordings) against global sample entropy, relative 30--40~Hz power and the aperiodic
+exponent in the 45 included participants. $\rho$: Spearman correlation.}
+\label{fig:emg}
 \end{figure}

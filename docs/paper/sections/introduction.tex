@@ -21,6 +21,18 @@ recorded during an emotional-face dot-probe task~\cite{macleod1986attentional} f
 controls. It is a natural testbed for these questions. In this paper we ask a single question:
 \emph{how well can task EEG classify MDD versus HC in participants that the model has never seen?}
 
+\paragraph{What the reader gains.} Beyond answering this question for MODMA, the study offers four things that can be
+reused:
+\begin{itemize}
+  \item a \emph{reference benchmark}: honest, participant-level estimates with fixed folds, against which future
+        MODMA results can be compared;
+  \item a \emph{mechanistic explanation} of inflated accuracies, with the size of the inflation measured on the
+        same data;
+  \item \emph{concrete confound checks}, namely a demographic baseline and a raw-data muscle index;
+  \item \emph{design guidance}: the effect sizes this sample can detect, the sample sizes needed for smaller
+        effects, and a reporting checklist (Table~\ref{tab:checklist}).
+\end{itemize}
+
 \paragraph{Contributions.}
 \begin{enumerate}
   \item A complete pipeline from the raw EGI files, with exact ID matching against the clinical spreadsheet,
@@ -38,5 +50,13 @@ controls. It is a natural testbed for these questions. In this paper we ask a si
         \end{itemize}
   \item Confound analyses: can EEG predict sex, age or recording period, and does performance survive restriction
         to a period in which both groups were recorded?
-  \item A direct measurement of how much trial-wise splitting inflates performance on the same data.
+  \item A direct measurement of how much trial-wise splitting inflates performance on the same data, and its
+        mechanism: single trials identify the participant almost perfectly.
+  \item Post-hoc audit analyses, labelled as exploratory:
+        \begin{itemize}
+          \item the incremental value of EEG over demographics;
+          \item a raw-data EMG index;
+          \item power and sample-size estimates;
+          \item a feature dictionary documenting all 288 variables.
+        \end{itemize}
 \end{enumerate}

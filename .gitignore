@@ -18,7 +18,6 @@ __pycache__/
 *.xls
 *.csv
 !configs/*.csv
-.claude/
 
 # Herramientas binarias locales
 tools/
@@ -28,3 +27,6 @@ tools/
 *.blg
 *.aux
 *.log
+
+# Jupyter Book build output
+book/_build/

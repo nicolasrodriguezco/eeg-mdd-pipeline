@@ -5,11 +5,30 @@ We used the 128-channel event-related potential (ERP) recordings of MODMA (Lanzh
 The release contains 53 recordings, one per participant, sampled at \SI{250}{Hz}. They were acquired with a HydroCel
 Geodesic Sensor Net (EGI) using 128 scalp electrodes plus the vertex reference (E129/Cz).
 
+According to the dataset description~\cite{cai2022modma}:
+\begin{itemize}
+  \item \textbf{Patients} were in- and outpatients of Lanzhou University Second Hospital. Each met DSM-IV criteria
+        for major depression on a structured MINI interview, had a PHQ-9 score of at least 5 and had received no
+        psychotropic drug treatment in the previous two weeks.
+  \item \textbf{Controls} were recruited by posters and excluded if they had a personal or family history of
+        mental disorders.
+  \item \textbf{All participants} were 18--55 years old and had at least primary education.
+\end{itemize}
+The same participants also completed a resting-state recording, which we did not analyse. Medication history beyond
+the two-week washout, illness duration and comorbidity are not provided per participant.
+
 Diagnostic group (24 MDD, 29 HC) was taken \emph{exclusively} from the official subject-information spreadsheet.
 Recording files were matched to it by exact identifier, without normalisation: all 53 identifiers matched one-to-one.
 
-Table~\ref{tab:demo} summarises the sample. The groups did not differ in age ($p=\DemoAgeP$) or sex
-($p=\DemoGenderP$), but MDD participants had fewer years of education ($p=\DemoEducationP$). Questionnaire scores
+Table~\ref{tab:demo} summarises the sample. The groups did not differ significantly in age ($p=\DemoAgeP$) or sex
+($p=\DemoGenderP$), but MDD participants had fewer years of education ($p=\DemoEducationP$).
+
+In the \NIncluded{} analysed participants the education gap was larger:
+\begin{itemize}
+  \item education: MDD \AudDemoEduMdd{} vs.\ HC \AudDemoEduHc{} years, $p=\AudDemoEduP$;
+  \item age: \AudDemoAgeMdd{} vs.\ \AudDemoAgeHc{} years, $p=\AudDemoAgeP$;
+  \item sex (F/M): \AudDemoSexMdd{} vs.\ \AudDemoSexHc, $p=\AudDemoSexP$.
+\end{itemize} Questionnaire scores
 (PHQ-9, GAD-7, CTQ-SF, LES, SSRS, PSQI) were used only to describe the sample and never as predictors, because they
 measure, or are closely tied to, the target.
 
@@ -41,8 +60,14 @@ Before any epoch, feature or model output existed, we committed an analysis plan
 preprocessing, the participant exclusion criteria, the feature definitions, the evaluation protocol, the primary model
 and the primary outcome.
 
-Five deviations are listed in Appendix~\ref{app:deviations}: four were decided before any model was run, and the
-fifth (a computational shortcut for the Riemannian models) before any of their results existed. The only one
+Six deviations are listed in Appendix~\ref{app:deviations}:
+\begin{itemize}
+  \item four were decided before any model was run;
+  \item the fifth, a computational shortcut for the Riemannian models, before any of their results existed;
+  \item the sixth adds post-hoc exploratory analyses after all results were known
+        (Section~\ref{sec:audit-methods}).
+\end{itemize}
+The only one
 affecting the data was replacing an ad-hoc bad-channel rule with the PREP implementation (below), after the original
 rule produced implausible flags next to the reference electrode.
 
@@ -76,7 +101,7 @@ A participant was excluded if any of these held:
   \item fewer than 40 trials survived in any condition.
 \end{itemize}
 
-\subsection{Features}
+\subsection{Features}\label{sec:features}
 All features were computed per participant, without labels. They are therefore not a source of leakage; everything
 that \emph{learns} from data happens inside the cross-validation loop.
 
@@ -85,6 +110,9 @@ We defined ten regions: frontal, central, temporal, parietal and occipital, each
 (Fig.~\ref{fig:regions} in the appendix). Each HydroCel electrode was assigned to the region of its nearest 10--10
 anchor position on the fitted head sphere. Midline electrodes and the lower face/neck ring (more than \SI{115}{\degree}
 from the vertex) were not used for regional features.
+
+Regions differ in size. Central regions have 14 electrodes each, frontal 12--13, occipital 9, parietal 7--8 and
+temporal only 3. The temporal regions are therefore both the noisiest and the closest to the temporalis muscle.
 
 \paragraph{Feature families.}
 \begin{itemize}
@@ -105,9 +133,14 @@ from the vertex) were not used for regional features.
   \item \textbf{Connectivity (135).} Weighted phase-lag index (wPLI)~\cite{vinck2011wpli} between the ten
         region-mean signals, in the theta, alpha and beta bands.
   \item \textbf{Complexity (30).} Per region, sample entropy~\cite{richman2000sampen}, Higuchi fractal
-        dimension~\cite{higuchi1988} and Lempel--Ziv complexity~\cite{lempel1976complexity}, averaged over 2-s
-        segments.
+        dimension~\cite{higuchi1988} and Lempel--Ziv complexity~\cite{lempel1976complexity}, averaged over up to 100
+        2-s segments (250 samples). Parameters: sample entropy with $m=2$ and $r=0.2\,\mathrm{SD}$; Higuchi with
+        $k_\text{max}=10$; Lempel--Ziv on the median-binarised signal, normalised.
 \end{itemize}
+Peak latencies inside fixed windows are fragile. In 34\% of participant--condition--side combinations the N170
+minimum fell on the 200-ms window edge, and in 24\% the P300 maximum fell on the 250-ms edge. The ERP latency
+features should therefore be read as low-validity measures. Appendix~\ref{app:dictionary} describes every feature.
+
 This gives 288 subject-level features. For trial-level models we kept the ten region-mean signals of each epoch
 ($10\times201$ samples) and, for deep learning, the full $129\times201$ epochs.
 
@@ -200,4 +233,82 @@ participant-level prediction.
         correction~\cite{benjamini1995fdr}.
   \item \textbf{Cluster-based permutation tests}~\cite{maris2007nonparametric} on channel-level band power
         (spatial clusters) and on ERPs (spatio-temporal clusters), as descriptive neurophysiology.
+\end{itemize}
+
+\subsection{Data representations seen by each model}
+Table~\ref{tab:views} lists the input of every model family. Every model was evaluated on the same participant
+partitions, and its result is always one prediction per participant.
+
+\begin{table}[h]
+\centering\scriptsize
+\caption{Inputs of each model family ($n=45$ participants, 18{,}413 retained epochs).}
+\label{tab:views}
+\begin{tabular}{@{}lllp{5.6cm}@{}}
+\toprule
+Representation & Shape & Row & Models \\
+\midrule
+Handcrafted features & $45\times288$ & participant & LR-L2 (primary), LR-L1, SVMs, RF, LightGBM, families \\
+Regional epochs & $18{,}413\times10\times201$ & trial & TS-LR, MDM, ERPCov-TS-LR, inflation control \\
+Full epochs & $18{,}413\times129\times201$ & trial & EEGNet, ShallowFBCSPNet, TCN \\
+Demographics & $45\times3$ & participant & demographic baseline \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Post-hoc audit analyses (exploratory)}\label{sec:audit-methods}
+After all pre-specified results were known, an internal audit added the following analyses (deviation D6). They are
+exploratory by construction. They do not replace or re-rank any pre-specified result, and the classification models
+among them are Holm-corrected among themselves.
+
+\begin{itemize}
+  \item \textbf{Incremental value.} LR-L2 on demographics plus EEG features: all 288, or a compact set (below). The
+        test permutes the rows of the EEG block between participants while labels and demographics stay fixed, so
+        the null hypothesis is ``EEG adds nothing to demographics''.
+  \item \textbf{Deconfounded EEG.} Within each training fold, the linear effect of age, sex and education was
+        regressed out of every feature, and the training coefficients were applied to the test participants.
+  \item \textbf{Dimensionality.} The 288 features are highly redundant: 53 pairs have $|r|>0.9$, and 17 principal
+        components explain 80\% of the variance. We therefore added PCA fitted inside the training fold
+        (5, 10 or 20 components, tuned in the inner loop) followed by LR.
+  \item \textbf{Compact theory-driven set (36 features)}, fixed before it was evaluated:
+        \begin{itemize}
+          \item ERP measures averaged over conditions;
+          \item sad$-$happy and fear$-$happy contrasts of N170, P300 and LPP amplitudes, because mood-congruent
+                biases are differences between conditions;
+          \item the aperiodic (1/$f$) exponent and offset, obtained from a robust log--log fit at 2--35~Hz (the
+                FOOOF logic, without a knee);
+          \item posterior alpha peak frequency and peak power above the aperiodic fit;
+          \item frontal-midline theta (Fz/FCz cluster), relative and aperiodic-corrected;
+          \item FAA;
+          \item trial-to-trial variability of the P300;
+          \item global wPLI per band, global relative band power and global complexity.
+        \end{itemize}
+  \item \textbf{Behaviour.} The EGI files store event onsets but not trial keys, so congruency, side of the
+        emotional face and accuracy are unavailable, and an attentional-bias index cannot be computed. Reaction times
+        were derived as the first response 150--1500~ms after the probe: median, SD, coefficient of variation, miss
+        rate, per-emotion medians and the sad$-$happy difference. This behavioural model uses no EEG and no
+        questionnaire.
+  \item \textbf{Subject-level Riemannian model.} The Riemannian mean of each participant's trial covariances, which
+        is label-free, was projected to the tangent space fitted inside the training fold and classified with LR.
+        This gives 45 rows instead of 18{,}413 correlated trials.
+  \item \textbf{Confounds.}
+        \begin{itemize}
+          \item Can EEG predict education above the median? This uses the primary pipeline with 1{,}000 permutations.
+          \item Signal quality was compared on all 53 participants, before exclusion.
+          \item An EMG index was computed per channel from the \emph{raw} recordings (1-Hz high-pass, 50/100-Hz
+                notch, average reference, task period, bad channels removed) as the log ratio of 55--95~Hz to
+                1--40~Hz power. Its median over 2-s segments was correlated with the features.
+        \end{itemize}
+  \item \textbf{Power.} Two analyses:
+        \begin{enumerate}
+          \item an ideal binormal score with 18 MDD and 27 HC, against the 95th percentile of the primary
+                permutation null;
+          \item a semi-synthetic analysis. The real feature matrix had its rows shuffled to destroy any real
+                association. A shift of $d$ standard deviations in the MDD group was then added to 10 random features,
+                and the full primary pipeline was run (\AudSemiNsims{} simulations per $d$, one repetition each).
+        \end{enumerate}
+  \item \textbf{Learning curve.} The primary and demographic models were refitted on random stratified subsets of
+        12--36 training participants within the same outer folds.
+  \item \textbf{Subject identification.} Multinomial LR on tangent-space single-trial covariances, predicting which
+        of the 45 participants produced a trial, with a trial-wise 5-fold split.
+  \item \textbf{Permutation test of the raw-amplitude random forest} (subject-wise, repetition 0 settings).
 \end{itemize}
