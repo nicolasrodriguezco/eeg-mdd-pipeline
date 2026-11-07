@@ -5,7 +5,7 @@ from 128-channel task EEG (MODMA, EGI HydroCel GSN, emotional-face dot-probe tas
 The protocol is fully reproducible and leakage-free. **This is research code, not a clinical tool.**
 
 Author: Nicolas Rodriguez (Data Science Program, Division of Basic Sciences, Universidad del Norte) ·
-[LinkedIn](https://www.linkedin.com/in/nicolasrodriguez04/)
+[ORCID](https://orcid.org/0009-0005-3286-0704) · [LinkedIn](https://www.linkedin.com/in/nicolasrodriguez04/)
 
 - Paper (LaTeX, English): `docs/paper/main.tex` → `docs/paper/main.pdf`
 - Analysis plan, fixed before any result: `docs/preregistration.md`. Deviations: `reports/deviations.md`
