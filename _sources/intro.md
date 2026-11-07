@@ -6,6 +6,7 @@ This book documents the code, methods and results of the study
 > A pre-specified, leakage-free benchmark on the MODMA 128-channel dot-probe dataset, with a diagnosis of why
 > published accuracies inflate. Nicolas Rodriguez, Data Science Program, Division of Basic Sciences,
 > Universidad del Norte, Barranquilla, Colombia.
+> [ORCID 0009-0005-3286-0704](https://orcid.org/0009-0005-3286-0704) ·
 > [LinkedIn](https://www.linkedin.com/in/nicolasrodriguez04/) ·
 > [nmcontreras@uninorte.edu.co](mailto:nmcontreras@uninorte.edu.co)
 
